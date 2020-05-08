@@ -1,0 +1,36 @@
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+</head>
+<body>
+<th:block th:include="/navbar"></th:block>
+<h3>Activity of :</h3>
+<h4 th:text="${sportsMan.getFirstName()}"></h4>
+<table>
+    <thead>
+    <tr>
+        <th> Name</th>
+        <th> Activity type</th>
+        <th> Registered</th>
+        <th> Creator</th>
+        <th> Status</th>
+        <th> Settings</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="event : ${sportsMan.getRegisteredActivities()}">
+        <td><span th:text="${event.getName()}"> Title </span></td>
+        <td><span th:text="${event.getActivityName()}"> Author </span></td>
+        <td><span th:text="${event.getRegistered().size()}"> Author </span></td>
+        <td><span th:text="${event.getCreatorName()}"> Author </span></td>
+        <td>
+            <span th:if="${event.getOpen()}" th:text="OPEN"></span>
+            <span th:unless="${event.getOpen()}" th:text="CANCELLED"></span>
+        </td>
+        <td><a th:href="@{/event(id=${event.getId()})}">Details</a></td>
+    </tr>
+    </tbody>
+</table>
+</body>

@@ -1,0 +1,198 @@
+package gradation.implementation.presentationtier.controller;
+
+import gradation.implementation.businesstier.service.contractinterface.*;
+import gradation.implementation.configuration.MediaTypeSetting;
+import gradation.implementation.datatier.entities.*;
+
+import gradation.implementation.presentationtier.form.ActivityTypeForm;
+import gradation.implementation.presentationtier.form.LevelForm;
+import gradation.implementation.presentationtier.form.SearchNewForm;
+import gradation.implementation.presentationtier.form.TopicForm;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.ServletContext;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.security.Principal;
+
+@Controller
+public class ManagementController {
+
+	private ActivityService activityService;
+	private SportsManService sportsManService;
+	private ManagementService managementService;
+	private NewsService newsService;
+	private ActivitySettingService activitySettingService;
+	private ServletContext servletContext;
+
+	@Autowired
+	public ManagementController(ActivityService activityService, SportsManService sportsManService,
+			ManagementService managementService, NewsService newsService, ActivitySettingService activitySettingService,
+								ServletContext servletContext) {
+		this.activityService = activityService;
+		this.sportsManService = sportsManService;
+		this.managementService = managementService;
+		this.newsService = newsService;
+		this.activitySettingService = activitySettingService;
+		this.servletContext = servletContext;
+	}
+
+	@RequestMapping(value="/manageUsers", method = RequestMethod.GET)
+	public String manageUserSetting(Model model) {
+		TopicForm topicForm = new TopicForm();
+		model.addAttribute("allUsers", sportsManService.getAllUser());
+		model.addAttribute("allCandidates", managementService.getPromotionCandidates());
+		model.addAttribute("topicForm", topicForm);
+		return "management/manageUsers";
+	}
+
+	@RequestMapping(value="/manageEvents", method = RequestMethod.GET)
+	public String manageEventSetting(Model model) {
+		model.addAttribute("allActivities", activityService.getAllActivities());
+		return "management/manageEvents";
+	}
+
+	@RequestMapping(value = "/cancel{id}", method = RequestMethod.GET)
+	public String cancel(@RequestParam(value = "id") Long id) {
+		activityService.cancelOrActivateActivity(activityService.getSpecificActivity(id), false);
+		newsService.returnCancelledApplictionNewOrCloseEventNew(activityService.getSpecificActivity(id),
+				NewsType.CANCELLED_EVENT);
+		return "redirect:/manageEvents";
+	}
+
+	@RequestMapping(value = "/open{id}", method = RequestMethod.GET)
+	public String open(@RequestParam(value = "id") Long id) {
+		activityService.cancelOrActivateActivity(activityService.getSpecificActivity(id), true);
+		return "redirect:/manageEvents";
+	}
+
+	@RequestMapping(value = "/user/block{id}", method = RequestMethod.GET)
+	public String block(@RequestParam(value = "id") Long id) {
+		sportsManService.blockOrUnblock(sportsManService.findSpecificUser(id),true);
+		for (Activity activity : sportsManService.findSpecificUser(id).getCreatedActivities()) {
+			activityService.cancelOrActivateActivity(activity,false);
+		}
+		return "redirect:/manageUsers";
+	}
+
+	@RequestMapping(value = "/user/unblock{id}", method = RequestMethod.GET)
+	public String unblock(@RequestParam(value = "id") Long id) {
+		sportsManService.blockOrUnblock(sportsManService.findSpecificUser(id),false);
+		for (Activity activity : sportsManService.findSpecificUser(id).getCreatedActivities()) {
+			activityService.cancelOrActivateActivity(activity,true);
+		}
+		return "redirect:/manageUsers";
+	}
+
+	@RequestMapping(value = "/refusePromotion{id}", method = RequestMethod.GET)
+	public String refusePromotionUser(@RequestParam(value = "id") Long id) {
+		SportsMan sportsMan = sportsManService.findSpecificUser(id);
+		managementService.removeRequest(managementService.findSpecific(sportsMan));
+		newsService.returnApplicationResultNewOrLevelUpNew(sportsMan, NewsType.NEGATIVE_REQUEST);
+		return "redirect:/manageUsers";
+	}
+
+	@RequestMapping(value = "/promote{id}", method = RequestMethod.GET)
+	public String promoteUser(@RequestParam(value = "id") Long id) {
+		sportsManService.promoteUser(sportsManService.findSpecificUser(id));
+		managementService.removeRequest(managementService.findSpecific
+				(sportsManService.findSpecificUser(id)));
+		newsService.returnApplicationResultNewOrLevelUpNew(sportsManService.findSpecificUser(id),
+				NewsType.VALIDATED_REQUEST);
+		//Add notification!!
+		return "redirect:/manageUsers";
+	}
+
+	@RequestMapping(value = "/addTopic", method = RequestMethod.POST)
+	public String createTopic(@ModelAttribute("topicForm") TopicForm topicForm,
+			Principal principal) {
+		this.managementService.addTopic(
+				sportsManService.findCurrentUser(principal.getName()),
+				topicForm);
+		return "redirect:/manage";
+	}
+
+	@RequestMapping(value = "/manageSportsSetting", method = RequestMethod.GET)
+	public String manageSportsSetting(Model model) {
+		model.addAttribute("activityTypeForm",new ActivityTypeForm());
+		model.addAttribute("activityTypes",activitySettingService.getAllActivityTypes());
+		return "management/setSportsSetting";
+	}
+
+	@RequestMapping(value = "/updateType{id}", method = RequestMethod.POST)
+	public String updateType(@RequestParam(value = "id") Long id, @ModelAttribute("activityTypeForm") ActivityTypeForm activityTypeForm) {
+		activitySettingService.updateType(activitySettingService.findSpecificActivityType(id),activityTypeForm);
+		return "redirect:/manageSportsSetting";
+	}
+
+	@RequestMapping(value = "/addType", method = RequestMethod.POST)
+	public String addType(@ModelAttribute("activityTypeForm") ActivityTypeForm activityTypeForm) {
+		activitySettingService.createType(activityTypeForm);
+		return "redirect:/manageSportsSetting";
+	}
+
+	@RequestMapping(value = "/manageLevelsSetting", method = RequestMethod.GET)
+	public String manageLevelsSetting(Model model) {
+		model.addAttribute("levelForm",new LevelForm());
+		model.addAttribute("activityLevels",activitySettingService.getAllLevels());
+		return "management/setLevelsSetting";
+	}
+
+	@RequestMapping(value = "/updateLevel{id}", method = RequestMethod.POST)
+	public String updateLevel(@RequestParam(value = "id") Long id, @ModelAttribute("levelForm") LevelForm levelForm) {
+		activitySettingService.updateLevel(levelForm,activitySettingService.findSpecificLevel(id));
+		return "redirect:/manageLevelsSetting";
+	}
+
+	@RequestMapping(value = "/history", method = RequestMethod.GET)
+	public String getHistory(@ModelAttribute("searchNewForm") SearchNewForm searchNewForm,
+							 Model model, @RequestParam(required = false) Boolean there) {
+		model.addAttribute("allTypes", newsService.getAllNewsType());
+		model.addAttribute("allUsers", sportsManService.getAllUser());
+
+		model.addAttribute("allActs",newsService.findAll());
+		model.addAttribute("searchActivityForm",searchNewForm);
+		return "management/searchNew";
+
+	}
+
+	@RequestMapping(value = "/historyByFilter", method = RequestMethod.POST)
+	public String getHistoryByFilter(@ModelAttribute("searchNewForm") SearchNewForm searchNewForm,
+									 Model model, @RequestParam(required = false) Boolean there) {
+		model.addAttribute("allTypes", newsService.getAllNewsType());
+		model.addAttribute("allUsers", sportsManService.getAllUser());
+		model.addAttribute("allActs",newsService.findForSearch(searchNewForm));
+		model.addAttribute("searchActivityForm",searchNewForm);
+		return "management/searchNew";
+	}
+
+	@RequestMapping(value = "/backUpDB", method = RequestMethod.GET)
+	public ResponseEntity<InputStreamResource> makeDBBackUp() throws FileNotFoundException {
+
+		this.managementService.getDBStatus();
+		String folderPath = "/home/laurent/ultimateProjects/phase3/tfe_repo";
+		String filename = "Daily_DB_Backup.sql";
+		MediaType mediaType = MediaTypeSetting.returnForFileName(this.servletContext, filename);
+		//Get the file
+		File file = new File(folderPath + "/" + filename);
+		InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+		file.delete();
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachement;filename=" + file.getName())
+				.contentType(mediaType)
+				.contentLength(file.length())
+				.body(resource);
+	}
+
+}

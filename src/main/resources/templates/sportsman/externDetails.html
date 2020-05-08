@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${sportsMan.getFirstName()}">Title</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+</head>
+<body>
+<th:block th:include="/navbar"></th:block>
+<div class="pure-g">
+    <div class="pure-u-1-8"></div>
+    <div class="pure-u-3-4"><h2 th:text="${sportsMan.getFirstName() + ' ' + sportsMan.getLastName()}"></h2></div>
+    <div class="pure-u-1-8"></div>
+</div>
+<div sec:authorize="hasRole('SIMPLY')">
+    <p>You want to create and manage your OWNS events? </p><a th:href="@{/applyAsConfirmedUser}" >Click Here!</a>
+</div>
+<div class="pure-g">
+    <div class="pure-u-1-8"></div>
+    <div class="pure-u-3-4">
+        <div class="pure-g">
+        <div class="pure-u-1-2"><h3>Age</h3></div>
+        <div class="pure-u-1-2"><h3>Level</h3></div>
+        </div>
+            <div class="pure-g">
+        <div class="pure-u-1-2"><p th:text="${sportsMan.getAge()}"></p></div>
+        <div class="pure-u-1-2"><p th:text="${sportsMan.getLevel().getName()}"></p></div>
+            </div>
+                <div class="pure-g">
+        <div class="pure-u-1-1"><h3>About me : </h3></div>
+        <div class="pure-u-1-1"><p th:text="${sportsMan.getDescription()}"></p></div>
+                </div>
+    </div>
+    <div class="pure-u-1-8"></div>
+</div>
+<div class="pure-g">
+    <div class="pure-u-1-8"></div>
+    <div class="pure-u-3-4">
+        <div class="pure-g">
+        <div class="pure-u-1-2"><h3>Events Créés</h3></div>
+        <div class="pure-u-1-2"><h3>Events enregistrés et/ou participés</h3></div>
+        </div>
+        <div class="pure-g">
+        <div class="pure-u-1-2"><a th:href="@{/eventsByCreator}" th:text="${sportsMan.getCreatedActivities().size()}"></a></div>
+        <div class="pure-u-1-2"><a th:href="@{/getRegisteredEvents(id=${sportsMan.getId()})}" th:text="${sportsMan.getRegisteredActivities().size()}"> Title </a></div>
+        </div>
+    </div>
+    <div class="pure-u-1-8"></div>
+</div>
+<div class="pure-g">
+    <div class="pure-u-1-8"></div>
+    <div class="pure-u-3-4">
+        <div class="pure-g">
+            <div class="pure-u-1-1"><h3>Statistics</h3></div>
+        </div>
+        <table class="pure-table">
+            <thead>
+            <tr>
+                <th> Event</th>
+                <th> EarnedPoints</th>
+                <th> EnergyExpenditure</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="statistic : ${statistics}">
+                <td><span th:text="${statistic.getActivity().getName()}"> Title </span></td>
+                <td><span th:text="${statistic.getEarnedPoints()}"> Title </span></td>
+                <td><span th:text="${statistic.getEnergyExpenditure()}"> Title </span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="pure-u-1-8"></div>
+</div>
+</body>
+</html>

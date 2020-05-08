@@ -1,0 +1,17 @@
+package gradation.implementation.datatier.entities;
+
+public enum NewsType {
+    APPLY_FOR_EVENT,
+    VALIDED_REGISTRATION,
+    REFUSED_REGISTRATION,
+    CANCEL_REGISTRATION,
+    CANCELLED_EVENT,
+    DONE_EVENT,
+    LEVEL_UP,
+    VALIDATED_REQUEST,
+    NEGATIVE_REQUEST,
+    COMMENTED_EVENT,
+    APPLY_AS_CONFIRMED,
+    MESSAGE_SEND,
+    PARTICIPANT_DROPOUT;
+}

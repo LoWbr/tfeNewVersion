@@ -1,0 +1,47 @@
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+</head>
+<body>
+<th:block th:include="/navbar"></th:block>
+<h3>All of the Users</h3>
+<table>
+    <thead>
+    <tr>
+        <th> User</th>
+        <th> Status</th>
+        <th> Block/Unblock</th>
+        <th> More</th>
+        <th> Promote</th>
+        <th> RefusePromotion</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="sporstman : ${allUsers}">
+        <td><span th:text="${sporstman.getFirstName()}"> Title </span></td>
+        <td>
+            <span th:if="${sporstman.getBlocked()}" th:text="BLOCKED"></span>
+            <span th:unless="${sporstman.getBlocked()}" th:text="Active"></span>
+        </td>
+        <td>
+            <span th:if="${sporstman.getBlocked()}"><a
+                    th:href="@{/user/unblock(id=${sporstman.getId()})}">Unblock</a></span>
+            <span th:unless="${sporstman.getBlocked()}"><a
+                    th:href="@{/user/block(id=${sporstman.getId()})}">Block</a></span>
+        </td>
+        <td><a th:href="@{/sportsMan(id=${sporstman.getId()})}">Details</a></td>
+        <td>
+            <span th:if="${allCandidates.contains(sporstman)}"><a th:href="@{/promote(id=${sporstman.getId()})}">Promote</a></span>
+            <span th:unless="${allCandidates.contains(sporstman.getId())}"></span>
+        </td>
+        <td>
+            <span th:if="${allCandidates.contains(sporstman)}"><a th:href="@{/refusePromotion(id=${sporstman.getId()})}">Refuse</a></span>
+            <span th:unless="${allCandidates.contains(sporstman.getId())}"></span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

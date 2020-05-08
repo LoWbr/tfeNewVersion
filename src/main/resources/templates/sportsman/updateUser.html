@@ -1,0 +1,86 @@
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+</head>
+<body>
+<th:block th:include="/navbar"></th:block>
+<div class="pure-g">
+    <div class="pure-u-1-6"></div>
+    <div class="pure-u-2-3">
+        <form th:action="@{/updateUser}"
+              th:object="${sportsManForm}" method="POST" class="pure-form pure-form-stacked">
+            <fieldset>
+                <legend>Register</legend>
+                <div>
+                    <span class="text-danger" th:errors="*{global}"></span>
+                </div>
+                <div class="pure-g">
+                    <div class="pure-u-1-2">
+                        <label th:for="${sportsManForm}">Name</label>
+                        <input class="pure-u-23-24" th:placeholder="${sportsManForm.getLastname()}" type="text" th:field="*{lastname}"/> <!--style="display:block; margin:auto;"-->
+                        <div>
+                            <span class="text-danger" th:errors="*{lastname}"> </span>
+                        </div>
+                    </div>
+                    <div class="pure-u-1-2">
+                        <label th:for="${sportsManForm}">First Name</label>
+                        <input class="pure-u-24-24" th:placeholder="${sportsManForm.getFirstname()}" type="text" th:field="*{firstname}"/>
+                        <div>
+                            <span class="text-danger" th:errors="*{firstname}" style="color: tomato"> </span>
+                        </div>
+                    </div>
+                    <div class="pure-u-1-2">
+                        <label th:for="${sportsManForm}">Mail</label>
+                        <input class="pure-u-23-24" th:placeholder="${sportsManForm.getMail()}" type="text" th:field="*{mail}"/>
+                        <div>
+                            <span class="text-danger" th:errors="*{mail}"> </span>
+                        </div>
+                    </div>
+                    <div class="pure-u-1-4">
+                        <label th:for="${sportsManForm}">Weight</label>
+                        <input class="pure-u-20-24" th:placeholder="${sportsManForm.getWeight()}" type="number" th:field="*{weight}">
+                        <div>
+                            <span class="text-danger" th:errors="*{weight}"> </span>
+                        </div>
+                    </div>
+                    <div class="pure-u-1-4">
+                        <label th:for="${sportsManForm}">BirthDate</label>
+                        <input class="pure-u-24-24" th:placeholder="${sportsManForm.getDateofBirth()}" type="date"th:field="*{dateofBirth}">
+                        <div>
+                            <span class="text-danger" th:errors="*{dateofBirth}"> </span>
+                        </div>
+                    </div>
+                    <div class="pure-u-1-1">
+                        <label th:for="${sportsManForm}">Few words about you</label>
+                        <textarea th:field="*{description}" th:placeholder="${sportsManForm.getDescription()}" class="pure-u-24-24"
+                                  rows="6"/></textarea>
+                        <div>
+                            <span class="text-danger" th:errors="*{description}"> </span>
+                        </div>
+                    </div>
+                    <div class="pure-u-1-2">
+                        <label th:for="${sportsManForm}">Password</label>
+                        <input class="pure-u-23-24" type="password" th:field="*{password}"/>
+                        <div>
+                            <span class="text-danger" th:errors="*{password}"> </span>
+                        </div>
+                    </div>
+                    <div class="pure-u-1-2">
+                        <label th:for="${sportsManForm}">Confirm Password</label>
+                        <input class="pure-u-24-24" type="password" th:field="*{confirmPassword}"/>
+                        <div>
+                            <span class="text-danger" th:errors="*{confirmPassword}"> </span>
+                        </div>
+                    </div>
+                    <div class="pure-u-1-1">
+                        <button class="pure-button pure-button" type="submit">Save</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="pure-u-1-6"></div>
+</div>
+</body>

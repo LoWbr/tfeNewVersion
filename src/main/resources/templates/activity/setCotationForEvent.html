@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+</head>
+<body>
+<th:block th:include="/navbar"></th:block>
+<h3>Mark the Participants!</h3>
+<h4>You have <span th:text="${peopleToMark.size()}"></span> to note.</h4>
+<div th:each="user : ${peopleToMark}">
+    <form form class="pure-form" th:action="@{/noteUser(idActivity=${id},idUser=${user.getId()})}"
+          th:object="${notationForm}" method="POST">
+        <div class="pure-u-1-3">
+            <label>Cote for <span th:text="${user.getFirstName()}"></span></label>
+            <select th:field="*{notation}">
+                <option value="0">Pas présent</option>
+                <option value="0.3">Basique</option>
+                <option value="0.5">Bien</option>
+                <option value="0.7">Très Bien</option>
+                <option value="1">Parfait</option>
+            </select>
+        </div>
+        <div class="pure-u-1-3">
+            <button class="pure-button pure-button" type="submit">Save</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

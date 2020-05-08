@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+</head>
+<body>
+<th:block th:include="/navbar"></th:block>
+<a th:href="@{/history}">Clear the Search</a>
+<form th:action="@{/historyByFilter}"
+      th:object="${searchNewForm}" method="POST" class="pure-form pure-form-stacked">
+    <div class="pure-g">
+        <div class="pure-u-1-4">
+            <label>Type</label>
+            <select class="pure-u-23-24" th:field="*{newsType}">
+                <option value="" selected> Choose Type</option>
+                <option th:each="type : ${allTypes}"
+                        th:value="${type}"
+                        th:utext="${type}">
+                </option>
+            </select>
+        </div>
+        <div class="pure-u-1-4">
+            <label>Source Name</label>
+            <select class="pure-u-23-24" th:field="*{nameSportsman}">
+                <option value="" selected> Choose User</option>
+                <option th:each="user : ${allUsers}"
+                        th:value="${user.getFirstName()}"
+                        th:utext="${user.getFirstName()}">
+                </option>
+            </select>
+        </div>
+        <div class="pure-u-1-1">
+            <button class="pure-button pure-button" type="submit">Save</button>
+        </div>
+    </div>
+</form>
+<table class="pure-table">
+    <thead>
+    <tr>
+        <th>Type</th>
+        <th>Source</th>
+        <th>Target</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="act : ${allActs}">
+        <td><span th:text="${act.getType()}"></span></td>
+        <td th:if="${act.getSource() == null}">
+            <span>Null</span>
+        </td>
+        <td th:unless="${act.getSource() == null}">
+            <span th:text="${act.getSource().getFirstName()}"></span>
+        </td>
+          <!--<td><span th:text="${act.getSource().getFirstName()}"></span></td>-->
+        <td><span th:text="${act.getTarget().getFirstName()}"></span></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${activity.getName()}">Title</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+</head>
+<body>
+<th:block th:include="/navbar"></th:block>
+<h4>Name</h4>
+<p th:text="${activity.getName()}"></p>
+<h4>Kind of Activity</h4>
+<p th:text="${activity.getActivityName()}"></p>
+<h4>Participants</h4>
+<p th:text="${activity.getRegistered().size()}"></p>
+<h4>Creator</h4>
+<p th:text="${activity.getCreatorName()}"></p>
+<h3>Comments</h3>
+<h3>Historic</h3>
+<table>
+    <thead>
+    <tr>
+        <th> Author</th>
+        <th> Date</th>
+        <th> Content</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="comment : ${comments}">
+        <td><span th:text="${comment.getAuthor().getFirstName()}"> Title </span></td>
+        <td><span th:text="${comment.getDate()}"> Title </span></td>
+        <td><span th:text="${comment.getContent()}"> Title </span></td>
+    </tr>
+    </tbody>
+</table>
+<div><a th:href="@{/createComment(id=${activity.getId()})}">Add Comment</a></div>
+<div sec:authorize="isAuthenticated()">
+    <div th:if="${activity.getOpen()}">
+
+    <div th:if="${activity.checkPresence(sportsMan)}">
+        <span><a th:href="@{/quit(id=${activity.getId()})}">Leave Event</a></span>
+    </div>
+        <div th:unless="${activity.checkPresence(sportsMan)}">
+
+            <td th:if="${activity.checkApplication(sportsMan)}">
+                <span th:if="${activity.checkLevel(sportsMan)}"><a th:href="@{/postulate(id=${activity.getId()})}">Postulate</a></span>
+                <span th:unless="${activity.checkLevel(sportsMan)}">Too low Level, sorry.</span>
+            </td>
+            <td th:unless="${activity.checkApplication(sportsMan)}">
+                <a>You have already sent a demand : an answer will be arrive very soon</a>
+            </td>
+
+        </div>
+
+    </div>
+    <div th:unless="${activity.getOpen()}">
+        <p>ACTIVITY CANCELLED</p>
+    </div>
+</div>
+
+</body>
+</html>

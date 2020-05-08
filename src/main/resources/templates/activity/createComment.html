@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+</head>
+<body>
+<th:block th:include="/navbar"></th:block>
+<h3>Add a Comment on </h3>
+<h4 th:text="${current_activity.getName()}"></h4>
+<form th:action="@{/addComment}"
+      th:object="${commentForm}" method="POST">
+    <label>Content</label>
+    <textarea name="content" th:field="*{content}" rows="10" cols="30">Ask a question or give an opinion!</textarea>
+    <div class="form-group">
+    <input type="hidden" th:field="*{activity}"/>
+    </div>
+    <div class="form-group">
+        <input type="hidden" th:field="*{author}"/>
+    </div>
+    <button class="btn btn-secondary" type="submit">Save</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+</head>
+<body>
+<th:block th:include="/navbar"></th:block>
+<table class="pure-table">
+    <thead>
+    <tr>
+        <th>Type</th>
+        <th>Source</th>
+        <th>Target</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="notification : ${notifications}">
+        <td><span th:text="${notification.getType()}"></span></td>
+        <td><span th:text="${notification.getSource().getFirstName()}"></span></td>
+        <td><span th:text="${notification.getTarget().getFirstName()}"></span></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

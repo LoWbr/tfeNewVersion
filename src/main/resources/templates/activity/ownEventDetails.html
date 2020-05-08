@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${activity.getName()}">Title</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+
+</head>
+<body>
+<th:block th:include="/navbar"></th:block>
+<h4>Name</h4>
+<p th:text="${activity.getName()}"></p>
+<h4>Kind of Activity</h4>
+<p th:text="${activity.getActivityName()}"></p>
+<h4>Participants</h4>
+<p th:text="${activity.getRegistered().size()}"></p>
+<h4>Creator</h4>
+<p th:text="${activity.getCreatorName()}"></p>
+<h5>Candidates</h5>
+<form th:action="@{/addUser(id=${activity.getId()})}"
+      th:object="${activityForm}" method="POST">
+    <select th:name="candidate" multiple="multiple" required="required">
+<!--
+        <option value="" disabled selected> Add Candidates</option>
+-->
+        <option th:each="sportsman : ${candidates}"
+                th:value="${sportsman.getId()}"
+                th:utext="${sportsman.getFirstName()}">
+        </option>
+    </select>
+    <span th:if="${activity.getOpen()}"><button class="btn btn-secondary" type="submit"
+                                             th:disabled="false">Add</button></span>
+    <span th:unless="${activity.getOpen()}"><button class="btn btn-secondary" type="submit"
+                                                 th:disabled="true">No Way</button></span>
+</form>
+<form th:action="@{/refuseUser(id=${activity.getId()})}"
+      th:object="${activityForm}" method="POST">
+    <select th:name="candidate" multiple="multiple" required="required">
+        <!--
+                <option value="" disabled selected> Add Candidates</option>
+        -->
+        <option th:each="sportsman : ${candidates}"
+                th:value="${sportsman.getId()}"
+                th:utext="${sportsman.getFirstName()}">
+        </option>
+    </select>
+    <span th:if="${activity.getOpen()}"><button class="btn btn-secondary" type="submit"
+                                                th:disabled="false">Refuse</button></span>
+    <span th:unless="${activity.getOpen()}"><button class="btn btn-secondary" type="submit"
+                                                    th:disabled="true">No Way</button></span>
+</form>
+<h3>Participants</h3>
+<form th:action="@{/removeUser(id=${activity.getId()})}"
+      th:object="${activityForm}" method="POST">
+    <select th:name="participant" multiple="multiple" required="required">
+<!--        <option value="" disabled selected> Remove Participant</option>-->
+        <option th:each="sportsman : ${participants}"
+                th:value="${sportsman.getId()}"
+                th:utext="${sportsman.getFirstName()}">
+        </option>
+    </select>
+    <span th:if="${activity.getOpen()}"><button class="btn btn-secondary" type="submit"
+                                             th:disabled="false">Save</button></span>
+    <span th:unless="${activity.getOpen()}"><button class="btn btn-secondary" type="submit"
+                                                 th:disabled="true">No Way</button></span>
+</form>
+<form th:action="@{/activeStatus(id=${activity.getId()})}"
+      th:object="${status}" method="POST">
+    <select th:name="status">
+        <option value="" disabled selected>Event Status</option>
+        <option th:value="true" th:text="Active"></option>
+        <option th:value="false" th:text="Cancelled"></option>
+    </select>
+    <button class="btn btn-secondary" type="submit">Save</button>
+</form>
+<a th:href="@{/event/updateEvent(id=${activity.getId()})}">MaJ</a>
+<h3>Comments</h3>
+<h3>Historic</h3>
+<table>
+    <thead>
+    <tr>
+        <th> Author</th>
+        <th> Date</th>
+        <th> Content</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="comment : ${comments}">
+        <td><span th:text="${comment.getAuthor().getName()}"> Title </span></td>
+        <td><span th:text="${comment.getDate()}"> Title </span></td>
+        <td><span th:text="${comment.getContent()}"> Title </span></td>
+    </tr>
+    </tbody>
+</table>
+<a th:href="@{/createComment(id=${activity.getId()})}">Add Comment</a>
+<a th:href="@{/inviteContactPage(id=${activity.getId()})}">Invite Contact</a>
+</body>
+</html>

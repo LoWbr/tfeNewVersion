@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Messages</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+</head>
+<body>
+<th:block th:include="/navbar"></th:block>
+<div th:if="${status} == 'sent'">
+<table>
+    <thead>
+    <tr>
+        <th> Receptor</th>
+        <th> About</th>
+        <th> Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="message : ${messages}">
+        <td><span th:text="${message.getAddressee().get(0).getFirstName()}"> Title </span></td>
+        <td><span th:text="${message.getAbout()}"> Title </span></td>
+        <td><span th:text="${message.getTimeOfDispatch()}"> Title </span></td>
+    </tr>
+    </tbody>
+</table>
+</div>
+<div th:if="${status} == 'received'">
+<table>
+    <thead>
+    <tr>
+        <th> Author</th>
+        <th> About</th>
+        <th> Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="message : ${messages}">
+        <td><span th:text="${message.getOriginator().getFirstName()}"> Title </span></td>
+        <td><span th:text="${message.getAbout()}"> Title </span></td>
+        <td><span th:text="${message.getTimeOfDispatch()}"> Title </span></td>
+    </tr>
+    </tbody>
+</table>
+</div>
+</body>
+</html>

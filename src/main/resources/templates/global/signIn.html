@@ -1,0 +1,42 @@
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign In</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+</head>
+<body>
+<th:block th:include="/navbar"></th:block>
+<div class="pure-g">
+    <div class="pure-u-2-5"></div>
+    <div class="pure-u-1-5">
+<form action="home" th:action="@{/signIn}" method="post" class="pure-form pure-form-stacked">
+    <fieldset>
+        <legend>Sign in to the Website</legend>
+    <div class="pure-control-group">
+        <span th:if="${warning != null}" th:text="${warning}"></span>
+
+        <label>Mail</label>
+        <input type="email" class="form-control" name="username"
+               placeholder="Email"/> <span
+            class="glyphicon glyphicon-envelope form-control-feedback"></span>
+    </div>
+    <div class="pure-control-group">
+        <label>Password</label>
+        <input type="password" class="form-control" name="password"
+               placeholder="Password"/> <span
+            class="glyphicon glyphicon-lock form-control-feedback"></span>
+    </div>
+    <div class="pure-controls">
+        <label>
+            <input type="checkbox" name="remember-me"> Remember Me
+        </label>
+    </div>
+    <div class="pure-controls">
+        <button type="submit" class="pure-button pure-button">LogIn</button>
+    </div>
+    </fieldset>
+</form>
+    </div>
+    <div class="pure-u-2-5"></div>
+</div>
+</body>
