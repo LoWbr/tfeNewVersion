@@ -128,6 +128,11 @@ public class SportsManController {
 			this.logout(request);// Check logout redirection // Problème
 			sportsManService.updateUser(transition, sportsManForm);
 			this.authWithHttpServletRequest(request,sportsManForm.getMail(), sportsManForm.getPassword());
+			/* To check
+			https://stackoverflow.com/questions/7889660/how-to-reload-spring-security-principal-after-updating-in-hibernate
+			https://stackoverflow.com/questions/23072235/reload-userdetails-object-from-database-every-request-in-spring-security
+			https://stackoverflow.com/questions/9910252/how-to-reload-authorities-on-user-update-with-spring-security
+			 */
 		}
 		return "redirect:/user";
 	}

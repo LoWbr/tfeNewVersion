@@ -88,4 +88,9 @@ public class GlobalController {
         return "global/accessdenied";
     }
 
+    @RequestMapping(value = "/404", method = RequestMethod.GET)
+    public String error(){
+        return "global/404";
+    }
+
 }

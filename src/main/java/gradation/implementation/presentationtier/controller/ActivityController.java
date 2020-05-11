@@ -34,6 +34,7 @@ public class ActivityController {
                               ActivitySettingService activitySettingService) {
         this.activityService = activityService;
         this.sportsManService = sportsManService;
+        this.activitySettingService = activitySettingService;
     }
 
     @RequestMapping(value ="/events", method = RequestMethod.GET)

@@ -69,7 +69,7 @@ public class WebSecuritySettings extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/manage", "/user/block**", "/user/unblock**").hasRole("ADMINISTRATOR")
-                .antMatchers("/create", "/event/update**", "/addUser**", "/removeUser**", "/activeStatus**", "/close**", "/ownEvents", "/ownEvent{id}").hasAnyRole("CONFIRMED", "ADMINISTRATOR")
+                .antMatchers("/create", "/event/update**", "/addUser**", "/removeUser**", "/activeStatus**", "/close**", "/ownEvents", "/ownEvent{id}").hasRole("CONFIRMED")
                 .antMatchers("/createComment", "/addComment", "/user/update**", "/user", "/addContact**", "/removeContact**").hasAnyRole("CONFIRMED", "ADMINISTRATOR", "SIMPLY")
                 .antMatchers("/", "/events", "/event{id}", "/signIn", "/signUp", "/contactUs", "/about", "/search", "/users", "/saveUser").permitAll()
                 /*.anyRequest().authenticated()*/
