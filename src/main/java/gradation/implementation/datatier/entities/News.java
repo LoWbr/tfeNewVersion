@@ -88,10 +88,11 @@ public class News{
 
     public News(){}
 
-    public News(SportsMan target, SportsMan source, Activity activity, NewsType type, boolean seen) {
+    public News(SportsMan target, SportsMan source, Activity activity, NewsType type, String content, boolean seen) {
         this.target = target;
         this.source = source;
         this.activity = activity;
+        this.content = content;
         this.type = type;
         this.seen = seen;
     }

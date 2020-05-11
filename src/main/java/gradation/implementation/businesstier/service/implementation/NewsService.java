@@ -81,13 +81,13 @@ public class NewsService {
     }
 
     public void returnApplicationEventNew(Activity activity, SportsMan sportsMan, NewsType newsType) {
-        News supplyToCreator = new News(activity.getCreator(),sportsMan,activity, newsType, false);
+        News supplyToCreator = new News(activity.getCreator(),sportsMan,activity, newsType, null,false);
         this.saveNew(supplyToCreator);
     }
 
     public void returnApplicationNew(SportsMan sportsMan, NewsType newsType){
         for (SportsMan administrator :adminService.selectAuthorityUsers()) {
-            News supplyToAdmin = new News(administrator,sportsMan,null, newsType, false);
+            News supplyToAdmin = new News(administrator,sportsMan,null, newsType,null, false);
             this.saveNew(supplyToAdmin);
         }
 
@@ -95,40 +95,40 @@ public class NewsService {
 
     public void returnApplicationResultNewOrLevelUpNew(SportsMan sportsMan, NewsType newsType){
         if(newsType.name().equals("VALIDATED_REQUEST")||newsType.name().equals("NEGATIVE_REQUEST")){
-            News answerToAdmin = new News(sportsMan,null,null,newsType, false);
+            News answerToAdmin = new News(sportsMan,null,null,newsType,null, false);
             this.saveNew(answerToAdmin);
         }
         else {
-            News announceLevelUp = new News(sportsMan,null,null,newsType, false);
+            News announceLevelUp = new News(sportsMan,null,null,newsType, null,false);
             this.saveNew(announceLevelUp);
         }
     }
 
     public void returnCancelledApplictionNewOrCloseEventNew(Activity activity, NewsType newsType){
         if(newsType.name().equals("CANCELLED_EVENT")){
-            News announceToCreator = new News(activity.getCreator(), null, activity, newsType, false);
+            News announceToCreator = new News(activity.getCreator(), null, activity, newsType, null,false);
             this.saveNew(announceToCreator);
             for (SportsMan registered : activity.getRegistered()) {
-                News announceToRegistered = new News(registered, null, activity, newsType, false);
+                News announceToRegistered = new News(registered, null, activity, newsType,null, false);
                 this.saveNew(announceToRegistered);
             }
         }
         else{
             for (SportsMan registered : activity.getRegistered()) {
-                News announceToRegistered = new News(registered, activity.getCreator(), activity, newsType, false);
+                News announceToRegistered = new News(registered, activity.getCreator(), activity, newsType,null, false);
                 this.saveNew(announceToRegistered);
             }
         }
     }
 
     public void returnRegistrationResultNew(SportsMan sportsMan, Activity activity, NewsType newsType){
-            News answerFromBuyer = new News(sportsMan, activity.getCreator(),activity,newsType, false);
+            News answerFromBuyer = new News(sportsMan, activity.getCreator(),activity,newsType, null,false);
             this.saveNew(answerFromBuyer);
     }
 
 
     public void returnCommentEventNew(SportsMan sportsMan, Activity activity, NewsType newsType){
-        News announceToCreator = new News(activity.getCreator(),sportsMan,activity,newsType, false);
+        News announceToCreator = new News(activity.getCreator(),sportsMan,activity,newsType,null, false);
         this.saveNew(announceToCreator);
     }
 
@@ -139,13 +139,13 @@ public class NewsService {
 
     public void returnSendMessageNew(Message message, NewsType newsType) {
         for (SportsMan sportsman:message.getAddressee()) {
-            News announceToCreator = new News(sportsman,message.getOriginator(),null,newsType, false);
+            News announceToCreator = new News(sportsman,message.getOriginator(),null,newsType,null, false);
             this.saveNew(announceToCreator);
         }
     }
 
     public void returnAbandonmentNew(SportsMan sportsMan, Activity activity, NewsType newsType) {
-        News answerToBuyer = new News(activity.getCreator(),sportsMan,activity,newsType, false);
+        News answerToBuyer = new News(activity.getCreator(),sportsMan,activity,newsType,null, false);
         this.saveNew(answerToBuyer);
     }
 }
