@@ -79,13 +79,18 @@ public class GlobalController {
     public String error(Model model, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
         if (principal != null) {
+            System.out.println(principal.getName());
             model.addAttribute("msg", "Hi user, you do not have permission to access this page!");
         } else {
-            model.addAttribute("msg",
-                    "It seems that your are not connected.");
+            return "redirect:/401";
         }
 
         return "global/accessdenied";
+    }
+
+    @RequestMapping(value = "/401", method = RequestMethod.GET)
+    public String notaccess() {
+        return "global/notAuthenticated";
     }
 
 }
