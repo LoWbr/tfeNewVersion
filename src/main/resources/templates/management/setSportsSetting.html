@@ -9,7 +9,7 @@
 <th:block th:include="/navbar"></th:block>
 <h3>Manage the Activity Setting</h3>
 <div th:each="type : ${activityTypes}">
-    <form form class="pure-form" th:action="@{/updateType(id=${type.getId()})}"
+    <form form class="pure-form" th:action="@{/manage/types/update(id=${type.getId()})}"
           th:object="${activityTypeForm}" method="POST">
         <div class="pure-u-1-3">
             <label>Name</label>
@@ -32,7 +32,7 @@
     <p>Create new Type of Activity</p>
 </div>
 <div>
-    <form form class="pure-form" th:action="@{/addType}"
+    <form form class="pure-form" th:action="@{/manage/types/add}"
           th:object="${activityTypeForm}" method="POST">
         <div class="pure-u-1-3">
             <label>Name</label>

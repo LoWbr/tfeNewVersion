@@ -9,7 +9,7 @@
 <th:block th:include="/navbar"></th:block>
 <h3>Manage the Level Setting</h3>
 <div th:each="level : ${activityLevels}">
-    <form form class="pure-form" th:action="@{/updateLevel(id=${level.getId()})}"
+    <form form class="pure-form" th:action="@{/manage/levels/update(id=${level.getId()})}"
           th:object="${levelForm}" method="POST">
         <div class="pure-u-1-3">
             <label>Name</label>

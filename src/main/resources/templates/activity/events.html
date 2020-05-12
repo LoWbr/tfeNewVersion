@@ -7,31 +7,6 @@
 <body>
 <th:block th:include="/navbar"></th:block>
 <h3>All of the Events</h3>
-<!--<table>
-    <thead>
-    <tr>
-        <th> Name</th>
-        <th> Activity type</th>
-        <th> Registered</th>
-        <th> Creator</th>
-        <th> Status</th>
-        <th> Settings</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="event : ${allActivities}">
-        <td><span th:text="${event.getName()}"> Title </span></td>
-        <td><span th:text="${event.getActivityName()}"> Author </span></td>
-        <td><span th:text="${event.getRegistered().size()}"> Author </span></td>
-        <td><span th:text="${event.getCreatorName()}"> Author </span></td>
-        <td>
-            <span th:if="${event.getOpen()}" th:text="OPEN"></span>
-            <span th:unless="${event.getOpen()}" th:text="CANCELLED"></span>
-        </td>
-        <td><a th:href="@{/event(id=${event.getId()})}">Details</a></td>
-    </tr>
-    </tbody>
-</table>-->
 
 <div class="pure-u-1-3" th:each="event : ${allActivities}">
     <div class="card">

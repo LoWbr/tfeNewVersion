@@ -38,7 +38,7 @@ public class SportsManController {
 		this.managementService = managementService;
 	}
 
-	@RequestMapping(value= "/users", method = RequestMethod.GET)
+	@RequestMapping(value= "/sportsmans", method = RequestMethod.GET)
 	public String getSportsMen(Model model) {
 		model.addAttribute("allUsers", sportsManService.getAllUser());
 		return "sportsman/users";
@@ -98,7 +98,7 @@ public class SportsManController {
 		return "sportsman/updateUser";
 	}
 
-	@RequestMapping(value = "/updateUser", method = RequestMethod.POST)
+	@RequestMapping(value = "/user/updateuser", method = RequestMethod.POST)
 	public String updateSportsMan(@Valid SportsManForm sportsManForm,
                                   BindingResult bindingResult, Principal principal, HttpServletRequest request) throws ServletException {
 		if(bindingResult.hasErrors()){
@@ -142,7 +142,7 @@ public class SportsManController {
 		securityContextLogoutHandler.logout(request, null, null);
 	}
 
-	@RequestMapping(value = "/user", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/details", method = RequestMethod.GET)
 	public String sportsManOwnDetails(Principal principal, Model model) {
 		model.addAttribute("sportsMan", sportsManService.findCurrentUser(principal.getName()));
 		model.addAttribute("allUsers",
@@ -153,26 +153,28 @@ public class SportsManController {
 	}
 
 	//Show User Details
-	@RequestMapping(value = "/sportsMan{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/sportsman{id}", method = RequestMethod.GET)
 	public String getSportsManDetail(@RequestParam Long id, Model model){
 		model.addAttribute("sportsMan",sportsManService.findSpecificUser(id));
 		return "sportsman/externDetails";
 	}
 	//Send Message to user (à mettre sur la page du contact)
-	@RequestMapping(value = "/createMessage{id}", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/user/createMessage{id}", method = RequestMethod.GET)
 	public String getMessageForm(@RequestParam Long id, Model model, Principal principal){
 		MessageForm messageForm = new MessageForm(sportsManService.findCurrentUser(principal.getName()),
 				sportsManService.findSpecificUser(id));
 		model.addAttribute("messageForm", messageForm);
 		return "sportsman/createMessage";
 	}
-	@RequestMapping(value = "/sendMessage", method = RequestMethod.POST)
+
+	@RequestMapping(value = "/user/sendMessage", method = RequestMethod.POST)
 	public String sendMessage(@Valid MessageForm messageForm, BindingResult bindingResult){
 		sportsManService.sendMessage(messageForm);
 		return "redirect:/user";
 	}
 
-	@RequestMapping(value = "/getMessagesSent", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/getMessagesSent", method = RequestMethod.GET)
 	public String getAllMessageSent(Model model, Principal principal){
 		model.addAttribute("messages",sportsManService.findMessages(
 				sportsManService.findCurrentUser(principal.getName()), true));
@@ -180,7 +182,7 @@ public class SportsManController {
 		model.addAttribute("status", status);
 		return "sportsman/getMessages";
 	}
-	@RequestMapping(value = "/getReceivedMessages", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/getReceivedMessages", method = RequestMethod.GET)
 	public String getAllReceivedMessages(Model model, Principal principal){
 		model.addAttribute("messages",sportsManService.findMessages(
 				sportsManService.findCurrentUser(principal.getName()), false));
@@ -189,34 +191,34 @@ public class SportsManController {
 		return "sportsman/getMessages";
 	}
 	//Get Notification Page
-	@RequestMapping(value = "/notifications", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/notifications", method = RequestMethod.GET)
 	public String notifications(Model model, Principal principal){
 		model.addAttribute("notifications",
 				sportsManService.getNotifications(sportsManService.findCurrentUser(principal.getName())));
 		return "sportsman/notifications";
 	}
 	//FindContacts
-	@RequestMapping(value = "/contacts", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/contacts", method = RequestMethod.GET)
 	public String getContacts(Model model, Principal principal){
 		model.addAttribute("allUsers",
 				sportsManService.getAllContacts(principal.getName()));
 		return "sportsman/contacts";
 	}
 	//FindNotContacts
-	@RequestMapping(value = "/findNewUsers", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/findNewUsers", method = RequestMethod.GET)
 	public String getUnknowUsers(Model model, Principal principal){
 		model.addAttribute("allUsers",
 				sportsManService.getPotentialContacts(sportsManService.findCurrentUser(principal.getName())));
 		return "sportsman/users";
 	}
 
-	@RequestMapping(value = "/getRegisteredEvents{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/getRegisteredEvents{id}", method = RequestMethod.GET)
 	public String getRegisteredEvents(@RequestParam Long id, Model model) {
 		model.addAttribute("sportsMan", sportsManService.findSpecificUser(id));
 		return "sportsman/userParticipatedEvents";
 	}
 
-	@RequestMapping(value = "/addContact{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/user/addContact{id}", method = RequestMethod.POST)
 	public String addContact(@RequestParam(value = "contact") Long idContact,
 			Principal principal) {
 		sportsManService.addOrRemoveContacts(sportsManService.findCurrentUser(principal.getName()),
@@ -224,7 +226,7 @@ public class SportsManController {
 		return "redirect:/user";
 	}
 
-	@RequestMapping(value = "/removeContact{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/user/removeContact{id}", method = RequestMethod.POST)
 	public String removeContact(@RequestParam(value = "contact") Long idContact,
 			Principal principal) {
 		sportsManService.addOrRemoveContacts(sportsManService.findCurrentUser(principal.getName()),
@@ -232,13 +234,13 @@ public class SportsManController {
 		return "redirect:/user";
 	}
 
-	@RequestMapping(value = "/applyAsConfirmedUser", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/applyAsConfirmedUser", method = RequestMethod.GET)
 	public String applyAsConfirmedUser(Principal principal) {
 		managementService.applyForConfirmedRole(sportsManService.findCurrentUser(principal.getName()));
 		return "redirect:/user";
 	}
 
-	@RequestMapping(value = "/noteUser{idActivity,idUser}", method = RequestMethod.POST)
+	@RequestMapping(value = "/factory/noteuser{idActivity,idUser}", method = RequestMethod.POST)
 	public String noteUser(@RequestParam(value = "idActivity") Long idActivity,
                            @RequestParam(value = "idUser") Long idUser, NotationForm notationForm){
 		this.sportsManService.setResultForEventToParticipant(activityService.getSpecificActivity(idActivity),

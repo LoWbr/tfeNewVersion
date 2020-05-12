@@ -17,7 +17,7 @@
 <h4>Creator</h4>
 <p th:text="${activity.getCreatorName()}"></p>
 <h5>Candidates</h5>
-<form th:action="@{/addUser(id=${activity.getId()})}"
+<form th:action="@{/factory/adduser(id=${activity.getId()})}"
       th:object="${activityForm}" method="POST">
     <select th:name="candidate" multiple="multiple" required="required">
 <!--
@@ -33,7 +33,7 @@
     <span th:unless="${activity.getOpen()}"><button class="btn btn-secondary" type="submit"
                                                  th:disabled="true">No Way</button></span>
 </form>
-<form th:action="@{/refuseUser(id=${activity.getId()})}"
+<form th:action="@{/factory/refuseuser(id=${activity.getId()})}"
       th:object="${activityForm}" method="POST">
     <select th:name="candidate" multiple="multiple" required="required">
         <!--
@@ -50,7 +50,7 @@
                                                     th:disabled="true">No Way</button></span>
 </form>
 <h3>Participants</h3>
-<form th:action="@{/removeUser(id=${activity.getId()})}"
+<form th:action="@{/factory/removeuser(id=${activity.getId()})}"
       th:object="${activityForm}" method="POST">
     <select th:name="participant" multiple="multiple" required="required">
 <!--        <option value="" disabled selected> Remove Participant</option>-->
@@ -73,7 +73,7 @@
     </select>
     <button class="btn btn-secondary" type="submit">Save</button>
 </form>
-<a th:href="@{/event/updateEvent(id=${activity.getId()})}">MaJ</a>
+<a th:href="@{/factory/activity/update(id=${activity.getId()})}">MaJ</a>
 <h3>Comments</h3>
 <h3>Historic</h3>
 <table>
@@ -93,6 +93,6 @@
     </tbody>
 </table>
 <a th:href="@{/createComment(id=${activity.getId()})}">Add Comment</a>
-<a th:href="@{/inviteContactPage(id=${activity.getId()})}">Invite Contact</a>
+<a th:href="@{/factory/invitecontactpage(id=${activity.getId()})}">Invite Contact</a>
 </body>
 </html>

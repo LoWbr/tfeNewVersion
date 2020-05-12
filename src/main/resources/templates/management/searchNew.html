@@ -7,8 +7,8 @@
 </head>
 <body>
 <th:block th:include="/navbar"></th:block>
-<a th:href="@{/history}">Clear the Search</a>
-<form th:action="@{/historyByFilter}"
+<a th:href="@{manage/history}">Clear the Search</a>
+<form th:action="@{manage/history/filter}"
       th:object="${searchNewForm}" method="POST" class="pure-form pure-form-stacked">
     <div class="pure-g">
         <div class="pure-u-1-4">

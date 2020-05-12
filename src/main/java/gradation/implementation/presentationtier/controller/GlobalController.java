@@ -64,7 +64,7 @@ public class GlobalController {
         return "global/search";
     }
 
-    @RequestMapping(value ="/searchByFilter", method = RequestMethod.POST)
+    @RequestMapping(value ="/search", method = RequestMethod.POST)
     public String searchByFilter(@ModelAttribute("searchActivityForm") SearchActivityForm searchActivityForm,
                                  Model model) {
         model.addAttribute("allLevels", activitySettingService.getAllLevels());

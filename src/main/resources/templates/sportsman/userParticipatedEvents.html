@@ -30,6 +30,7 @@
             <span th:unless="${event.getOpen()}" th:text="CANCELLED"></span>
         </td>
         <td><a th:href="@{/event(id=${event.getId()})}">Details</a></td>
+        <td><a th:href="@{/user/quit(id=${event.getId()})}">Leave</a></td>
     </tr>
     </tbody>
 </table>

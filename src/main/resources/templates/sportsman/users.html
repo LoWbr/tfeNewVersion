@@ -21,7 +21,7 @@
             <span th:if="${sporstman.getBlocked()}" th:text="BLOCKED"></span>
             <span th:unless="${sporstman.getBlocked()}" th:text="Active"></span>
         </td>
-        <td><a th:href="@{/sportsMan(id=${sporstman.getId()})}">Details</a></td>
+        <td><a th:href="@{/user/sportsman(id=${sporstman.getId()})}">Details</a></td>
     </tr>
     </tbody>
 </table>

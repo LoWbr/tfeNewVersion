@@ -32,9 +32,9 @@
         </td>
         <td th:if="${event.getOpen()}">
             <span th:if="${event.getOver()}" th:text="CLOSE"></span>
-            <span th:unless="${event.getOver()}"><a th:href="@{/close(id=${event.getId()})}">Close</a></span>
+            <span th:unless="${event.getOver()}"><a th:href="@{/factory/close(id=${event.getId()})}">Close</a></span>
         </td>
-        <td><a th:href="@{/ownEvent(id=${event.getId()})}">Details</a></td>
+        <td><a th:href="@{/factory/ownactivity(id=${event.getId()})}">Details</a></td>
     </tr>
     </tbody>
 </table>

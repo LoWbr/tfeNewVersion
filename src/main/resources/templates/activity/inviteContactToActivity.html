@@ -19,7 +19,7 @@
         <td><span th:text="${sportsman.getFirstName()}"> Title </span></td>
         <div th:if="${!activity.checkPresence(sportsman)}">
         <td th:if="${activity.checkLevel(sportsman)}">
-            <span><a th:href="@{/inviteUserToActivity(idActivity=${activity.getId()},idUser=${sportsman.getId()})}">Invite</a></span>
+            <span><a th:href="@{/factory/inviteusertoactivity(idActivity=${activity.getId()},idUser=${sportsman.getId()})}">Invite</a></span>
         </td>
         <td th:unless="${activity.checkLevel(sportsman)}">
             <span th:text="Level to low"></span>

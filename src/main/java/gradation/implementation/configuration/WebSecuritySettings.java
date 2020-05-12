@@ -68,10 +68,11 @@ public class WebSecuritySettings extends WebSecurityConfigurerAdapter {
                 .frameOptions().sameOrigin()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/manage", "/user/block**", "/user/unblock**").hasRole("ADMINISTRATOR")
-                .antMatchers("/create", "/event/update**", "/addUser**", "/removeUser**", "/activeStatus**", "/close**", "/ownEvents", "/ownEvent{id}").hasRole("CONFIRMED")
-                .antMatchers("/createComment", "/addComment", "/user/update**", "/user", "/addContact**", "/removeContact**").hasAnyRole("CONFIRMED", "ADMINISTRATOR", "SIMPLY")
-                .antMatchers("/", "/events", "/event{id}", "/signIn", "/signUp", "/contactUs", "/about", "/search", "/users", "/saveUser").permitAll()
+                .antMatchers("/manage/**").hasRole("ADMINISTRATOR")
+                .antMatchers("/factory/**").hasRole("CONFIRMED")
+                .antMatchers("/user/**").hasAnyRole("SIMPLY")
+                .antMatchers("/", "activities", "activity{id}", "/sportsmans", "/sportsman{id}","saveUser", "/signIn",
+                        "/signUp", "/contactUs", "/about", "/search").permitAll()
                 /*.anyRequest().authenticated()*/
                 .and()
                 .authorizeRequests()

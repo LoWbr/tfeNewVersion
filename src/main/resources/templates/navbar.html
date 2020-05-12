@@ -7,34 +7,36 @@
         <li class="pure-menu-item"><a th:href="@{/}" class="pure-menu-link">Home</a></li>
         <li class="pure-menu-item"><a th:href="@{/about}" class="pure-menu-link">About Us</a></li>
         <li class="pure-menu-item"><a th:href="@{/contactUs}" class="pure-menu-link">Contact Us</a></li>
-        <li class="pure-menu-item"><a th:href="@{/users}" class="pure-menu-link">Users</a></li>
+        <li class="pure-menu-item"><a th:href="@{/activities}" class="pure-menu-link">Activities</a></li>
+        <li class="pure-menu-item"><a th:href="@{/sportsmans}" class="pure-menu-link">Users</a></li>
         <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-            <a sec:authorize="hasAnyRole('ADMINISTRATOR','CONFIRMED','SIMPLY')" id="menuLink1" class="pure-menu-link">My Account</a>
+            <a sec:authorize="hasAnyRole('SIMPLY')" id="menuLink1" class="pure-menu-link">My Account</a>
             <ul class="pure-menu-children">
-                <li class="pure-menu-item"><a th:href="@{/notifications}" class="pure-menu-link">News</a></li>
-                <li class="pure-menu-item"><a th:href="@{/user}" class="pure-menu-link">Me</a></li>
-            </ul>
-        </li>
-        <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-            <a sec:authorize="hasAnyRole('ADMINISTRATOR','CONFIRMED','SIMPLY')" id="menuLink1" class="pure-menu-link">My Contacts</a>
-            <ul class="pure-menu-children">
-                <li class="pure-menu-item"><a th:href="@{/contacts}" class="pure-menu-link">List</a></li>
-                <li class="pure-menu-item"><a th:href="@{/getMessagesSent}" class="pure-menu-link">Sent Messages</a></li>
-                <li class="pure-menu-item"><a th:href="@{/getReceivedMessages}" class="pure-menu-link">Received Messages</a></li>
+                <li class="pure-menu-item"><a th:href="@{/user/details}" class="pure-menu-link">Me</a></li>
+                <li class="pure-menu-item"><a th:href="@{/user/update}" class="pure-menu-link">Update</a></li>
+                <li class="pure-menu-item"><a th:href="@{/user/notifications}" class="pure-menu-link">News</a></li>
+                <li class="pure-menu-item"><a th:href="@{/user/contacts}" class="pure-menu-link">List</a></li>
+                <li class="pure-menu-item"><a th:href="@{/user/getMessagesSent}" class="pure-menu-link">Sent Messages</a></li>
+                <li class="pure-menu-item"><a th:href="@{/user/getReceivedMessages}" class="pure-menu-link">Received Messages</a></li>
                 <li class="pure-menu-item"><a class="pure-menu-link">Write</a></li>
             </ul>
         </li>
-        <li class="pure-menu-item"><a sec:authorize="hasAnyRole('ADMINISTRATOR','CONFIRMED')" th:href="@{/eventsByCreator}" class="pure-menu-link">My Creations</a></li>
-        <li class="pure-menu-item"><a sec:authorize="hasAnyRole('ADMINISTRATOR','CONFIRMED')" th:href="@{/create}" class="pure-menu-link">Create Events</a></li>
+        <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+            <a sec:authorize="hasAnyRole('CONFIRMED')" id="menuLink1" class="pure-menu-link">Factory</a>
+            <ul class="pure-menu-children">
+                <li class="pure-menu-item"><a th:href="@{/factory/activitiesbycreator}" class="pure-menu-link">Overview</a></li>
+                <li class="pure-menu-item"><a th:href="@{/factory/create}" class="pure-menu-link">Create Activity</a></li>
+            </ul>
+        </li>
         <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
             <a sec:authorize="hasRole('ADMINISTRATOR')" id="menuLink1" class="pure-menu-link">Manage...</a>
             <ul class="pure-menu-children">
-                <li class="pure-menu-item"><a th:href="@{/manageUsers}" class="pure-menu-link">Users</a></li>
-                <li class="pure-menu-item"><a th:href="@{/manageEvents}" class="pure-menu-link">Events</a></li>
-                <li class="pure-menu-item"><a th:href="@{/manageSportsSetting}" class="pure-menu-link">Activity Types</a></li>
-                <li class="pure-menu-item"><a th:href="@{/manageLevelsSetting}" class="pure-menu-link">Levels</a></li>
-                <li class="pure-menu-item"><a th:href="@{/history}" class="pure-menu-link">History</a></li>
-                <li class="pure-menu-item"><a th:href="@{/backUpDB}" class="pure-menu-link">Back-Up DB</a></li>
+                <li class="pure-menu-item"><a th:href="@{/manage/users}" class="pure-menu-link">Users</a></li>
+                <li class="pure-menu-item"><a th:href="@{/manage/activities}" class="pure-menu-link">Events</a></li>
+                <li class="pure-menu-item"><a th:href="@{/manage/types}" class="pure-menu-link">Activity Types</a></li>
+                <li class="pure-menu-item"><a th:href="@{/manage/levels}" class="pure-menu-link">Levels</a></li>
+                <li class="pure-menu-item"><a th:href="@{/manage/history}" class="pure-menu-link">History</a></li>
+                <li class="pure-menu-item"><a th:href="@{/manage/backupdb}" class="pure-menu-link">Back-Up DB</a></li>
             </ul>
         </li>
         <li class="pure-menu-item"><a sec:authorize="!isAuthenticated()" th:href="@{/signIn}" class="pure-menu-link">SignIn</a></li>

@@ -48,7 +48,7 @@ public class ManagementController {
 		this.servletContext = servletContext;
 	}
 
-	@RequestMapping(value="/manageUsers", method = RequestMethod.GET)
+	@RequestMapping(value="/manage/users", method = RequestMethod.GET)
 	public String manageUserSetting(Model model) {
 		TopicForm topicForm = new TopicForm();
 		model.addAttribute("allUsers", sportsManService.getAllUser());
@@ -57,53 +57,53 @@ public class ManagementController {
 		return "management/manageUsers";
 	}
 
-	@RequestMapping(value="/manageEvents", method = RequestMethod.GET)
+	@RequestMapping(value="/manage/activities", method = RequestMethod.GET)
 	public String manageEventSetting(Model model) {
 		model.addAttribute("allActivities", activityService.getAllActivities());
 		return "management/manageEvents";
 	}
 
-	@RequestMapping(value = "/cancel{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/manage/activities/cancel{id}", method = RequestMethod.GET)
 	public String cancel(@RequestParam(value = "id") Long id) {
 		activityService.cancelOrActivateActivity(activityService.getSpecificActivity(id), false);
 		newsService.returnCancelledApplictionNewOrCloseEventNew(activityService.getSpecificActivity(id),
 				NewsType.CANCELLED_EVENT);
-		return "redirect:/manageEvents";
+		return "redirect:/manage/activities";
 	}
 
-	@RequestMapping(value = "/open{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/manage/activities/open{id}", method = RequestMethod.GET)
 	public String open(@RequestParam(value = "id") Long id) {
 		activityService.cancelOrActivateActivity(activityService.getSpecificActivity(id), true);
-		return "redirect:/manageEvents";
+		return "redirect:/manage/activities";
 	}
 
-	@RequestMapping(value = "/user/block{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/manage/users/block{id}", method = RequestMethod.GET)
 	public String block(@RequestParam(value = "id") Long id) {
 		sportsManService.blockOrUnblock(sportsManService.findSpecificUser(id),true);
 		for (Activity activity : sportsManService.findSpecificUser(id).getCreatedActivities()) {
 			activityService.cancelOrActivateActivity(activity,false);
 		}
-		return "redirect:/manageUsers";
+		return "redirect:/manage/users";
 	}
 
-	@RequestMapping(value = "/user/unblock{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/manage/users/unblock{id}", method = RequestMethod.GET)
 	public String unblock(@RequestParam(value = "id") Long id) {
 		sportsManService.blockOrUnblock(sportsManService.findSpecificUser(id),false);
 		for (Activity activity : sportsManService.findSpecificUser(id).getCreatedActivities()) {
 			activityService.cancelOrActivateActivity(activity,true);
 		}
-		return "redirect:/manageUsers";
+		return "redirect:/manage/users";
 	}
 
-	@RequestMapping(value = "/refusePromotion{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/manage/users/deniepromote{id}", method = RequestMethod.GET)
 	public String refusePromotionUser(@RequestParam(value = "id") Long id) {
 		SportsMan sportsMan = sportsManService.findSpecificUser(id);
 		managementService.removeRequest(managementService.findSpecific(sportsMan));
 		newsService.returnApplicationResultNewOrLevelUpNew(sportsMan, NewsType.NEGATIVE_REQUEST);
-		return "redirect:/manageUsers";
+		return "redirect:/manage/users";
 	}
 
-	@RequestMapping(value = "/promote{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/manage/users/promote{id}", method = RequestMethod.GET)
 	public String promoteUser(@RequestParam(value = "id") Long id) {
 		sportsManService.promoteUser(sportsManService.findSpecificUser(id));
 		managementService.removeRequest(managementService.findSpecific
@@ -111,51 +111,51 @@ public class ManagementController {
 		newsService.returnApplicationResultNewOrLevelUpNew(sportsManService.findSpecificUser(id),
 				NewsType.VALIDATED_REQUEST);
 		//Add notification!!
-		return "redirect:/manageUsers";
+		return "redirect:/manage/users";
 	}
 
-	@RequestMapping(value = "/addTopic", method = RequestMethod.POST)
+	@RequestMapping(value = "/manage/addtopic", method = RequestMethod.POST)
 	public String createTopic(@ModelAttribute("topicForm") TopicForm topicForm,
 			Principal principal) {
 		this.managementService.addTopic(
 				sportsManService.findCurrentUser(principal.getName()),
 				topicForm);
-		return "redirect:/manage";
+		return "redirect:/";
 	}
 
-	@RequestMapping(value = "/manageSportsSetting", method = RequestMethod.GET)
+	@RequestMapping(value = "/manage/types", method = RequestMethod.GET)
 	public String manageSportsSetting(Model model) {
 		model.addAttribute("activityTypeForm",new ActivityTypeForm());
 		model.addAttribute("activityTypes",activitySettingService.getAllActivityTypes());
 		return "management/setSportsSetting";
 	}
 
-	@RequestMapping(value = "/updateType{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/manage/types/update{id}", method = RequestMethod.POST)
 	public String updateType(@RequestParam(value = "id") Long id, @ModelAttribute("activityTypeForm") ActivityTypeForm activityTypeForm) {
 		activitySettingService.updateType(activitySettingService.findSpecificActivityType(id),activityTypeForm);
-		return "redirect:/manageSportsSetting";
+		return "redirect:/manage/types";
 	}
 
-	@RequestMapping(value = "/addType", method = RequestMethod.POST)
+	@RequestMapping(value = "/manage/types/add", method = RequestMethod.POST)
 	public String addType(@ModelAttribute("activityTypeForm") ActivityTypeForm activityTypeForm) {
 		activitySettingService.createType(activityTypeForm);
-		return "redirect:/manageSportsSetting";
+		return "redirect:/manage/types";
 	}
 
-	@RequestMapping(value = "/manageLevelsSetting", method = RequestMethod.GET)
+	@RequestMapping(value = "/manage/levels", method = RequestMethod.GET)
 	public String manageLevelsSetting(Model model) {
 		model.addAttribute("levelForm",new LevelForm());
 		model.addAttribute("activityLevels",activitySettingService.getAllLevels());
 		return "management/setLevelsSetting";
 	}
 
-	@RequestMapping(value = "/updateLevel{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/manage/levels/update{id}", method = RequestMethod.POST)
 	public String updateLevel(@RequestParam(value = "id") Long id, @ModelAttribute("levelForm") LevelForm levelForm) {
 		activitySettingService.updateLevel(levelForm,activitySettingService.findSpecificLevel(id));
-		return "redirect:/manageLevelsSetting";
+		return "redirect:/manage/levels";
 	}
 
-	@RequestMapping(value = "/history", method = RequestMethod.GET)
+	@RequestMapping(value = "/manage/history", method = RequestMethod.GET)
 	public String getHistory(@ModelAttribute("searchNewForm") SearchNewForm searchNewForm,
 							 Model model, @RequestParam(required = false) Boolean there) {
 		model.addAttribute("allTypes", newsService.getAllNewsType());
@@ -167,7 +167,7 @@ public class ManagementController {
 
 	}
 
-	@RequestMapping(value = "/historyByFilter", method = RequestMethod.POST)
+	@RequestMapping(value = "/manage/history/filter", method = RequestMethod.POST)
 	public String getHistoryByFilter(@ModelAttribute("searchNewForm") SearchNewForm searchNewForm,
 									 Model model, @RequestParam(required = false) Boolean there) {
 		model.addAttribute("allTypes", newsService.getAllNewsType());
@@ -177,7 +177,7 @@ public class ManagementController {
 		return "management/searchNew";
 	}
 
-	@RequestMapping(value = "/backUpDB", method = RequestMethod.GET)
+	@RequestMapping(value = "/manage/backupdb", method = RequestMethod.GET)
 	public ResponseEntity<InputStreamResource> makeDBBackUp() throws FileNotFoundException {
 
 		this.managementService.getDBStatus();
