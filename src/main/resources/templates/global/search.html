@@ -8,7 +8,7 @@
 <body>
 <th:block th:include="/navbar"></th:block>
 <a th:href="@{/search}">Clear the Search</a>
-<form th:action="@{/searchByFilter}"
+<form th:action="@{/searchbyfilter}"
       th:object="${searchActivityForm}" method="POST" class="pure-form pure-form-stacked">
     <div class="pure-g">
         <div class="pure-u-1-4">
@@ -20,6 +20,18 @@
                         th:utext="${type.getName()}">
                 </option>
             </select>
+        </div>
+        <div class="pure-u-1-4">
+            <label>After..</label>
+        <input class="pure-u-24-24" type="date" th:field="*{date}"/>
+        </div>
+        <div class="pure-u-1-4">
+            <label>Minimum Duration</label>
+            <input class="pure-u-24-24" type="number" th:field="*{duration}">
+        </div>
+        <div class="pure-u-1-4">
+            <label>City</label>
+            <input class="pure-u-23-24" type="text" th:field="*{city}"/>
         </div>
         <div class="pure-u-1-4">
             <label>Minimum Level</label>
@@ -42,6 +54,9 @@
         <th> Name</th>
         <th> Kind</th>
         <th> Level</th>
+        <th> Duration</th>
+        <th> City</th>
+        <th> Date</th>
     </tr>
     </thead>
     <tbody>
@@ -49,6 +64,9 @@
         <td><span th:text="${event.getName()}"></span></td>
         <td><span th:text="${event.getActivityName()}"></span></td>
         <td><span th:text="${event.getMinimumLevel().getName()}"></span></td>
+        <td><span th:text="${event.getDuration()}"></span></td>
+        <td><span th:text="${event.getAddress().getCity()}"></span></td>
+        <td><span th:text="${event.getPlannedTo()}"></span></td>
     </tr>
     </tbody>
 </table>

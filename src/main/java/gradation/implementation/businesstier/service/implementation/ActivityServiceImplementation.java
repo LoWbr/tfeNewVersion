@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -51,7 +53,16 @@ public class ActivityServiceImplementation implements ActivityService {
 
     @Override
     public List<Activity> findForSearch(SearchActivityForm searchActivityForm) {
-        return this.activityRepository.filter(searchActivityForm.getActivity(), searchActivityForm.getMinimumLevel());
+        LocalDate plannedTo;
+        if(searchActivityForm.getDate() == null){
+            plannedTo = null;
+        }
+        else {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            plannedTo = LocalDate.parse(searchActivityForm.getDate(), formatter).plusDays(1);
+        }
+        return this.activityRepository.filter(searchActivityForm.getActivity(), searchActivityForm.getMinimumLevel(),
+                searchActivityForm.getCity(),searchActivityForm.getDuration(), plannedTo);
     }
 
     @Override

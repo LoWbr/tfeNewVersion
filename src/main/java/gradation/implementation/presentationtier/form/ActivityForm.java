@@ -41,7 +41,7 @@ public class ActivityForm {
     private String street;
     @Positive(message = "Get whole number")
     @Digits(integer=6,fraction=0)
-    private Short postalCode;
+    private Integer postalCode;
     @NotBlank(message = "You should get a City")
     @Size(max=60, message="Maximum 60 characters")
     private String city;
@@ -137,11 +137,11 @@ public class ActivityForm {
         this.street = street;
     }
 
-    public Short getPostalCode() {
+    public Integer getPostalCode() {
         return postalCode;
     }
 
-    public void setPostalCode(Short postalCode) {
+    public void setPostalCode(Integer postalCode) {
         this.postalCode = postalCode;
     }
 

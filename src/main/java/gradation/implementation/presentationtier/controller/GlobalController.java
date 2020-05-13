@@ -64,9 +64,16 @@ public class GlobalController {
         return "global/search";
     }
 
-    @RequestMapping(value ="/search", method = RequestMethod.POST)
+    @RequestMapping(value ="/searchbyfilter", method = RequestMethod.POST)
     public String searchByFilter(@ModelAttribute("searchActivityForm") SearchActivityForm searchActivityForm,
                                  Model model) {
+        System.out.println("Date " + searchActivityForm.getDate());
+        if(searchActivityForm.getCity().equals("")){
+            searchActivityForm.setCity(null);
+        }
+        if(searchActivityForm.getDate().equals("")){
+            searchActivityForm.setDate(null);
+        }
         model.addAttribute("allLevels", activitySettingService.getAllLevels());
         model.addAttribute("allKinds", activitySettingService.getAllActivityTypes());
         model.addAttribute("allEvents", activityService.findForSearch(searchActivityForm));

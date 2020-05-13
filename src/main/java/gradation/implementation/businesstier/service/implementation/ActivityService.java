@@ -55,7 +55,10 @@ public class ActivityService {
 
 	//FindForSearch
 	public List<Activity> findForSearch(SearchActivityForm searchActivityForm){
+/*
 		return this.activityRepository.filter(searchActivityForm.getActivity(), searchActivityForm.getMinimumLevel());
+*/
+		return null;
 	}
 
 	//SaveEvent

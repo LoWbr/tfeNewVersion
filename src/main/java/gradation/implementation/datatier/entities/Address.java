@@ -16,7 +16,7 @@ public class Address {
 
     private String street;
 
-    private Short postalCode;
+    private Integer postalCode;
 
     private String city;
 
@@ -46,11 +46,11 @@ public class Address {
         this.street = street;
     }
 
-    public Short getPostalCode() {
+    public Integer getPostalCode() {
         return postalCode;
     }
 
-    public void setPostalCode(Short postalCode) {
+    public void setPostalCode(Integer postalCode) {
         this.postalCode = postalCode;
     }
 
