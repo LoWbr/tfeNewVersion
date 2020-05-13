@@ -16,11 +16,17 @@
 
     <properties>
         <java.version>11</java.version>
-        <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+        <!--<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
 		<sonar.surefire.reportsPath>${project.build.directory}/surefire-reports</sonar.surefire.reportsPath>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 		<sonar.projectVersion>${project.version}</sonar.projectVersion>
-		<sonar.language>java</sonar.language>
+		<sonar.language>java</sonar.language>-->
+        <properties>
+            <sonar.projectKey>LoWbr_tfeNewVersion</sonar.projectKey>
+            <sonar.organization>lowbr</sonar.organization>
+            <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+            <sonar.login>e8b8d4b20a2ff15051d9d8e9fd2fe2d573337407</sonar.login>
+        </properties>
     </properties>
 
     <dependencies>
