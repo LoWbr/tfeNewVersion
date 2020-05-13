@@ -16,6 +16,11 @@
 
     <properties>
         <java.version>11</java.version>
+        <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+		<sonar.surefire.reportsPath>${project.build.directory}/surefire-reports</sonar.surefire.reportsPath>
+		<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+		<sonar.projectVersion>${project.version}</sonar.projectVersion>
+		<sonar.language>java</sonar.language>
     </properties>
 
     <dependencies>
