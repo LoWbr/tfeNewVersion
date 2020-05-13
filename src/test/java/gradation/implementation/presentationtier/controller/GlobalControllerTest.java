@@ -71,9 +71,7 @@ public class GlobalControllerTest {
     @Test
     public void error() throws Exception {
         mockMvc.perform(get("/403"))
-                .andExpect(status().is2xxSuccessful())
-                .andExpect(view().name("global/accessdenied"))
-                .andExpect(model().size(1))
-                .andExpect(model().attributeExists("msg"));
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/401"));
     }
 }

@@ -55,7 +55,7 @@ public class ActivityControllerTest {
         when(activityService.getAllActivities()).thenReturn(allActivities);
         when(activitySettingService.getAllActivityTypes()).thenReturn(activityTypes);
         when(activitySettingService.getAllLevels()).thenReturn(levels);
-        mockMvc.perform(get("/events"))
+        mockMvc.perform(get("/activities"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("activity/events"))
                 .andExpect(model().size(4))
@@ -75,7 +75,7 @@ public class ActivityControllerTest {
         List<Level> levels = Arrays.asList(level);
         when(activitySettingService.getAllActivityTypes()).thenReturn(activityTypes);
         when(activitySettingService.getAllLevels()).thenReturn(levels);
-        mockMvc.perform(get("/create"))
+        mockMvc.perform(get("/factory/create"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("activity/createEvent"))
                 .andExpect(model().size(3))
