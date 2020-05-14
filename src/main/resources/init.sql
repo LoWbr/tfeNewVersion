@@ -84,6 +84,7 @@ INSERT INTO sports_man_contacts (sports_man_id,contacts_id) VALUES
 (2,1),
 (2,3),
 (1,3),
+(1,6),
 (5,1)
 ;
 
@@ -95,8 +96,11 @@ INSERT INTO role (name) VALUES
 INSERT INTO user_role (users_id,roles_id) VALUES
 (1,3),
 (1,2),
+(1,1),
 (2,2),
+(2,1),
 (3,2),
+(3,1),
 (4,1),
 (5,1),
 (6,1);

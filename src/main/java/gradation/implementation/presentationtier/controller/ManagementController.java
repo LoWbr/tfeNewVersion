@@ -170,6 +170,9 @@ public class ManagementController {
 	@RequestMapping(value = "/manage/history/filter", method = RequestMethod.POST)
 	public String getHistoryByFilter(@ModelAttribute("searchNewForm") SearchNewForm searchNewForm,
 									 Model model, @RequestParam(required = false) Boolean there) {
+		if(searchNewForm.getNameSportsman().equals("")){
+			searchNewForm.setNameSportsman(null);
+		}
 		model.addAttribute("allTypes", newsService.getAllNewsType());
 		model.addAttribute("allUsers", sportsManService.getAllUser());
 		model.addAttribute("allActs",newsService.findForSearch(searchNewForm));

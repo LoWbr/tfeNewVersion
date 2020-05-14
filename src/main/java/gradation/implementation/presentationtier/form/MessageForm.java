@@ -20,6 +20,12 @@ public class MessageForm {
         this.addressee.add(addressee);
     }
 
+    public MessageForm(SportsMan originator) {
+        this.originator = originator;
+    }
+
+    public MessageForm(){}
+
     public String getAbout() {
         return about;
     }

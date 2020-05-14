@@ -161,9 +161,21 @@ public class SportsManController {
 	//Send Message to user (à mettre sur la page du contact)
 
 	@RequestMapping(value = "/user/createMessage{id}", method = RequestMethod.GET)
-	public String getMessageForm(@RequestParam Long id, Model model, Principal principal){
-		MessageForm messageForm = new MessageForm(sportsManService.findCurrentUser(principal.getName()),
-				sportsManService.findSpecificUser(id));
+	public String getMessageForm(@RequestParam(required = false) Long id, Model model, Principal principal){
+		MessageForm messageForm = new MessageForm();
+		boolean showInput;
+		if (id != null) {
+			showInput = false;
+			model.addAttribute("showInput",showInput);
+			messageForm.setOriginator(sportsManService.findCurrentUser(principal.getName()));
+			messageForm.getAddressee().add(sportsManService.findSpecificUser(id));
+		}
+		else{
+			showInput = true;
+			model.addAttribute("showInput",showInput);
+			model.addAttribute("contacts", sportsManService.getAllContacts(principal.getName()));
+			messageForm.setOriginator(sportsManService.findCurrentUser(principal.getName()));
+		}
 		model.addAttribute("messageForm", messageForm);
 		return "sportsman/createMessage";
 	}
@@ -171,7 +183,7 @@ public class SportsManController {
 	@RequestMapping(value = "/user/sendMessage", method = RequestMethod.POST)
 	public String sendMessage(@Valid MessageForm messageForm, BindingResult bindingResult){
 		sportsManService.sendMessage(messageForm);
-		return "redirect:/user";
+		return "redirect:/user/details";
 	}
 
 	@RequestMapping(value = "/user/getMessagesSent", method = RequestMethod.GET)
@@ -237,7 +249,7 @@ public class SportsManController {
 	@RequestMapping(value = "/user/applyAsConfirmedUser", method = RequestMethod.GET)
 	public String applyAsConfirmedUser(Principal principal) {
 		managementService.applyForConfirmedRole(sportsManService.findCurrentUser(principal.getName()));
-		return "redirect:/user";
+		return "redirect:/user/details";
 	}
 
 	@RequestMapping(value = "/factory/noteuser{idActivity,idUser}", method = RequestMethod.POST)

@@ -171,7 +171,6 @@ public class SportsManServiceImplementation implements SportsManService {
 
     @Override
     public void sendMessage(MessageForm messageForm) {
-
         Message message = new Message(messageForm);
         this.messageRepository.save(message);
         this.newsService.returnSendMessageNew(message, NewsType.MESSAGE_SEND);

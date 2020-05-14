@@ -16,6 +16,22 @@
         <div>
             <span class="text-danger" th:errors="*{global}"></span>
         </div>
+        <div th:if="${showInput}">
+        <div class="pure-g">
+            <div class="pure-u-1-1">
+                <label>For...</label>
+                <select th:name="addressee" multiple="multiple" required="required">
+                    <option th:each="sportsman : ${contacts}"
+                            th:value="${sportsman.getId()}"
+                            th:utext="${sportsman.getFirstName()}">
+                    </option>
+                </select>
+                <div>
+                    <span class="text-danger" th:errors="*{addressee}"> </span>
+                </div>
+            </div>
+        </div>
+        </div>
         <div class="pure-g">
             <div class="pure-u-1-1">
             <label>About</label>
@@ -35,8 +51,12 @@
             <div class="form-group">
                 <input type="hidden" th:field="*{originator}"/>
             </div>
-            <div class="form-group">
-                <input type="hidden" th:field="*{addressee}"/>
+            <div th:if="${showInput}">
+            </div>
+            <div th:unless="${showInput}">
+                <div class="form-group">
+                    <input type="hidden" th:field="*{addressee}"/>
+                </div>
             </div>
             <div class="pure-controls">
                 <button type="submit" class="pure-button pure-button">Send</button>
