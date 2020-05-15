@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -51,11 +52,11 @@ public class Activity {
 
     @ManyToMany
     @JoinColumn(name="fk_user_candidate", referencedColumnName = "id", nullable = false)
-    private List<SportsMan> candidate;
+    private List<SportsMan> candidate = new ArrayList<>();
 
     @ManyToMany
     @JoinColumn(name="fk_user_registered", referencedColumnName = "id", nullable = false)
-    private List<SportsMan> registered;
+    private List<SportsMan> registered = new ArrayList<>();
 
     @Column(nullable = false, columnDefinition = "boolean default true")
     private Boolean open;

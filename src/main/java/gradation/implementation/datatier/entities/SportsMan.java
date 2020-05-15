@@ -59,11 +59,11 @@ public class SportsMan  {
     private List<Message> ReceivedMessages;
 
     @ManyToMany
-    private List<SportsMan> contacts;
+    private List<SportsMan> contacts = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "user_role")
-    private List<Role> roles;
+    private List<Role> roles = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -117,9 +117,12 @@ public class SportsMan  {
         return points;
     }
 
-    public void setPoints(Integer energyExpenditure) {
-        Integer earnedPoints = energyExpenditure / 10;
-        this.points += earnedPoints;
+    public void setPoints(Integer points){
+        this.points = points;
+    }
+
+    public void addPoints(Integer energyExpenditure) {
+        this.points += energyExpenditure;
     }
 
     public Boolean getBlocked() {
