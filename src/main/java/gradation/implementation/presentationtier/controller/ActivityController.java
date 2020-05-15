@@ -233,7 +233,7 @@ public class ActivityController {
         //check cotations => if stat avec id event pour chaque participant, close event.
         if(activityService.checkAllCotationsForRegistered(activityService.getSpecificActivity(id))){
             activityService.closeActivity(activityService.getSpecificActivity(id));
-            return "redirect:/events";
+            return "redirect:/factory/activitiesbycreator";
         }
         //Sinon, redirection sur la page de check avec les personnes à noter
         else{

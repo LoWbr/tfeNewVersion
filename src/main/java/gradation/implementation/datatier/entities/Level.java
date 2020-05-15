@@ -16,7 +16,7 @@ public class Level {
 
     private Byte place;
 
-    private Short maximumThreshold;
+    private Integer maximumThreshold;
 
     @Column(name = "ratio_points")
     private Double ratioPoints;
@@ -45,11 +45,11 @@ public class Level {
         this.place = place;
     }
 
-    public Short getMaximumThreshold() {
+    public Integer getMaximumThreshold() {
         return maximumThreshold;
     }
 
-    public void setMaximumThreshold(Short maximumThreshold) {
+    public void setMaximumThreshold(Integer maximumThreshold) {
         this.maximumThreshold = maximumThreshold;
     }
 

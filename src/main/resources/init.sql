@@ -11,14 +11,14 @@ INSERT INTO activity_type (name,met) VALUES
 ('Swimming',5.5);
 
 INSERT INTO level (name, place, maximum_threshold, ratio_points) VALUES
-('Beginner',1,50,1),
-('Active',2,120,0.8),
-('Sporstman',3,200,0.5),
-('Athlete',4,350,0.4),
-('Hero',5,600,0.3);
+('Beginner',1,3000,1),
+('Active',2,6000,0.8),
+('Sporstman',3,10000,0.5),
+('Athlete',4,15000,0.4),
+('Hero',5,20000,0.3);
 
 INSERT INTO sports_man (first_name,last_name,description,date_of_birth,weight,points,email,password, fk_level,blocked) VALUES
-('Laurent','Weber','Chevelu Sportif','1990-05-29',79,35,'lo@gmail.com','$2y$10$e/M4T66Ioz3rZ0fltX7qpeLzonDbP/sD60zehJ77t0SoJUCF.WGMa',1,false),
+('Laurent','Weber','Chevelu Sportif','1990-05-29',79,2900,'lo@gmail.com','$2y$10$e/M4T66Ioz3rZ0fltX7qpeLzonDbP/sD60zehJ77t0SoJUCF.WGMa',1,false),
 ('Michael','Atlas','Photograhe en tout genre','1988-04-01',90,32,'mike@gmail.com','$2y$10$0w8iBx3F0.9N9x5eGgy73eqhkDRcKXGnoZQyqvFZ9KC0XEeyHRi0K',1,false),
 ('Geoffrey','Moyens','Militaire et Patate Mariée','1983-02-02',95,40,'geof@gmail.com','$2y$10$4g0uGcj7IjljDWoCY5e8X.T2GbVP2e/RPs65.MbUvYECccKlJiQqW',1,true),
 ('Romain','Monsterlet','Animateur et Flûtiste','1990-12-06',83,84,'ro@gmail.com','$2y$10$FbazGLhM/vvjhS8ykF5neu58q9cdQB02b1DVVdPfHY47S6zoAw3US',1,false),
@@ -42,7 +42,7 @@ INSERT INTO activity (name, fk_activity, fk_creator,duration,open,over,fk_minimu
 
 --Current Events
 INSERT INTO activity (name, fk_activity, fk_creator,duration,open,over,fk_minimum_level, fk_maximum_level, planned_to, fk_address) VALUES
-('Brasse Bien Grasse',3,1,90,false,false,2,3,'2020-08-10 14:00:00',5 ),
+('Brasse Bien Grasse',3,1,90,true,false,1,3,'2020-08-10 14:00:00',5 ),
 ('Footing Mosan',2,2,60,true,false,1,2,'2020-07-15 09:30:00',6),
 ('Vélo en Folie',1,3,180,true,false,1,1,'2020-07-04 08:00:00',2),
 ('Run & Beer',2,1,45,true,false,1,2,'2020-06-25 17:30:00',4);
@@ -62,7 +62,8 @@ INSERT INTO activity_registered(registered_activities_id, registered_id) VALUES
 (4,5),
 (4,6),
 (8,6),
-(8,2);
+(8,2),
+(5,1);
 
 --Statistic
 INSERT INTO statistic (earned_points,energy_expenditure,activity_id, sports_man_id) VALUES

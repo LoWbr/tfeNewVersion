@@ -257,7 +257,7 @@ public class SportsManController {
                            @RequestParam(value = "idUser") Long idUser, NotationForm notationForm){
 		this.sportsManService.setResultForEventToParticipant(activityService.getSpecificActivity(idActivity),
 				sportsManService.findSpecificUser(idUser), notationForm.getNotation());
-		return "redirect:/ownEvent?id=" + idActivity;
+		return "redirect:/factory/ownactivity?id=" + idActivity;
 	}
 
 }

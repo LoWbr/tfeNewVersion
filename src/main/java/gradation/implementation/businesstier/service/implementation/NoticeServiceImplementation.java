@@ -72,8 +72,13 @@ public class NoticeServiceImplementation implements NewsService {
             News answerToAdmin = new News(sportsMan,null,null,newsType, content,false);
             this.saveNew(answerToAdmin);
         }
-        else {
+        else if(newsType.name().equals("NEGATIVE_REQUEST")){
             content = "The administrator rejected your application";
+            News answerToAdmin = new News(sportsMan,null,null,newsType,content, false);
+            this.saveNew(answerToAdmin);
+        }
+        else{//LEVEL UP
+            content = "You have passed to the next Level: " + sportsMan.getLevel().getName();
             News announceLevelUp = new News(sportsMan,null,null,newsType,content, false);
             this.saveNew(announceLevelUp);
         }

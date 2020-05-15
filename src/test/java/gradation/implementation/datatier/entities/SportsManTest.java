@@ -59,7 +59,7 @@ public class SportsManTest {
         SportsMan sportsMan = new SportsMan();
         sportsMan.setPoints(80);
         Level level = new Level();
-        level.setMaximumThreshold((short) 60);
+        level.setMaximumThreshold(60);
         sportsMan.setLevel(level);
         assertTrue(sportsMan.checkLevelStatus());
         sportsMan.setPoints(50);
