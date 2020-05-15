@@ -221,10 +221,10 @@ public class SportsManServiceImplementation implements SportsManService {
             Integer earnedPoints = Math.toIntExact((long) (energeticExpenditure * sportsMan.getLevel().getRatioPoints() * notation));
             sportsMan.addPoints(earnedPoints);
             if (sportsMan.checkLevelStatus()){// Récursivité pour les niveaux suivant à mettre en place!!
-                newsService.returnApplicationResultNewOrLevelUpNew(sportsMan,NewsType.LEVEL_UP);
                 Byte new_place = sportsMan.getLevel().getPlace();
                 new_place++;
                 sportsMan.setLevel(activitySettingService.findSpecificLevel(Long.valueOf(new_place)));
+                newsService.returnApplicationResultNewOrLevelUpNew(sportsMan,NewsType.LEVEL_UP);
             }
             this.saveUser(sportsMan);
             Statistic statistic = new Statistic(sportsMan, activity, earnedPoints, energeticExpenditure);
