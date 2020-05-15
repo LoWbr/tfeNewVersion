@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>Search</title>
@@ -57,16 +57,24 @@
         <th> Duration</th>
         <th> City</th>
         <th> Date</th>
+
     </tr>
     </thead>
     <tbody>
     <tr th:each="event : ${allEvents}">
         <td><span th:text="${event.getName()}"></span></td>
-        <td><span th:text="${event.getActivityName()}"></span></td>
+        <td>
+            <span th:if="${event.checkLevel(sportsMan)}"><a th:href="@{/activity(id=${event.getId()})}" th:text="${event.getActivityName()}"></a></span>
+            <span th:unless="${event.checkLevel(sportsMan)}" th:text="${event.getActivityName()}"></span>
+        </td>
         <td><span th:text="${event.getMinimumLevel().getName()}"></span></td>
         <td><span th:text="${event.getDuration()}"></span></td>
         <td><span th:text="${event.getAddress().getCity()}"></span></td>
-        <td><span th:text="${event.getPlannedTo()}"></span></td>
+        <td><span th:utext="${#temporals.format(event.getPlannedTo(), 'dd-MM-yyyy')}"></span></td>
+        <td sec:authorize="isAuthenticated()">
+            <span th:if="${event.checkLevel(sportsMan)}" style="color: green">Open for you!!</span>
+            <span th:unless="${event.checkLevel(sportsMan)}" style="color: red">Not Available</span>
+        </td>
     </tr>
     </tbody>
 </table>

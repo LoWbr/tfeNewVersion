@@ -10,7 +10,7 @@
         <li class="pure-menu-item"><a th:href="@{/activities}" class="pure-menu-link">Activities</a></li>
         <li class="pure-menu-item"><a th:href="@{/sportsmans}" class="pure-menu-link">Users</a></li>
         <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-            <a sec:authorize="hasAnyRole('SIMPLY')" id="menuLink1" class="pure-menu-link">My Account</a>
+            <a sec:authorize="hasRole('SIMPLY')" id="menuLink1" class="pure-menu-link">My Account</a>
             <ul class="pure-menu-children">
                 <li class="pure-menu-item"><a th:href="@{/user/details}" class="pure-menu-link">Me</a></li>
                 <li class="pure-menu-item"><a th:href="@{/user/update}" class="pure-menu-link">Update</a></li>
@@ -22,7 +22,7 @@
             </ul>
         </li>
         <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-            <a sec:authorize="hasAnyRole('CONFIRMED')" id="menuLink1" class="pure-menu-link">Factory</a>
+            <a sec:authorize="hasRole('CONFIRMED')" id="menuLink1" class="pure-menu-link">Factory</a>
             <ul class="pure-menu-children">
                 <li class="pure-menu-item"><a th:href="@{/factory/activitiesbycreator}" class="pure-menu-link">Overview</a></li>
                 <li class="pure-menu-item"><a th:href="@{/factory/create}" class="pure-menu-link">Create Activity</a></li>

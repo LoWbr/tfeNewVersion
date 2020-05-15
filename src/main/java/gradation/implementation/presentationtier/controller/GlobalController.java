@@ -19,12 +19,14 @@ public class GlobalController {
 
     private ActivitySettingService activitySettingService;
     private ActivityService activityService;
+    private SportsManService sportsManService;
 
     @Autowired
     public GlobalController(ActivitySettingService activitySettingService,
-                            ActivityService activityService){
+                            ActivityService activityService, SportsManService sportsManService){
         this.activityService = activityService;
         this.activitySettingService = activitySettingService;
+        this.sportsManService = sportsManService;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -56,7 +58,10 @@ public class GlobalController {
 
     @RequestMapping(value ="/search", method = RequestMethod.GET)
     public String search(@ModelAttribute("searchActivityForm") SearchActivityForm searchActivityForm,
-                         Model model, @RequestParam(required = false) Boolean there) {
+                         Model model, @RequestParam(required = false) Boolean there, Principal principal) {
+        if(principal != null){
+            model.addAttribute("sportsMan", sportsManService.findCurrentUser(principal.getName()));
+        }
         model.addAttribute("allLevels", activitySettingService.getAllLevels());
         model.addAttribute("allKinds", activitySettingService.getAllActivityTypes());
         model.addAttribute("allEvents",activityService.getAllActivities());
@@ -66,8 +71,10 @@ public class GlobalController {
 
     @RequestMapping(value ="/searchbyfilter", method = RequestMethod.POST)
     public String searchByFilter(@ModelAttribute("searchActivityForm") SearchActivityForm searchActivityForm,
-                                 Model model) {
-        System.out.println("Date " + searchActivityForm.getDate());
+                                 Model model, Principal principal) {
+        if(principal != null){
+            model.addAttribute("sportsMan", sportsManService.findCurrentUser(principal.getName()));
+        }
         if(searchActivityForm.getCity().equals("")){
             searchActivityForm.setCity(null);
         }
