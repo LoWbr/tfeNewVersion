@@ -81,7 +81,7 @@ public class SportsManController {
 			authWithHttpServletRequest(request,sportsManForm.getMail(), sportsManForm.getPassword());
 		}
 
-		return "redirect:/user";
+		return "redirect:/user/details";
 	}
 	public void authWithHttpServletRequest(HttpServletRequest request, String username, String password) {
 		try {
@@ -134,7 +134,7 @@ public class SportsManController {
 			https://stackoverflow.com/questions/9910252/how-to-reload-authorities-on-user-update-with-spring-security
 			 */
 		}
-		return "redirect:/user";
+		return "redirect:/user/details";
 	}
 
 	public void logout(HttpServletRequest request) throws ServletException {

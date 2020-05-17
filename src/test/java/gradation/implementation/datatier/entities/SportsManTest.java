@@ -4,6 +4,7 @@ import gradation.implementation.presentationtier.form.SportsManForm;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import static org.junit.Assert.*;
 
@@ -38,12 +39,26 @@ public class SportsManTest {
     @Test
     public void updateSportsMan() {
         SportsMan sportsMan = new SportsMan();
-        sportsMan.setFirstName("Initial");
+        sportsMan.setFirstName("Laurent");
+        sportsMan.setLastName("Weber");
+        sportsMan.setEmail("laurent@gmail.com");
+        sportsMan.setDescription("------");
+        sportsMan.setWeight(84.5);
+        sportsMan.setDateOfBirth(LocalDate.of(1990,05,15));
         SportsManForm sportsManForm = new SportsManForm();
         sportsManForm.setFirstname("Test");
+        sportsManForm.setLastname("testLastName");
+        sportsManForm.setMail("test@gmail.com");
+        sportsManForm.setDescription("complete");
+        sportsManForm.setWeight(70.0);
         sportsManForm.setDateofBirth("1990-05-22");
         sportsMan.updateSportsMan(sportsManForm);
         assertEquals("Test", sportsMan.getFirstName());
+        assertEquals("testLastName", sportsMan.getLastName());
+        assertEquals("test@gmail.com", sportsMan.getEmail());
+        assertEquals("complete", sportsMan.getDescription());
+        assertEquals(new Double(70.0),sportsMan.getWeight());
+        assertEquals(LocalDate.of(1990,05,22), sportsMan.getDateOfBirth().minusDays(1));
     }
 
     @Test

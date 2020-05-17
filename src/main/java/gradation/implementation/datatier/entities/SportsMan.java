@@ -5,9 +5,11 @@ import gradation.implementation.presentationtier.form.SportsManForm;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Entity
 public class SportsMan  {
@@ -223,8 +225,7 @@ public class SportsMan  {
         this.lastName = sportsManForm.getLastname();
         this.email = sportsManForm.getMail();
         this.description = sportsManForm.getDescription();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        this.dateOfBirth = LocalDate.parse(sportsManForm.getDateofBirth(),formatter).plusDays(1);
+        this.dateOfBirth = LocalDate.parse(sportsManForm.getDateofBirth()).plusDays(1);
         this.weight = sportsManForm.getWeight();
     }
 

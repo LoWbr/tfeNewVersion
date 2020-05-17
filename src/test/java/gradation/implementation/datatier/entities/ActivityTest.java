@@ -3,6 +3,9 @@ package gradation.implementation.datatier.entities;
 import gradation.implementation.presentationtier.form.ActivityForm;
 import org.junit.Test;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import static org.junit.Assert.*;
 
 public class ActivityTest {
@@ -31,12 +34,23 @@ public class ActivityTest {
         Address address = new Address();
         Activity activity = new Activity();
         activity.setName("Initial");
+        activity.setDescription("initial");
+        activity.setPlannedTo(LocalDate.of(2020,8,7));
+        activity.setHour(LocalTime.of(12,00));
+        activity.setDuration((short) 45);
         ActivityForm activityForm = new ActivityForm();
         activityForm.setName("Test");
+        activityForm.setDescription("test");
         activityForm.setPlannedTo("2020-08-08");
         activityForm.setHour("14:15");
+        activityForm.setDuration((short) 60);
         activity.update(activityForm, address);
         assertEquals("Test", activity.getName());
+        assertEquals("test", activity.getDescription());
+        assertEquals(LocalTime.of(14,15), activity.getHour().minusHours(1));
+        assertEquals(LocalDate.of(2020,8,8),activity.getPlannedTo().minusDays(1));
+        assertEquals(new Short((short) 60), activity.getDuration());
+
     }
 
     @Test
