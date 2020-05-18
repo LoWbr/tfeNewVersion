@@ -9,6 +9,7 @@ import gradation.implementation.datatier.repositories.StatisticRepository;
 import gradation.implementation.presentationtier.form.ActivityForm;
 import gradation.implementation.presentationtier.form.SearchActivityForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@ConditionalOnProperty(name="app.service", havingValue = "main")
 @Service
 public class ActivityServiceImplementation implements ActivityService {
 

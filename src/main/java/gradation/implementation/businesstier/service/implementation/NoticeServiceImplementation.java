@@ -6,11 +6,13 @@ import gradation.implementation.datatier.entities.*;
 import gradation.implementation.datatier.repositories.NewsRepository;
 import gradation.implementation.presentationtier.form.SearchNewForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@ConditionalOnProperty(name="app.service", havingValue = "main")
 @Service
 public class NoticeServiceImplementation implements NewsService {
 

@@ -4,10 +4,12 @@ import gradation.implementation.businesstier.service.contractinterface.RoleServi
 import gradation.implementation.datatier.entities.Role;
 import gradation.implementation.datatier.repositories.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@ConditionalOnProperty(name="app.service", havingValue = "main")
 @Service
 public class RoleServiceImplementation implements RoleService {
 

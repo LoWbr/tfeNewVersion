@@ -10,6 +10,7 @@ import gradation.implementation.presentationtier.form.ActivityTypeForm;
 import gradation.implementation.presentationtier.form.LevelForm;
 import gradation.implementation.presentationtier.form.TopicForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@ConditionalOnProperty(name="app.service", havingValue = "main")
 @Service
 public class ManagementServiceImplementation implements ManagementService {
 

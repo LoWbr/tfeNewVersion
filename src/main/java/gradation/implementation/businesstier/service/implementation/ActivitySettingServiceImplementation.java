@@ -11,8 +11,10 @@ import gradation.implementation.presentationtier.form.ActivityTypeForm;
 import gradation.implementation.presentationtier.form.CommentForm;
 import gradation.implementation.presentationtier.form.LevelForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
+@ConditionalOnProperty(name="app.service", havingValue = "main")
 @Service
 public class ActivitySettingServiceImplementation implements ActivitySettingService {
 

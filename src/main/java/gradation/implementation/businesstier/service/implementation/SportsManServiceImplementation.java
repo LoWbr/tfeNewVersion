@@ -11,12 +11,14 @@ import gradation.implementation.datatier.repositories.StatisticRepository;
 import gradation.implementation.presentationtier.form.MessageForm;
 import gradation.implementation.presentationtier.form.SportsManForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@ConditionalOnProperty(name="app.service", havingValue = "main")
 @Service
 public class SportsManServiceImplementation implements SportsManService {
 
