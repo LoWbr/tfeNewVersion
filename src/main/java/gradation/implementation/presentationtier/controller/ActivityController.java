@@ -37,7 +37,7 @@ public class ActivityController {
         this.activitySettingService = activitySettingService;
     }
 
-    @RequestMapping(value ="activities", method = RequestMethod.GET)
+    @RequestMapping(value ="/activities", method = RequestMethod.GET)
     public String getAllEvents(Model model) {
         model.addAttribute("allActivities", activityService.getAllActivities());
         return "activity/events";
@@ -187,7 +187,7 @@ public class ActivityController {
                           @RequestParam(value = "id") Long idActivity) {
         activityService.refuseBuyer(activityService.getSpecificActivity(idActivity),
                 sportsManService.findSpecificUser(idParticipant));
-        return "redirect:/events";
+        return "redirect:/activities";
     }
 
     @RequestMapping(value = "/factory/adduser{id}", method = RequestMethod.POST)

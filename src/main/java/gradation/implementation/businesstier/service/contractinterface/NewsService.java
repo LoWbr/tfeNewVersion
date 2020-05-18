@@ -33,4 +33,6 @@ public interface NewsService {
 
     void returnAbandonmentNew(SportsMan sportsMan, Activity activity, NewsType newsType);
 
+    void checkNews(Long idNews);
+
 }

@@ -151,4 +151,11 @@ public class NoticeServiceImplementation implements NewsService {
         this.saveNew(answerToBuyer);
     }
 
+    @Override
+    public void checkNews(Long idNews) {
+        News notification = this.newsRepository.findbyId(idNews);
+        notification.setSeen(true);
+        this.newsRepository.save(notification);
+    }
+
 }

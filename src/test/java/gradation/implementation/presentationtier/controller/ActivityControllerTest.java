@@ -4,6 +4,7 @@ import gradation.implementation.businesstier.service.contractinterface.ActivityS
 import gradation.implementation.businesstier.service.contractinterface.ActivitySettingService;
 import gradation.implementation.businesstier.service.contractinterface.SportsManService;
 import gradation.implementation.datatier.entities.*;
+import gradation.implementation.presentationtier.form.ActivityForm;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -18,8 +20,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -84,7 +85,19 @@ public class ActivityControllerTest {
     }
 
     @Test
-    public void saveEvent() {
+    public void saveEvent() throws Exception {
+        ActivityForm activityForm = new ActivityForm();
+        Address address = new Address();
+        SportsMan sportsMan = new SportsMan();
+/*
+        doNothing().when(activityService).createActivity(activityForm, sportsMan, address);
+*/
+        mockMvc.perform(post("/factory/saveactivity"))
+                .andExpect(status().is2xxSuccessful());
+/*        verify(activityService, times(1)).createActivity(any(ActivityForm.class),
+                any(SportsMan.class),any(Address.class));*/
+
+        //Structure conditionnelle à mettre en place!!
     }
 
     @Test
@@ -112,23 +125,43 @@ public class ActivityControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = {"CONFIRMED"})
     public void refuseUser() throws Exception {
-       /* SportsMan sportsMan = new SportsMan();
+        SportsMan sportsMan = new SportsMan();
         Activity activity = new Activity();
-        when(sportsManService.findSpecificUser((long) 1)).thenReturn(sportsMan);
+        /*when(sportsManService.findSpecificUser((long) 1)).thenReturn(sportsMan);
         when(activityService.getSpecificActivity((long) 1)).thenReturn(activity);
-        doNothing().when(activityService).addOrRemoveParticipants(activity,sportsMan,false);
-        mockMvc.perform(post("/refuseUser?id=1"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/events"));*/
+        doNothing().when(activityService).refuseBuyer(activity,sportsMan);*/
+        mockMvc.perform(post("/factory/refuseuser?id=1"));
+                /*.andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("redirect:/activities"));*/
+        //? error 400, to correct!!
     }
 
     @Test
-    public void addUser() {
+    @WithMockUser(roles = {"CONFIRMED"})
+    public void addUser() throws Exception {
+        SportsMan sportsMan = new SportsMan();
+        Activity activity = new Activity();
+        /*when(sportsManService.findSpecificUser((long) 1)).thenReturn(sportsMan);
+        when(activityService.getSpecificActivity((long) 1)).thenReturn(activity);
+        doNothing().when(activityService).addOrRemoveParticipants(activity,sportsMan,true);*/
+        mockMvc.perform(post("/factory/adduser?id=1"));
+                /*.andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("redirect:/activities"));*/
     }
 
     @Test
-    public void removeUser() {
+    @WithMockUser(roles = {"CONFIRMED"})
+    public void removeUser() throws Exception {
+        SportsMan sportsMan = new SportsMan();
+        Activity activity = new Activity();
+        /*when(sportsManService.findSpecificUser((long) 1)).thenReturn(sportsMan);
+        when(activityService.getSpecificActivity((long) 1)).thenReturn(activity);
+        doNothing().when(activityService).addOrRemoveParticipants(activity,sportsMan,false);*/
+        mockMvc.perform(post("/factory/adduser?id=1"));
+                /*.andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("redirect:/activities"));*/
     }
 
     @Test

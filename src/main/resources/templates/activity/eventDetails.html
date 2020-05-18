@@ -43,11 +43,11 @@
         <div th:unless="${activity.checkPresence(sportsMan)}">
 
             <td th:if="${activity.checkApplication(sportsMan)}">
-                <span th:if="${activity.checkLevel(sportsMan)}"><a th:href="@{/user/postulate(id=${activity.getId()})}">Postulate</a></span>
-                <span th:unless="${activity.checkLevel(sportsMan)}">Too low Level, sorry.</span>
+                <a>You have already sent a demand : an answer will be arrive very soon</a>
             </td>
             <td th:unless="${activity.checkApplication(sportsMan)}">
-                <a>You have already sent a demand : an answer will be arrive very soon</a>
+                <span th:if="${activity.checkLevel(sportsMan)}"><a th:href="@{/user/postulate(id=${activity.getId()})}">Postulate</a></span>
+                <span th:unless="${activity.checkLevel(sportsMan)}">Too low Level, sorry.</span>
             </td>
 
         </div>

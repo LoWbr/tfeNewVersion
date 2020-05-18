@@ -13,6 +13,8 @@
         <th>Type</th>
         <th>Source</th>
         <th>Target</th>
+        <th>Content</th>
+        <th>Check</th>
     </tr>
     </thead>
     <tbody>
@@ -20,6 +22,10 @@
         <td><span th:text="${notification.getType()}"></span></td>
         <td><span th:text="${notification.getSource().getFirstName()}"></span></td>
         <td><span th:text="${notification.getTarget().getFirstName()}"></span></td>
+        <td><span th:text="${notification.getContent()}"></span></td>
+        <td>
+            <span><a th:href="@{/user/clearnotification(id=${notification.getId()})}">Seen</a></span>
+        </td>
     </tr>
     </tbody>
 </table>

@@ -31,11 +31,15 @@ public class SportsManController {
 
     private ManagementService managementService;
 
+    private NewsService newsService;
+
 	@Autowired
-	public SportsManController(SportsManService sportsManService, ActivityService activityService, ManagementService managementService) {
+	public SportsManController(SportsManService sportsManService, ActivityService activityService,
+							   ManagementService managementService, NewsService newsService) {
 		this.sportsManService = sportsManService;
 		this.activityService = activityService;
 		this.managementService = managementService;
+		this.newsService = newsService;
 	}
 
 	@RequestMapping(value= "/sportsmans", method = RequestMethod.GET)
@@ -209,6 +213,12 @@ public class SportsManController {
 				sportsManService.getNotifications(sportsManService.findCurrentUser(principal.getName())));
 		return "sportsman/notifications";
 	}
+	@RequestMapping(value = "/user/clearnotification{id}")
+	public String checkNotification(@RequestParam Long id){
+		newsService.checkNews(id);
+		return "redirect:/user/notifications";
+	}
+
 	//FindContacts
 	@RequestMapping(value = "/user/contacts", method = RequestMethod.GET)
 	public String getContacts(Model model, Principal principal){
