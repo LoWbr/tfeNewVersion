@@ -1,6 +1,7 @@
 package gradation.implementation.businesstier.service.implementation;
 
 import gradation.implementation.businesstier.service.contractinterface.NewsService;
+import gradation.implementation.businesstier.service.implementation.oldversion.SportsManService;
 import gradation.implementation.datatier.entities.*;
 import gradation.implementation.datatier.repositories.NewsRepository;
 import gradation.implementation.presentationtier.form.SearchNewForm;
