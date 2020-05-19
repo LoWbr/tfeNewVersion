@@ -183,14 +183,14 @@ public class ManagementController {
 	@RequestMapping(value = "/manage/backupdb", method = RequestMethod.GET)
 	public ResponseEntity<InputStreamResource> makeDBBackUp() throws FileNotFoundException {
 
-		this.managementService.getDBStatus();
-		String folderPath = "/home/laurent/ultimateProjects/phase3/tfe_repo";
+		this.managementService.returnDB();
+		String folderPath = "/home/laurent/ultimateProjects/phase3/tfe_implementation";
 		String filename = "Daily_DB_Backup.sql";
 		MediaType mediaType = MediaTypeSetting.returnForFileName(this.servletContext, filename);
 		//Get the file
 		File file = new File(folderPath + "/" + filename);
 		InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-		file.delete();
+		/*file.delete();*/
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachement;filename=" + file.getName())
 				.contentType(mediaType)

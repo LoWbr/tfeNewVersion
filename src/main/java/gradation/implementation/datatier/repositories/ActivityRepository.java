@@ -2,6 +2,7 @@ package gradation.implementation.datatier.repositories;
 
 import gradation.implementation.datatier.entities.*;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -9,7 +10,8 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface ActivityRepository extends CrudRepository<Activity, Long> {
+@ConditionalOnProperty(name="app.repository", havingValue = "main")
+public interface ActivityRepository extends CrudRepository<Activity, Long>{
 
     @Query("Select event from Activity event where event.id = :id")
     Activity findSpecific(
