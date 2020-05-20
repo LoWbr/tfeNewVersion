@@ -213,7 +213,7 @@ public class SportsManController {
 				sportsManService.getNotifications(sportsManService.findCurrentUser(principal.getName())));
 		return "sportsman/notifications";
 	}
-	@RequestMapping(value = "/user/clearnotification{id}")
+	@RequestMapping(value = "/user/clearnotification{id}", method = RequestMethod.GET)
 	public String checkNotification(@RequestParam Long id){
 		newsService.checkNews(id);
 		return "redirect:/user/notifications";
