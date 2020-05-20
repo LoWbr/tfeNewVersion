@@ -189,36 +189,9 @@ public class ManagementController {
 	@RequestMapping(value = "/manage/backupdb/download", method = RequestMethod.GET)
 	public ResponseEntity<InputStreamResource> makeDBBackUp() throws IOException, InterruptedException, NullPointerException {
 
-		/*this.managementService.returnDB();*/
+		this.managementService.returnDB();
 
-		String dbName = "tfe";
-		String fileName = "Gradation_DB_BackUp";
 		String folderPath = "/home/laurent/ultimateProjects/phase3/tfe_implementation/backupForDownload";
-		File f1 = new File(folderPath);
-		f1.mkdir();
-
-		String saveFileName = fileName + ".sql";
-		String savePath = f1.getAbsolutePath() + File.separator + saveFileName;
-
-		String executeCmd = "mysqldump -u " + "lolo" + " -p" + "lolo" + "  --databases " + dbName
-				+ " -r " + savePath;
-		Process runtimeProcess = null;
-		/*try {*/
-			runtimeProcess = Runtime.getRuntime().exec(executeCmd);
-		/*} catch (IOException e) {
-			e.printStackTrace();
-		}
-		*/int processComplete = 0;
-		processComplete = runtimeProcess.waitFor();/*
-		try {
-			processComplete = runtimeProcess.waitFor();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}*/
-
-/*
-		String folderPath = "/home/laurent/ultimateProjects/phase3/tfe_implementation/backupForDownload";
-*/
 		String filename = "Gradation_DB_BackUp.sql";
 		MediaType mediaType = MediaTypeSetting.returnForFileName(this.servletContext, filename);
 		File file = new File(folderPath + "/" + filename);

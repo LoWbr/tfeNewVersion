@@ -85,7 +85,14 @@ public class ManagementServiceImplementation implements ManagementService {
     @Override
     public void returnDB() {
 
-        databaseBackUp.saveForDownload();
+        try {
+            databaseBackUp.saveForDownload();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            Thread.currentThread().interrupt();
+        }
 
     }
 

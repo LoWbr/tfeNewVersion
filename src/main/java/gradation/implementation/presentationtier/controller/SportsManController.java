@@ -114,18 +114,18 @@ public class SportsManController {
 		LocalDate current = LocalDate.now();
 
 		if(this.sportsManService.findCurrentUser(sportsManForm.getMail()) != null &&
-				(this.sportsManService.findCurrentUser(principal.getName())).equals(sportsManForm.getMail())) {
+				this.sportsManService.findCurrentUser(sportsManForm.getMail()).getId() != sportsManForm.getId()) {
 			bindingResult.rejectValue("mail", "", "This account already exists");
-			return "updateUser";
+			return "sportsman/updateUser";
 		}
 		else if(Period.between(dateInput,current).getYears() < 18){
 			System.out.println(Period.between(dateInput,current).getYears());
 			bindingResult.rejectValue("dateofBirth","","You must have 18 years old to register");
-			return "updateUser";
+			return "sportsman/updateUser";
 		}
 		else if(!(sportsManForm.getPassword()).equals(sportsManForm.getConfirmPassword())){
 			bindingResult.rejectValue("password","","The two passwords do not match.");
-			return "updateUser";
+			return "sportsman/updateUser";
 		}
 		else {
 			SportsMan transition = sportsManService.findCurrentUser(principal.getName());

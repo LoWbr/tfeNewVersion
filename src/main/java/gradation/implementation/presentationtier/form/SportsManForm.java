@@ -118,6 +118,7 @@ public class SportsManForm {
 	}
 
 	public SportsManForm(SportsMan sportsMan) {
+		this.id = sportsMan.getId();
 		this.firstname = sportsMan.getFirstName();
 		this.lastname = sportsMan.getLastName();
 		this.description = sportsMan.getDescription();
