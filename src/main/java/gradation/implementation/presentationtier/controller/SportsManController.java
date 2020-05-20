@@ -114,7 +114,7 @@ public class SportsManController {
 		LocalDate current = LocalDate.now();
 
 		if(this.sportsManService.findCurrentUser(sportsManForm.getMail()) != null &&
-				this.sportsManService.findCurrentUser(sportsManForm.getMail()).getId() != sportsManForm.getId()) {
+				! this.sportsManService.findCurrentUser(sportsManForm.getMail()).getId().equals(sportsManForm.getId())) {
 			bindingResult.rejectValue("mail", "", "This account already exists");
 			return "sportsman/updateUser";
 		}
