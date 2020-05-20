@@ -1,9 +1,11 @@
 package gradation.implementation.businesstier.service.implementation;
 
 import gradation.implementation.businesstier.service.contractinterface.NewsService;
+import gradation.implementation.businesstier.service.contractinterface.RoleService;
 import gradation.implementation.businesstier.service.implementation.oldversion.SportsManService;
 import gradation.implementation.datatier.entities.*;
 import gradation.implementation.datatier.repositories.NewsRepository;
+import gradation.implementation.datatier.repositories.SportsManRepository;
 import gradation.implementation.presentationtier.form.SearchNewForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -18,12 +20,16 @@ public class NoticeServiceImplementation implements NewsService {
 
     private NewsRepository newsRepository;
 
-    private SportsManService sportsManService;
+    private SportsManRepository sportsManRepository;
+
+    private RoleService roleService;
 
     @Autowired
-    public NoticeServiceImplementation(NewsRepository newsRepository, SportsManService sportsManService){
+    public NoticeServiceImplementation(NewsRepository newsRepository, SportsManRepository sportsManRepository,
+                                       RoleService roleService){
         this.newsRepository = newsRepository;
-        this.sportsManService = sportsManService;
+        this.sportsManRepository = sportsManRepository;
+        this.roleService = roleService;
     }
 
     @Override
@@ -61,7 +67,7 @@ public class NoticeServiceImplementation implements NewsService {
     @Override
     public void returnApplicationNew(SportsMan sportsMan, NewsType newsType) {
         String content = sportsMan.getFirstName() + " applied for the the confirmed Role.";
-        for (SportsMan administrator :sportsManService.selectAuthorityUsers()) {
+        for (SportsMan administrator :sportsManRepository.selectAuthorityUsers(roleService.findAdministrator())) {
             News supplyToAdmin = new News(administrator,sportsMan,null, newsType, content,false);
             this.saveNew(supplyToAdmin);
         }
