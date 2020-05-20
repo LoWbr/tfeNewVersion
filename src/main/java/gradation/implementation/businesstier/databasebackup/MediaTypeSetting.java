@@ -1,4 +1,4 @@
-package gradation.implementation.configuration;
+package gradation.implementation.businesstier.databasebackup;
 
 import org.springframework.http.MediaType;
 
@@ -7,9 +7,7 @@ import javax.servlet.ServletContext;
 public class MediaTypeSetting {
 
     public static MediaType returnForFileName(ServletContext servletContext, String fileName) {
-        // application/pdf
-        // application/xml
-        // image/gif, ...
+
         String mimeType = servletContext.getMimeType(fileName);
         try {
             MediaType mediaType = MediaType.parseMediaType(mimeType);

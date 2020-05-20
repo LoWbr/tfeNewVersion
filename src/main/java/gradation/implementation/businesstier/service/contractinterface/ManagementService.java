@@ -24,8 +24,6 @@ public interface ManagementService {
 
     void addTopic(SportsMan sportsMan, TopicForm topicForm);
 
-    void getDBStatus();
-
     public void applyForConfirmedRole(SportsMan sportsMan);
 
     void returnDB();
