@@ -1,8 +1,10 @@
 package gradation.implementation.businesstier.service.implementation;
 
 import gradation.implementation.businesstier.service.contractinterface.ActivitySettingService;
+import gradation.implementation.businesstier.service.contractinterface.NewsService;
 import gradation.implementation.businesstier.service.contractinterface.RoleService;
 import gradation.implementation.datatier.entities.*;
+import gradation.implementation.datatier.repositories.MessageRepository;
 import gradation.implementation.datatier.repositories.SportsManRepository;
 import gradation.implementation.datatier.repositories.StatisticRepository;
 import gradation.implementation.presentationtier.form.SportsManForm;
@@ -20,6 +22,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.management.Notification;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,10 +42,16 @@ public class SportsManServiceImplementationTest {
     private StatisticRepository statisticRepository;
 
     @Mock
+    private MessageRepository messageRepository;
+
+    @Mock
     private RoleService roleService;
 
     @Mock
     private ActivitySettingService activitySettingService;
+
+    @Mock
+    private NewsService newsService;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -242,26 +252,74 @@ public class SportsManServiceImplementationTest {
 
     @Test
     public void promoteUser() {
+        SportsMan sportsMan = new SportsMan();
+        Role role = new Role();
+        given(roleService.findConfirmedRole()).willReturn(role);
+        sportsMan.addRoles(roleService.findConfirmedRole());
+        assertEquals(1, sportsMan.getRoles().size());
+        verify(roleService, times(1)).findConfirmedRole();
+        verifyNoMoreInteractions(roleService);
+
     }
 
     @Test
     public void saveStatistic() {
+        Statistic statistic = new Statistic();
+        Long id = 1L;
+        given(statisticRepository.save(statistic)).willReturn(statistic);
+        assertNotNull(statisticRepository.save(statistic));
+        verify(statisticRepository, times(1)).save(statistic);
+        verifyNoMoreInteractions(statisticRepository);
     }
 
     @Test
     public void sendMessage() {
+        Message message = new Message();
+        given(messageRepository.save(message)).willReturn(message);
+        assertNotNull(messageRepository.save(message));
+        verify(messageRepository, times(1)).save(message);
+        verifyNoMoreInteractions(messageRepository);
     }
 
     @Test
     public void findMessages() {
+        SportsMan sportsMan = new SportsMan(), sportsMan1 = new SportsMan();
+        Message message = new Message(), message1 = new Message();
+        message.setOriginator(sportsMan);
+        message1.setOriginator(sportsMan);
+        List<Message> byAuthor = Arrays.asList(message,message1);
+        List<SportsMan> addressees = Arrays.asList(sportsMan1);
+        message.setAddressee(addressees);
+        List<Message> forUser = Arrays.asList(message);
+        given(messageRepository.findByCreator(sportsMan)).willReturn(byAuthor);
+        List<Message> result = sportsManServiceImplementation.findMessages(sportsMan,true);
+        assertEquals(2, result.size());
+        given(messageRepository.findByReceptor(sportsMan)).willReturn(forUser);
+        result = sportsManServiceImplementation.findMessages(sportsMan,false);
+        assertEquals(1, result.size());
     }
 
     @Test
     public void getNotifications() {
+        SportsMan sportsMan = new SportsMan();
+        News news = new News(), news1 = new News();
+        List<News> notifications = Arrays.asList(news,news1);
+        given(newsService.getByUser(sportsMan)).willReturn(notifications);
+        List<News> result = newsService.getByUser(sportsMan);
+
+        assertEquals(notifications, result);
     }
 
     @Test
     public void getAllNotMarked() {
+        SportsMan sportsMan = new SportsMan();
+        List<SportsMan> notTreated = Arrays.asList(sportsMan);
+        Activity activity = new Activity();
+        activity.getRegistered().add(sportsMan);
+        List<Statistic>statistics = new ArrayList<>();
+        given(statisticRepository.findForActivityAndSportsMan(activity,sportsMan)).willReturn(statistics);
+        List<SportsMan> result = sportsManServiceImplementation.getAllNotMarked(activity);
+        assertEquals(notTreated,result);
     }
 
     @Test

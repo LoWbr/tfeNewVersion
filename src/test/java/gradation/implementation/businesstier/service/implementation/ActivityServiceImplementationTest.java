@@ -3,6 +3,7 @@ package gradation.implementation.businesstier.service.implementation;
 import gradation.implementation.businesstier.service.contractinterface.*;
 import gradation.implementation.datatier.entities.Activity;
 import gradation.implementation.datatier.entities.SportsMan;
+import gradation.implementation.datatier.entities.Statistic;
 import gradation.implementation.datatier.repositories.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +16,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -89,15 +91,15 @@ public class ActivityServiceImplementationTest {
 
     @Test
     public void findForSearch() {
+
+
     }
 
     @Test
     public void saveActivity() {
-        /*Activity activity = new Activity();
-        given(activityRepository.save(activity)).willAnswer(invocation -> invocation.getArgument(0));
-
-        verify(activityRepository).save(any(Activity.class));
-        verifyNoMoreInteractions(activityRepository);*/
+        Activity activity = new Activity();
+        given(activityRepository.save(activity)).willReturn(activity);
+        assertNotNull(activityRepository.save(activity));
 
     }
 
@@ -111,26 +113,57 @@ public class ActivityServiceImplementationTest {
 
     @Test
     public void applyAsCandidate() {
+        Activity activity = new Activity();
+        SportsMan sportsMan = new SportsMan();
+        assertEquals(0,activity.getCandidate().size());
+        activityServiceImplementation.applyAsCandidate(activity,sportsMan);
+        assertEquals(1,activity.getCandidate().size());
     }
 
     @Test
     public void refuseBuyer() {
+        Activity activity = new Activity();
+        SportsMan sportsMan = new SportsMan();
+        activity.getCandidate().add(sportsMan);
+        activityServiceImplementation.refuseBuyer(activity,sportsMan);
+        assertEquals(0,activity.getCandidate().size());
     }
 
     @Test
     public void addOrRemoveParticipants() {
+        Activity activity = new Activity();
+        SportsMan sportsMan = new SportsMan();
+        activity.getCandidate().add(sportsMan);
+        activityServiceImplementation.addOrRemoveParticipants(activity,sportsMan,true);
+        assertEquals(1,activity.getRegistered().size());
+        activityServiceImplementation.addOrRemoveParticipants(activity,sportsMan,false);
+        assertEquals(0,activity.getRegistered().size());
     }
 
     @Test
     public void participantDropout() {
+        Activity activity = new Activity();
+        SportsMan sportsMan = new SportsMan();
+        activity.getRegistered().add(sportsMan);
+        activityServiceImplementation.participantDropout(activity,sportsMan);
+        assertEquals(0, activity.getRegistered().size());
     }
 
     @Test
     public void closeActivity() {
+        Activity activity = new Activity();
+        activityServiceImplementation.closeActivity(activity);
+        assertTrue(activity.getOver());
     }
 
     @Test
     public void cancelOrActivateActivity() {
+        Activity activity = new Activity();
+        activity.setOpen(true);
+        activityServiceImplementation.cancelOrActivateActivity(activity,false);
+        assertFalse(activity.getOpen());
+        activityServiceImplementation.cancelOrActivateActivity(activity,true);
+        assertTrue(activity.getOpen());
     }
 
     @Test
@@ -139,9 +172,24 @@ public class ActivityServiceImplementationTest {
 
     @Test
     public void inviteContact() {
+        Activity activity = new Activity();
+        SportsMan sportsMan = new SportsMan();
+        activityServiceImplementation.inviteContact(activity, sportsMan);
+        assertEquals(1, activity.getRegistered().size());
     }
 
     @Test
     public void checkAllCotationsForRegistered() {
+        Activity activity = new Activity();
+        SportsMan sportsMan = new SportsMan();
+        activity.getRegistered().add(sportsMan);
+        List<Statistic> allStat = new ArrayList<>();
+        given(statisticRepository.findByActivity(activity)).willReturn(allStat);
+        assertFalse(activityServiceImplementation.checkAllCotationsForRegistered(activity));
+        Statistic statistic = new Statistic();
+        statistic.setActivity(activity);
+        allStat.add(statistic);
+        given(statisticRepository.findByActivity(activity)).willReturn(allStat);
+        assertTrue(activityServiceImplementation.checkAllCotationsForRegistered(activity));
     }
 }
