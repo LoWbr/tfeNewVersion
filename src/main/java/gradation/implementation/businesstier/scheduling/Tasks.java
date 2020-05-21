@@ -1,6 +1,8 @@
 package gradation.implementation.businesstier.scheduling;
 
 import gradation.implementation.businesstier.databasebackup.DatabaseBackUp;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -16,12 +18,12 @@ public class Tasks {
     @Scheduled(fixedRate = 5000)
     public void permanent() throws IOException {
         if(getStatus()){
-            try {
+            /*try {
                 databaseBackUp.saveOnServer();
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 Thread.currentThread().interrupt();
-            }
+            }*/
             System.out.println("BackUp.");
         }
         else{
@@ -51,5 +53,16 @@ public class Tasks {
         content.load(fileInputStream);
         fileInputStream.close();
         return content;
+    }
+
+    public void activeProcess(String file) throws ConfigurationException {
+        PropertiesConfiguration setting = new PropertiesConfiguration(file);
+        setting.setProperty("activeScheduleBackUp","yes");
+        setting.save();
+    }
+    public void stopProcess(String file) throws ConfigurationException {
+        PropertiesConfiguration setting = new PropertiesConfiguration(file);
+        setting.setProperty("activeScheduleBackUp","no");
+        setting.save();
     }
 }

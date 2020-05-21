@@ -1,5 +1,6 @@
 package gradation.implementation.presentationtier.controller;
 
+import gradation.implementation.businesstier.scheduling.Tasks;
 import gradation.implementation.businesstier.service.contractinterface.*;
 import gradation.implementation.businesstier.databasebackup.MediaTypeSetting;
 import gradation.implementation.datatier.entities.*;
@@ -8,6 +9,7 @@ import gradation.implementation.presentationtier.form.ActivityTypeForm;
 import gradation.implementation.presentationtier.form.LevelForm;
 import gradation.implementation.presentationtier.form.SearchNewForm;
 import gradation.implementation.presentationtier.form.TopicForm;
+import org.apache.commons.configuration.ConfigurationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -26,6 +28,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Properties;
 
 @Controller
 public class ManagementController {
@@ -36,6 +39,8 @@ public class ManagementController {
 	private NewsService newsService;
 	private ActivitySettingService activitySettingService;
 	private ServletContext servletContext;
+
+	public Tasks tasks = new Tasks();
 
 	@Autowired
 	public ManagementController(ActivityService activityService, SportsManService sportsManService,
@@ -159,6 +164,11 @@ public class ManagementController {
 	@RequestMapping(value = "/manage/history", method = RequestMethod.GET)
 	public String getHistory(@ModelAttribute("searchNewForm") SearchNewForm searchNewForm,
 							 Model model, @RequestParam(required = false) Boolean there) {
+		try {
+			model.addAttribute("active", this.getStatus());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		model.addAttribute("allTypes", newsService.getAllNewsType());
 		model.addAttribute("allUsers", sportsManService.getAllUser());
 
@@ -174,6 +184,11 @@ public class ManagementController {
 		if(searchNewForm.getNameSportsman().equals("")){
 			searchNewForm.setNameSportsman(null);
 		}
+		try {
+			model.addAttribute("active", this.getStatus());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		model.addAttribute("allTypes", newsService.getAllNewsType());
 		model.addAttribute("allUsers", sportsManService.getAllUser());
 		model.addAttribute("allActs",newsService.findForSearch(searchNewForm));
@@ -181,9 +196,29 @@ public class ManagementController {
 		return "management/searchNew";
 	}
 
-	@RequestMapping(value = "/manage/backupdb/cyclic", method = RequestMethod.GET)
-	public String launchBackUpProcess(){
-		return "managementHome";
+	public boolean getStatus() throws IOException {
+		if (tasks.getStatus()){
+			return true;
+		}
+		return false;
+	}
+
+	@RequestMapping(value = "/manage/backupdb/cyclic{up}", method = RequestMethod.GET)
+	public String launchBackUpProcess(@RequestParam(value = "up") boolean up){
+		if(up){
+			try {
+				this.tasks.activeProcess("src/main/resources/settingVariables.properties");
+			} catch (ConfigurationException e) {
+				e.printStackTrace();
+			}
+		}else{
+			try {
+				this.tasks.stopProcess("src/main/resources/settingVariables.properties");
+			} catch (ConfigurationException e) {
+				e.printStackTrace();
+			}
+		}
+		return "redirect:/manage/history";
 	}
 
 	@RequestMapping(value = "/manage/backupdb/download", method = RequestMethod.GET)

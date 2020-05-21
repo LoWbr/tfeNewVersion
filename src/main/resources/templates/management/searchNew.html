@@ -7,6 +7,10 @@
 </head>
 <body>
 <th:block th:include="/navbar"></th:block>
+<td>
+    <span th:if="${active}"><a th:href="@{/manage/backupdb/cyclic(up=false)}">Stop Cyclic BackUp</a></span>
+    <span th:unless="${active}"><a th:href="@{/manage/backupdb/cyclic(up=true)}">Active Cyclic BackUp</a></span>
+</td>
 <a th:href="@{/manage/history}">Clear the Search</a>
 <form th:action="@{/manage/history/filter}"
       th:object="${searchNewForm}" method="POST" class="pure-form pure-form-stacked">
