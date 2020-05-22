@@ -52,16 +52,10 @@ public class NoticeServiceImplementation implements NewsService {
     }
 
     @Override
-    public void saveNew(News news) {
-        this.newsRepository.save(news);
-    }
-
-
-    @Override
     public void returnApplicationEventNew(Activity activity, SportsMan sportsMan, NewsType newsType) {
         String content = sportsMan.getFirstName() + " apply your the activity.";
         News supplyToCreator = new News(activity.getCreator(),sportsMan,activity, newsType,content, false);
-        this.saveNew(supplyToCreator);
+        this.newsRepository.save(supplyToCreator);
     }
 
     @Override
@@ -69,27 +63,27 @@ public class NoticeServiceImplementation implements NewsService {
         String content = sportsMan.getFirstName() + " applied for the the confirmed Role.";
         for (SportsMan administrator :sportsManRepository.selectAuthorityUsers(roleService.findAdministrator())) {
             News supplyToAdmin = new News(administrator,sportsMan,null, newsType, content,false);
-            this.saveNew(supplyToAdmin);
+            this.newsRepository.save(supplyToAdmin);
         }
     }
 
     @Override
-    public void returnApplicationResultNewOrLevelUpNew(SportsMan sportsMan, NewsType newsType) {
+    public void returnApplicationResultNewOrLevelUpNew(SportsMan sportsMan, SportsMan validator, NewsType newsType) {
         String content;
         if(newsType.name().equals("VALIDATED_REQUEST")){
             content = "The administrator has accepted your application";
-            News answerToAdmin = new News(sportsMan,null,null,newsType, content,false);
-            this.saveNew(answerToAdmin);
+            News answerToAdmin = new News(sportsMan,validator,null,newsType, content,false);
+            this.newsRepository.save(answerToAdmin);
         }
         else if(newsType.name().equals("NEGATIVE_REQUEST")){
             content = "The administrator rejected your application";
-            News answerToAdmin = new News(sportsMan,null,null,newsType,content, false);
-            this.saveNew(answerToAdmin);
+            News answerToAdmin = new News(sportsMan,validator,null,newsType,content, false);
+            this.newsRepository.save(answerToAdmin);
         }
         else{//LEVEL UP
             content = "You have passed to the next Level: " + sportsMan.getLevel().getName();
             News announceLevelUp = new News(sportsMan,null,null,newsType,content, false);
-            this.saveNew(announceLevelUp);
+            this.newsRepository.save(announceLevelUp);
         }
 
     }
@@ -100,17 +94,17 @@ public class NoticeServiceImplementation implements NewsService {
         if(newsType.name().equals("CANCELLED_EVENT")){
             content = "The activity was cancelled by the administrator";
             News announceToCreator = new News(activity.getCreator(), null, activity, newsType,content, false);
-            this.saveNew(announceToCreator);
+            this.newsRepository.save(announceToCreator);
             for (SportsMan registered : activity.getRegistered()) {
                 News announceToRegistered = new News(registered, null, activity, newsType, content,false);
-                this.saveNew(announceToRegistered);
+                this.newsRepository.save(announceToRegistered);
             }
         }
         else{
             content = "The event is now closed";
             for (SportsMan registered : activity.getRegistered()) {
                 News announceToRegistered = new News(registered, activity.getCreator(), activity, newsType,content, false);
-                this.saveNew(announceToRegistered);
+                this.newsRepository.save(announceToRegistered);
             }
         }
 
@@ -129,14 +123,14 @@ public class NoticeServiceImplementation implements NewsService {
             content = activity.getCreatorName() + " creator cancel your participation to the activity";
         }
         News answerFromBuyer = new News(sportsMan, activity.getCreator(), activity, newsType, content, false);
-        this.saveNew(answerFromBuyer);
+        this.newsRepository.save(answerFromBuyer);
     }
 
     @Override
     public void returnCommentEventNew(SportsMan sportsMan, Activity activity, NewsType newsType) {
         String content = sportsMan.getFirstName() + " has commented your activity";
         News announceToCreator = new News(activity.getCreator(),sportsMan,activity,newsType,content, false);
-        this.saveNew(announceToCreator);
+        this.newsRepository.save(announceToCreator);
     }
 
     @Override
@@ -149,7 +143,7 @@ public class NoticeServiceImplementation implements NewsService {
         for (SportsMan sportsman:message.getAddressee()) {
             String content = message.getContent();
             News announceToCreator = new News(sportsman,message.getOriginator(),null,newsType, content,false);
-            this.saveNew(announceToCreator);
+            this.newsRepository.save(announceToCreator);
         }
     }
 
@@ -157,7 +151,7 @@ public class NoticeServiceImplementation implements NewsService {
     public void returnAbandonmentNew(SportsMan sportsMan, Activity activity, NewsType newsType) {
         String content = sportsMan.getFirstName() + " left the activity";
         News answerToBuyer = new News(activity.getCreator(),sportsMan,activity,newsType, content, false);
-        this.saveNew(answerToBuyer);
+        this.newsRepository.save(answerToBuyer);
     }
 
     @Override

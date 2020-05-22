@@ -13,13 +13,11 @@ public interface NewsService {
 
     Iterable<News> findAll();
 
-    void saveNew(News news);
-
     void returnApplicationEventNew(Activity activity, SportsMan sportsMan, NewsType newsType);
 
     void returnApplicationNew(SportsMan sportsMan, NewsType newsType);
 
-    void returnApplicationResultNewOrLevelUpNew(SportsMan sportsMan, NewsType newsType);
+    void returnApplicationResultNewOrLevelUpNew(SportsMan sportsMan, SportsMan validator, NewsType newsType);
 
     void returnCancelledApplictionNewOrCloseEventNew(Activity activity, NewsType newsType);
 

@@ -1,10 +1,9 @@
 package gradation.implementation.businesstier.service.implementation;
 
 import gradation.implementation.businesstier.service.contractinterface.*;
-import gradation.implementation.datatier.entities.Activity;
-import gradation.implementation.datatier.entities.SportsMan;
-import gradation.implementation.datatier.entities.Statistic;
+import gradation.implementation.datatier.entities.*;
 import gradation.implementation.datatier.repositories.*;
+import gradation.implementation.presentationtier.form.ActivityForm;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +15,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -104,11 +104,27 @@ public class ActivityServiceImplementationTest {
     }
 
     @Test
-    public void createActivity() {
+    public void createActivity() throws ParseException {
+        Address address = new Address();
+        ActivityForm activityForm = new ActivityForm();
+        SportsMan sportsMan = new SportsMan();
+        activityForm.setName("test");
+        activityForm.setPlannedTo("2020-08-08");
+        activityForm.setHour("14:15");
+        activityServiceImplementation.createActivity(activityForm, sportsMan, address);
+        verify(activityRepository, times(1)).save(any(Activity.class));
     }
 
     @Test
     public void updateActivity() {
+        Address address = new Address();
+        Activity activity = new Activity();
+        ActivityForm activityForm = new ActivityForm();
+        activityForm.setName("test");
+        activityForm.setPlannedTo("2020-08-08");
+        activityForm.setHour("14:15");
+        activityServiceImplementation.updateActivity(activity,activityForm);
+        assertEquals(activityForm.getName(), activity.getName());
     }
 
     @Test
@@ -168,6 +184,7 @@ public class ActivityServiceImplementationTest {
 
     @Test
     public void getActivityByName() {
+        assertNull(activityServiceImplementation.getActivityByName("test"));
     }
 
     @Test

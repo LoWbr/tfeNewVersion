@@ -75,7 +75,7 @@ public class ActivityServiceImplementation implements ActivityService {
     @Override
     public void createActivity(ActivityForm activityForm, SportsMan sportsMan, Address address) throws ParseException {
         Activity activity = new Activity(activityForm, sportsMan, address);
-        this.saveActivity(activity);
+        this.activityRepository.save(activity);
     }
 
     @Override

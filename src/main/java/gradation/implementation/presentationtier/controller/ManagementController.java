@@ -102,20 +102,21 @@ public class ManagementController {
 	}
 
 	@RequestMapping(value = "/manage/users/deniepromote{id}", method = RequestMethod.GET)
-	public String refusePromotionUser(@RequestParam(value = "id") Long id) {
+	public String refusePromotionUser(@RequestParam(value = "id") Long id, Principal principal) {
 		SportsMan sportsMan = sportsManService.findSpecificUser(id);
 		managementService.removeRequest(managementService.findSpecific(sportsMan));
-		newsService.returnApplicationResultNewOrLevelUpNew(sportsMan, NewsType.NEGATIVE_REQUEST);
+		newsService.returnApplicationResultNewOrLevelUpNew(sportsMan,
+				sportsManService.findCurrentUser(principal.getName()), NewsType.NEGATIVE_REQUEST);
 		return "redirect:/manage/users";
 	}
 
 	@RequestMapping(value = "/manage/users/promote{id}", method = RequestMethod.GET)
-	public String promoteUser(@RequestParam(value = "id") Long id) {
+	public String promoteUser(@RequestParam(value = "id") Long id, Principal principal) {
 		sportsManService.promoteUser(sportsManService.findSpecificUser(id));
 		managementService.removeRequest(managementService.findSpecific
 				(sportsManService.findSpecificUser(id)));
 		newsService.returnApplicationResultNewOrLevelUpNew(sportsManService.findSpecificUser(id),
-				NewsType.VALIDATED_REQUEST);
+				sportsManService.findCurrentUser(principal.getName()),NewsType.VALIDATED_REQUEST);
 		//Add notification!!
 		return "redirect:/manage/users";
 	}

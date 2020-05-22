@@ -226,7 +226,7 @@ public class SportsManServiceImplementation implements SportsManService {
                 Byte new_place = sportsMan.getLevel().getPlace();
                 new_place++;
                 sportsMan.setLevel(activitySettingService.findSpecificLevel(Long.valueOf(new_place)));
-                newsService.returnApplicationResultNewOrLevelUpNew(sportsMan,NewsType.LEVEL_UP);
+                newsService.returnApplicationResultNewOrLevelUpNew(sportsMan,null,NewsType.LEVEL_UP);
             }
             this.saveUser(sportsMan);
             Statistic statistic = new Statistic(sportsMan, activity, earnedPoints, energeticExpenditure);

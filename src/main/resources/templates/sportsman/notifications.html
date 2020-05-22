@@ -20,7 +20,11 @@
     <tbody>
     <tr th:each="notification : ${notifications}">
         <td><span th:text="${notification.getType()}"></span></td>
+<!--
         <td><span th:text="${notification.getSource().getFirstName()}"></span></td>
+-->
+        <td><span th:text="${notification.getSource() != null}?
+        ${notification.getSource().getFirstName()} : 'null value!'"></span></td>
         <td><span th:text="${notification.getTarget().getFirstName()}"></span></td>
         <td><span th:text="${notification.getContent()}"></span></td>
         <td>
