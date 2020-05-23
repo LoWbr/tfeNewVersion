@@ -79,7 +79,7 @@ public class ActivityController {
         }
         else if(Period.between(dateInput,current).getDays() >= 0 && duration.getSeconds() < 3600){
             bindingResult.rejectValue("hour","","You have to set a valid hour");
-            return "createEvent";
+            return "activity/createEvent";
         }
         else if(activityForm.getMinimumLevel().getPlace() > activityForm.getMaximumLevel().getPlace()){
             bindingResult.rejectValue("maximumLevel", "", "Should be equal or greater than" +

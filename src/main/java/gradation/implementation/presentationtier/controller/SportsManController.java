@@ -157,7 +157,7 @@ public class SportsManController {
 	}
 
 	//Show User Details
-	@RequestMapping(value = "/sportsman{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/sportsman{id}", method = RequestMethod.GET)
 	public String getSportsManDetail(@RequestParam Long id, Model model){
 		model.addAttribute("sportsMan",sportsManService.findSpecificUser(id));
 		return "sportsman/externDetails";
