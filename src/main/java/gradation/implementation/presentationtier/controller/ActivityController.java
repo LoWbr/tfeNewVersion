@@ -94,10 +94,10 @@ public class ActivityController {
             activityService.createActivity(activityForm, sportsManService.findCurrentUser(principal.getName()),
                     activitySettingService.createAddress(activityForm));
         }
-        return "redirect:/events";
+        return "redirect:/activities";
     }
 
-    @RequestMapping(value = "activity{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/activity{id}", method = RequestMethod.GET)
     public String eventDetails(@RequestParam Long id, Model model, Principal principal) {
         if(principal != null){
             model.addAttribute("sportsMan", sportsManService.findCurrentUser(principal.getName()));
@@ -136,7 +136,7 @@ public class ActivityController {
         return "activity/updateEvent";
     }
 
-    @RequestMapping(value = "/factory/updateactiviy", method = RequestMethod.POST)
+    @RequestMapping(value = "/factory/updateactivity", method = RequestMethod.POST)
     public String updateEvent(@Valid @ModelAttribute("activityForm") ActivityForm activityForm, BindingResult
                               bindingResult) {
         if(bindingResult.hasErrors()){
@@ -172,7 +172,7 @@ public class ActivityController {
             activityService.updateActivity(activityService.getSpecificActivity(activityForm.getId()), activityForm);
         }
 
-        return "activity/events";
+        return "redirect:/activities";
     }
 
     @RequestMapping(value = "/user/postulate{id}", method = RequestMethod.GET)

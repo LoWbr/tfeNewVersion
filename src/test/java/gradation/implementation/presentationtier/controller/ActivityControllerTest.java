@@ -17,9 +17,11 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -101,11 +103,27 @@ public class ActivityControllerTest {
     }
 
     @Test
-    public void eventDetails() {
+    public void eventDetails() throws Exception {
+        Activity activity = new Activity();
+        given(activityService.getSpecificActivity(1L)).willReturn(activity);
+        mockMvc.perform(get("/activity?id=1"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(model().size(6))
+                .andExpect(view().name("activity/eventDetails"));
     }
 
     @Test
-    public void getActivitiesByCreator() {
+    public void getActivitiesByCreator() throws Exception {
+        /*Activity activity = new Activity();
+        SportsMan sportsMan = new SportsMan();
+        sportsMan.setEmail("test");
+        List<Activity> activities = Arrays.asList(activity);
+        given(sportsManService.findCurrentUser(sportsMan.getEmail())).willReturn(sportsMan);
+        given(activityService.getAllOfTheSameCreator(sportsMan)).willReturn(activities);
+        mockMvc.perform(get("/factory/activitiesbycreator"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(model().size(1))
+                .andExpect(view().name("activity/ownEvents"));*/
     }
 
     @Test
@@ -117,7 +135,10 @@ public class ActivityControllerTest {
     }
 
     @Test
-    public void updateEvent() {
+    public void updateEvent() throws Exception {
+        /*mockMvc.perform(post("/factory/updateactivity"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/activities"));*/
     }
 
     @Test

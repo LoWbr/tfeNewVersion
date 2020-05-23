@@ -219,6 +219,12 @@ public class ManagementControllerTest {
     }
 
     @Test
-    public void getHistory() {
+    @WithMockUser(roles = {"ADMINISTRATOR"})
+    public void getHistory() throws Exception {
+        mockMvc.perform(get("/manage/history"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(model().size(6))
+                .andExpect(view().name("management/searchNew"));
     }
+
 }
