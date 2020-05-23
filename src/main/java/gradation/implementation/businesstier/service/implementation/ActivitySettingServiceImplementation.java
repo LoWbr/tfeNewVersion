@@ -44,6 +44,11 @@ public class ActivitySettingServiceImplementation implements ActivitySettingServ
     }
 
     @Override
+    public Level findLevelByPlace(Byte place) {
+        return this.levelRepository.findSpecific(place);
+    }
+
+    @Override
     public CommentForm initiateCommentForm(Activity activity, SportsMan sportsMan) {
         CommentForm commentForm = new CommentForm(sportsMan, activity);
         return commentForm;

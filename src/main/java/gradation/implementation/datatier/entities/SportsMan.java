@@ -123,8 +123,8 @@ public class SportsMan  {
         this.points = points;
     }
 
-    public void addPoints(Integer energyExpenditure) {
-        this.points += energyExpenditure;
+    public void addPoints(Integer earnedPoints) {
+        this.points += earnedPoints;
     }
 
     public Boolean getBlocked() {
@@ -230,10 +230,16 @@ public class SportsMan  {
     }
 
     public boolean checkLevelStatus() {
-        if(this.getPoints()>this.getLevel().getMaximumThreshold()){
+        if(this.level.getPlace() != 5 && this.getPoints()>this.getLevel().getMaximumThreshold()){
             return true;
         }
         return false;
+    }
+
+    public Byte setLevelUp(){
+        Byte new_place = this.getLevel().getPlace();
+        new_place++;
+        return new_place;
     }
 
     public int getAge(){

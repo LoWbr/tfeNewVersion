@@ -222,10 +222,9 @@ public class SportsManServiceImplementation implements SportsManService {
             //Calcul des points acquis : base du ratio du niveau utilisateur, et de la cotation
             Integer earnedPoints = Math.toIntExact((long) (energeticExpenditure * sportsMan.getLevel().getRatioPoints() * notation));
             sportsMan.addPoints(earnedPoints);
-            if (sportsMan.checkLevelStatus()){// Récursivité pour les niveaux suivant à mettre en place!!
-                Byte new_place = sportsMan.getLevel().getPlace();
-                new_place++;
-                sportsMan.setLevel(activitySettingService.findSpecificLevel(Long.valueOf(new_place)));
+            while(sportsMan.checkLevelStatus()){
+                Byte new_place = sportsMan.setLevelUp();
+                sportsMan.setLevel(activitySettingService.findLevelByPlace(new_place));
                 newsService.returnApplicationResultNewOrLevelUpNew(sportsMan,null,NewsType.LEVEL_UP);
             }
             this.saveUser(sportsMan);

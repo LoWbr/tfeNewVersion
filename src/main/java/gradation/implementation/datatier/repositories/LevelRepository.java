@@ -12,4 +12,8 @@ public interface LevelRepository extends CrudRepository<Level,Long> {
     Level findSpecific(
             @Param("id") Long id);
 
+    @Query("Select level from Level level where level.place = :place")
+    Level findSpecific(
+            @Param("place") Byte place);
+
 }

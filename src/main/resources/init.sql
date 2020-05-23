@@ -12,7 +12,7 @@ INSERT INTO activity_type (name,met) VALUES
 
 INSERT INTO level (name, place, maximum_threshold, ratio_points) VALUES
 ('Beginner',1,3000,1),
-('Active',2,6000,0.8),
+('Active',2,5000,0.8),
 ('Sporstman',3,10000,0.5),
 ('Athlete',4,15000,0.4),
 ('Hero',5,20000,0.3);

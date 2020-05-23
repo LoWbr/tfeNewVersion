@@ -12,6 +12,8 @@ public interface ActivitySettingService {
 
     Level findBeginner();
 
+    Level findLevelByPlace(Byte place);
+
     CommentForm initiateCommentForm(Activity activity, SportsMan sportsMan);
 
     void createComment(Comment comment);
