@@ -1,9 +1,16 @@
 package gradation.implementation.presentationtier.controller;
 
+import gradation.implementation.businesstier.service.contractinterface.ActivityService;
+import gradation.implementation.businesstier.service.contractinterface.ManagementService;
+import gradation.implementation.businesstier.service.contractinterface.NewsService;
 import gradation.implementation.businesstier.service.contractinterface.SportsManService;
+import gradation.implementation.datatier.entities.Activity;
 import gradation.implementation.datatier.entities.Message;
+import gradation.implementation.datatier.entities.News;
 import gradation.implementation.datatier.entities.SportsMan;
 import gradation.implementation.presentationtier.form.MessageForm;
+import gradation.implementation.presentationtier.form.NotationForm;
+import io.florianlopes.spring.test.web.servlet.request.MockMvcRequestBuilderUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -33,6 +40,12 @@ public class SportsManControllerTest {
     private MockMvc mockMvc;
     @Mock
     private SportsManService sportsManService;
+    @Mock
+    private NewsService newsService;
+    @Mock
+    private ManagementService managementService;
+    @Mock
+    private ActivityService activityService;
     @InjectMocks
     private SportsManController sportsManController;
     @Before
@@ -172,23 +185,58 @@ public class SportsManControllerTest {
     }
 
     @Test
-    public void notifications() {
+    public void notifications() throws Exception {
+        SportsMan current = new SportsMan();
+        News news = new News();
+        List<News> notices = Arrays.asList(news);
+        when(sportsManService.findCurrentUser(SecurityContextHolder.getContext().getAuthentication().getName())).thenReturn(current);
+        when(sportsManService.getNotifications(current)).thenReturn(notices);
+        mockMvc.perform(get("/user/notifications").principal(SecurityContextHolder.getContext().getAuthentication()))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("sportsman/notifications"));
     }
 
     @Test
-    public void checkNotification() {
+    public void checkNotification() throws Exception {
+        mockMvc.perform(get("/user/clearnotification?id=1").principal(SecurityContextHolder.getContext().getAuthentication()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/user/notifications"));
+        verify(newsService,times(1)).checkNews(1L);
     }
 
     @Test
-    public void getContacts() {
+    public void getContacts() throws Exception {
+        SportsMan sportsMan = new SportsMan(), current = new SportsMan();
+        List<SportsMan> sportsMEN = Arrays.asList(sportsMan);
+        when(sportsManService.getAllContacts(SecurityContextHolder.getContext().getAuthentication().getName())).thenReturn(sportsMEN);
+        mockMvc.perform(get("/user/contacts").principal(SecurityContextHolder.getContext().getAuthentication()))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("sportsman/contacts"));
+        verify(sportsManService,times(1)).getAllContacts(SecurityContextHolder.getContext().getAuthentication().getName());
+
     }
 
     @Test
-    public void getUnknowUsers() {
+    public void getUnknowUsers() throws Exception {
+        SportsMan sportsMan = new SportsMan(), current = new SportsMan();
+        List<SportsMan> sportsMEN = Arrays.asList(sportsMan);
+        when(sportsManService.findCurrentUser(SecurityContextHolder.getContext().getAuthentication().getName())).thenReturn(current);
+        when(sportsManService.getPotentialContacts(current)).thenReturn(sportsMEN);
+        mockMvc.perform(get("/user/findNewUsers").principal(SecurityContextHolder.getContext().getAuthentication()))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("sportsman/users"));
+        verify(sportsManService,times(1)).getPotentialContacts(current);
     }
 
     @Test
-    public void getRegisteredEvents() {
+    public void getRegisteredEvents() throws Exception {
+        SportsMan current = new SportsMan();
+        when(sportsManService.findSpecificUser(1L)).thenReturn(current);
+        mockMvc.perform(get("/user/getRegisteredEvents?id=1"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(model().size(1))
+                .andExpect(view().name("sportsman/userParticipatedEvents"));
+        verify(sportsManService,times(1)).findSpecificUser(1L);
     }
 
     @Test
@@ -200,10 +248,26 @@ public class SportsManControllerTest {
     }
 
     @Test
-    public void applyAsConfirmedUser() {
+    public void applyAsConfirmedUser() throws Exception {
+        SportsMan current = new SportsMan();
+        when(sportsManService.findCurrentUser(SecurityContextHolder.getContext().getAuthentication().getName())).thenReturn(current);
+        mockMvc.perform(get("/user/applyAsConfirmedUser").principal(SecurityContextHolder.getContext().getAuthentication()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/user/details"));
+        verify(managementService,times(1)).applyForConfirmedRole(current);
     }
 
     @Test
-    public void noteUser() {
+    public void noteUser() throws Exception {
+        NotationForm notationForm = new NotationForm();
+        notationForm.setNotation(0.2);
+        SportsMan sportsMan = new SportsMan(), current = new SportsMan();
+        Activity activity = new Activity();
+        when(sportsManService.findSpecificUser(1L)).thenReturn(sportsMan);
+        when(activityService.getSpecificActivity(1L)).thenReturn(activity);
+        mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/factory/noteuser?idActivity=1&idUser=1", notationForm))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/factory/ownactivity?id=1"));
+        verify(sportsManService,times(1)).setResultForEventToParticipant(activity, sportsMan, notationForm.getNotation());
     }
 }

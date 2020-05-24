@@ -3,10 +3,10 @@ package gradation.implementation.presentationtier.controller;
 import gradation.implementation.businesstier.service.contractinterface.ActivityService;
 import gradation.implementation.businesstier.service.contractinterface.ActivitySettingService;
 import gradation.implementation.businesstier.service.contractinterface.SportsManService;
-import gradation.implementation.datatier.entities.Activity;
-import gradation.implementation.datatier.entities.ActivityType;
-import gradation.implementation.datatier.entities.Level;
-import gradation.implementation.datatier.entities.SportsMan;
+import gradation.implementation.datatier.entities.*;
+import gradation.implementation.presentationtier.form.SearchActivityForm;
+import gradation.implementation.presentationtier.form.SearchNewForm;
+import io.florianlopes.spring.test.web.servlet.request.MockMvcRequestBuilderUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -109,10 +109,24 @@ public class GlobalControllerTest {
 
     @Test
     public void searchByFilter() throws Exception {
-        /*mockMvc.perform(get("/searchbyfilter"))
+        final SportsMan userExpected = new SportsMan();
+        when(this.sportsManService.findCurrentUser(SecurityContextHolder.getContext().getAuthentication().getName()))
+                .thenReturn(userExpected);
+        List<ActivityType> activitytypes = Arrays.asList();
+        List<Level> levels = Arrays.asList();
+        List<Activity> activities = Arrays.asList();
+        SearchActivityForm searchActivityForm = new SearchActivityForm();
+        searchActivityForm.setCity("");
+        searchActivityForm.setDate("");
+        when(activitySettingService.getAllLevels()).thenReturn(levels);
+        when(activitySettingService.getAllActivityTypes()).thenReturn(activitytypes);
+/*
+        when(activityService.findForSearch(searchActivityForm)).thenReturn(activities);
+*/
+        mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/searchbyfilter", searchActivityForm).principal(SecurityContextHolder.getContext() .getAuthentication()))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(model().size(4))
-                .andExpect(view().name("global/search"));*/
+                .andExpect(model().size(5))
+                .andExpect(view().name("global/search"));
     }
 
     @Test

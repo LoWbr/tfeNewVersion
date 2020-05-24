@@ -4,7 +4,9 @@ import gradation.implementation.businesstier.service.contractinterface.*;
 import gradation.implementation.datatier.entities.*;
 import gradation.implementation.presentationtier.form.ActivityTypeForm;
 import gradation.implementation.presentationtier.form.LevelForm;
+import gradation.implementation.presentationtier.form.SearchNewForm;
 import gradation.implementation.presentationtier.form.TopicForm;
+import io.florianlopes.spring.test.web.servlet.request.MockMvcRequestBuilderUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -158,13 +160,24 @@ public class ManagementControllerTest {
     @Test
     @WithMockUser(roles = {"ADMINISTRATOR"})
     public void refusePromotionUser() throws Exception {
+        SportsMan sportsMan = new SportsMan();
+        when(this.sportsManService.findCurrentUser(SecurityContextHolder.getContext().getAuthentication().getName()))
+                .thenReturn(sportsMan);
+        mockMvc.perform(get("/manage/users/promote?id=1").principal(SecurityContextHolder.getContext().getAuthentication()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/manage/users"));
 
     }
 
     @Test
     @WithMockUser(roles = {"ADMINISTRATOR"})
     public void promoteUser() throws Exception {
-
+        SportsMan sportsMan = new SportsMan();
+        when(this.sportsManService.findCurrentUser(SecurityContextHolder.getContext().getAuthentication().getName()))
+                .thenReturn(sportsMan);
+        mockMvc.perform(get("/manage/users/deniepromote?id=1").principal(SecurityContextHolder.getContext().getAuthentication()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/manage/users"));
     }
 
     @Test
@@ -198,9 +211,6 @@ public class ManagementControllerTest {
         ActivityType type1 = new ActivityType();
         ActivityTypeForm form = new ActivityTypeForm();
         when(activitySettingService.findSpecificActivityType((long) 1)).thenReturn(type1);
-/*
-        doNothing().when(activitySettingService).updateType(type1,form);
-*/
         mockMvc.perform(post("/manage/types/update?id=1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/manage/types"));
@@ -211,9 +221,6 @@ public class ManagementControllerTest {
     @WithMockUser(roles = {"ADMINISTRATOR"})
     public void addType() throws Exception {
         ActivityTypeForm form = new ActivityTypeForm();
-/*
-        doNothing().when(activitySettingService).createType(form);
-*/
         mockMvc.perform(post("/manage/types/add"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/manage/types"));
@@ -238,9 +245,6 @@ public class ManagementControllerTest {
         Level level = new Level();
         LevelForm form = new LevelForm();
         when(activitySettingService.findSpecificLevel((long) 1)).thenReturn(level);
-/*
-        doNothing().when(activitySettingService).updateLevel(form,level);
-*/
         mockMvc.perform(post("/manage/levels/update?id=1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/manage/levels"));
@@ -258,7 +262,10 @@ public class ManagementControllerTest {
     @Test
     @WithMockUser(roles = {"ADMINISTRATOR"})
     public void getHistoryByFilter() throws Exception {
-        mockMvc.perform(get("/manage/history"))
+        SearchNewForm searchNewForm = new SearchNewForm();
+        searchNewForm.setNameSportsman("");
+        searchNewForm.setNewsType(NewsType.MESSAGE_SEND);
+        mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/manage/history/filter", searchNewForm))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(model().size(6))
                 .andExpect(view().name("management/searchNew"));
