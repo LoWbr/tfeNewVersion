@@ -74,11 +74,22 @@ public class SportsManTest {
         SportsMan sportsMan = new SportsMan();
         sportsMan.setPoints(80);
         Level level = new Level();
+        level.setPlace((byte) 4);
         level.setMaximumThreshold(60);
         sportsMan.setLevel(level);
         assertTrue(sportsMan.checkLevelStatus());
         sportsMan.setPoints(50);
         assertFalse(sportsMan.checkLevelStatus());
+    }
+
+    @Test
+    public void setLevelUp() {
+        SportsMan sportsMan = new SportsMan();
+        Level level = new Level();
+        level.setPlace((byte)3);
+        sportsMan.setLevel(level);
+        Byte actual = Byte.valueOf((byte) 4);
+        assertEquals(actual,sportsMan.setLevelUp());
     }
 
     @Test

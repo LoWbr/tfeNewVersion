@@ -14,6 +14,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -23,6 +28,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -53,6 +60,10 @@ public class ManagementControllerTest {
     public void init(){
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(managementController).build();
+        final Authentication authentication = new TestingAuthenticationToken("laurent.weber", "test");
+        final SecurityContext securityContext = new SecurityContextImpl();
+        securityContext.setAuthentication(authentication);
+        SecurityContextHolder.setContext(securityContext);
     }
 
     @Test
@@ -108,46 +119,63 @@ public class ManagementControllerTest {
     }
 
     @Test
-    public void block()   {
-
+    public void block() throws Exception {
+        Activity activity = new Activity();
+        activity.setOpen(true);
+        List<Activity> activities = Arrays.asList(activity);
+        SportsMan sportsMan = new SportsMan();
+        sportsMan.setId(1L);
+        sportsMan.setBlocked(false);
+        sportsMan.setCreatedActivities(activities);
+        when(sportsManService.findSpecificUser(1L)).thenReturn(sportsMan);
+        mockMvc.perform(get("/manage/users/block?id=1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/manage/users"));
+        verify(sportsManService, times(2)).findSpecificUser(1L);
+        verify(sportsManService, times(1)).blockOrUnblock(sportsMan,true);
+        verify(activityService, times(1)).cancelOrActivateActivity(activity,false);
     }
 
     @Test
-    public void unblock()   {
+    public void unblock() throws Exception {
+        Activity activity = new Activity();
+        activity.setOpen(true);
+        List<Activity> activities = Arrays.asList(activity);
+        SportsMan sportsMan = new SportsMan();
+        sportsMan.setId(1L);
+        sportsMan.setBlocked(false);
+        sportsMan.setCreatedActivities(activities);
+        when(sportsManService.findSpecificUser(1L)).thenReturn(sportsMan);
+        mockMvc.perform(get("/manage/users/unblock?id=1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/manage/users"));
+        verify(sportsManService, times(2)).findSpecificUser(1L);
+        verify(sportsManService, times(1)).blockOrUnblock(sportsMan,false);
+        verify(activityService, times(1)).cancelOrActivateActivity(activity,true);
 
     }
 
     @Test
     @WithMockUser(roles = {"ADMINISTRATOR"})
     public void refusePromotionUser() throws Exception {
- /*       SportsMan sportsMan = new SportsMan(), sportsMan1 = new SportsMan();
-        PromotionRequest promotionRequest = new PromotionRequest();
-        when(sportsManService.findSpecificUser((long) 1)).thenReturn(sportsMan);
-*//*
-        doNothing().when(newsService).returnApplicationResultNewOrLevelUpNew(sportsMan,sportsMan1, NewsType.NEGATIVE_REQUEST);
-*//*
-        mockMvc.perform(get("/manage/users/deniepromote?id=1"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/manage/users"));*/
+
     }
 
     @Test
     @WithMockUser(roles = {"ADMINISTRATOR"})
     public void promoteUser() throws Exception {
-/*        SportsMan sportsMan = new SportsMan(), sportsMan1 = new SportsMan();
-        PromotionRequest promotionRequest = new PromotionRequest();
-        when(sportsManService.findSpecificUser((long) 1)).thenReturn(sportsMan);
-        doNothing().when(sportsManService).promoteUser(sportsMan);
-*//*
-        doNothing().when(newsService).returnApplicationResultNewOrLevelUpNew(sportsMan,sportsMan1, NewsType.VALIDATED_REQUEST);
-*//*
-        mockMvc.perform(get("/manage/users/promote?id=1"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/manage/users"));*/
+
     }
 
     @Test
-    public void createTopic()   {
+    public void createTopic() throws Exception {
+        SportsMan sportsMan = new SportsMan();
+        when(this.sportsManService.findCurrentUser(SecurityContextHolder.getContext().getAuthentication().getName()))
+                .thenReturn(sportsMan);
+        mockMvc.perform(post("/manage/addtopic").principal(SecurityContextHolder.getContext().getAuthentication())
+                .param("topicForm.content", "test"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/"));
 
     }
 
@@ -221,6 +249,15 @@ public class ManagementControllerTest {
     @Test
     @WithMockUser(roles = {"ADMINISTRATOR"})
     public void getHistory() throws Exception {
+        mockMvc.perform(get("/manage/history"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(model().size(6))
+                .andExpect(view().name("management/searchNew"));
+    }
+
+    @Test
+    @WithMockUser(roles = {"ADMINISTRATOR"})
+    public void getHistoryByFilter() throws Exception {
         mockMvc.perform(get("/manage/history"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(model().size(6))

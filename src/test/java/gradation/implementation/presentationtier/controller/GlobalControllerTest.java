@@ -55,7 +55,7 @@ public class GlobalControllerTest {
     public void init(){
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(globalController).build();
-        final Authentication authentication = new TestingAuthenticationToken("celine.gilet", "netapsys");
+        final Authentication authentication = new TestingAuthenticationToken("laurent.weber", "test");
         final SecurityContext securityContext = new SecurityContextImpl();
         securityContext.setAuthentication(authentication);
         SecurityContextHolder.setContext(securityContext);
@@ -93,7 +93,6 @@ public class GlobalControllerTest {
     @Test
     public void search() throws Exception {
         final SportsMan userExpected = new SportsMan();
-        userExpected.setId(1L);
         when(this.sportsManService.findCurrentUser(SecurityContextHolder.getContext().getAuthentication().getName()))
                 .thenReturn(userExpected);
         List<ActivityType> activitytypes = Arrays.asList();
