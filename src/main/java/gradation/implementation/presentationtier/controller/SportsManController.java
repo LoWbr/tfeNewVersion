@@ -59,7 +59,6 @@ public class SportsManController {
                                 HttpServletRequest request, HttpServletResponse response){
 
 		if(bindingResult.hasErrors()){
-			System.out.println("Errors: " + bindingResult.getErrorCount());
 			return "global/signUp";
 		}
 
@@ -106,7 +105,6 @@ public class SportsManController {
 	public String updateSportsMan(@Valid SportsManForm sportsManForm,
                                   BindingResult bindingResult, Principal principal, HttpServletRequest request) throws ServletException {
 		if(bindingResult.hasErrors()){
-			System.out.println(bindingResult.getFieldError());
 			return "sportsman/updateUser";
 		}
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -119,7 +117,6 @@ public class SportsManController {
 			return "sportsman/updateUser";
 		}
 		else if(Period.between(dateInput,current).getYears() < 18){
-			System.out.println(Period.between(dateInput,current).getYears());
 			bindingResult.rejectValue("dateofBirth","","You must have 18 years old to register");
 			return "sportsman/updateUser";
 		}
@@ -131,7 +128,9 @@ public class SportsManController {
 			SportsMan transition = sportsManService.findCurrentUser(principal.getName());
 			this.logout(request);// Check logout redirection // Problème
 			sportsManService.updateUser(transition, sportsManForm);
+/*
 			this.authWithHttpServletRequest(request,sportsManForm.getMail(), sportsManForm.getPassword());
+*/
 			/* To check
 			https://stackoverflow.com/questions/7889660/how-to-reload-spring-security-principal-after-updating-in-hibernate
 			https://stackoverflow.com/questions/23072235/reload-userdetails-object-from-database-every-request-in-spring-security

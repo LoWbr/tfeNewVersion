@@ -10,6 +10,7 @@ import gradation.implementation.datatier.entities.News;
 import gradation.implementation.datatier.entities.SportsMan;
 import gradation.implementation.presentationtier.form.MessageForm;
 import gradation.implementation.presentationtier.form.NotationForm;
+import gradation.implementation.presentationtier.form.SportsManForm;
 import io.florianlopes.spring.test.web.servlet.request.MockMvcRequestBuilderUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -52,7 +54,7 @@ public class SportsManControllerTest {
     public void init(){
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(sportsManController).build();
-        final Authentication authentication = new TestingAuthenticationToken("laurent.weber", "test");
+        final Authentication authentication = new TestingAuthenticationToken("laurent@gmail.com", "test");
         final SecurityContext securityContext = new SecurityContextImpl();
         securityContext.setAuthentication(authentication);
         SecurityContextHolder.setContext(securityContext);
@@ -82,9 +84,29 @@ public class SportsManControllerTest {
 
     @Test
     public void saveSportsMan() throws Exception {
-        mockMvc.perform(post("/saveUser"))
+        SportsMan current = new SportsMan();
+        SportsManForm sportsManForm = new SportsManForm();
+        sportsManForm.setFirstname("Test");
+        sportsManForm.setLastname("testLastName");
+        sportsManForm.setMail("test@gmail.com");
+        sportsManForm.setDescription("complete");
+        sportsManForm.setWeight(70.0);
+        sportsManForm.setDateofBirth("2010-05-22");
+        sportsManForm.setPassword("testtesttest");
+        sportsManForm.setConfirmPassword("wrongwrong");
+        when(this.sportsManService.findCurrentUser(SecurityContextHolder.getContext().getAuthentication().getName()))
+                .thenReturn(current);
+        mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/saveUser",sportsManForm))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("global/signUp"));
+        sportsManForm.setLastname("testLastName");
+        mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/saveUser",sportsManForm))
                 .andExpect(status().is2xxSuccessful())
         .andExpect(view().name("global/signUp"));
+        sportsManForm.setDateofBirth("1990-05-22");
+        mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/saveUser",sportsManForm))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("global/signUp"));
     }
 
     @Test
@@ -92,11 +114,47 @@ public class SportsManControllerTest {
     }
 
     @Test
-    public void updateSportsManForm() {
+    public void updateSportsManForm() throws Exception {
+        SportsMan current = new SportsMan();
+        current.setDateOfBirth(LocalDate.of(1990,05,15));
+        when(this.sportsManService.findCurrentUser(SecurityContextHolder.getContext().getAuthentication().getName()))
+                .thenReturn(current);
+        mockMvc.perform(get("/user/update").principal(SecurityContextHolder.getContext().getAuthentication()))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(model().size(1))
+                .andExpect(model().attributeExists(
+                        "sportsManForm"))
+                .andExpect(view().name("sportsman/updateUser"));
     }
 
     @Test
-    public void updateSportsMan() {
+    public void updateSportsMan() throws Exception {
+        SportsMan current = new SportsMan();
+        SportsManForm sportsManForm = new SportsManForm();
+        sportsManForm.setFirstname("Test");
+        sportsManForm.setMail("test@gmail.com");
+        sportsManForm.setDescription("complete");
+        sportsManForm.setWeight(70.0);
+        sportsManForm.setDateofBirth("2010-05-22");
+        sportsManForm.setPassword("testtesttest");
+        sportsManForm.setConfirmPassword("wrongwrong");
+        when(this.sportsManService.findCurrentUser(SecurityContextHolder.getContext().getAuthentication().getName()))
+                .thenReturn(current);
+        mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/user/updateuser", sportsManForm).principal(SecurityContextHolder.getContext().getAuthentication()))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("sportsman/updateUser"));
+        sportsManForm.setLastname("testLastName");
+        mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/user/updateuser", sportsManForm).principal(SecurityContextHolder.getContext().getAuthentication()))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("sportsman/updateUser"));
+        sportsManForm.setDateofBirth("1990-05-22");
+        mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/user/updateuser", sportsManForm).principal(SecurityContextHolder.getContext().getAuthentication()))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("sportsman/updateUser"));
+        sportsManForm.setConfirmPassword("testtesttest");
+        mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/user/updateuser", sportsManForm).principal(SecurityContextHolder.getContext().getAuthentication()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/user/details"));
     }
 
     @Test
