@@ -22,6 +22,7 @@
             <span th:unless="${sporstman.getBlocked()}" th:text="Active"></span>
         </td>
         <td><a th:href="@{/user/sportsman(id=${sporstman.getId()})}">Details</a></td>
+        <td><a th:href="@{/user/addContact(id=${sporstman.getId()})}">Add as Contact</a></td>
     </tr>
     </tbody>
 </table>

@@ -182,32 +182,48 @@ public class ActivityController {
         return "redirect:/events";
     }
 
-    @RequestMapping(value = "/factory/refuseuser{id}", method = RequestMethod.POST)
-    public String refuseUser(@RequestParam(value = "candidate") Long idParticipant,
-                          @RequestParam(value = "id") Long idActivity) {
+    @RequestMapping(value = "/factory/managecandidates{id}", method = RequestMethod.GET)
+    public String manageCandidates(@RequestParam Long id, Model model) {
+        model.addAttribute("users",activityService.getSpecificActivity(id).getCandidate());
+        model.addAttribute("activity",activityService.getSpecificActivity(id));
+        model.addAttribute("status", false);
+        return "activity/usersForEvent";
+    }
+
+    @RequestMapping(value = "/factory/manageparticipants{id}", method = RequestMethod.GET)
+    public String manageParticipants(@RequestParam Long id, Model model) {
+        model.addAttribute("users",activityService.getSpecificActivity(id).getRegistered());
+        model.addAttribute("activity",activityService.getSpecificActivity(id));
+        model.addAttribute("status", true);
+        return "activity/usersForEvent";
+    }
+
+    @RequestMapping(value = "/factory/refuseuser{idActivity,idUser}", method = RequestMethod.GET)
+    public String refuseUser(@RequestParam Long idUser,
+                          @RequestParam Long idActivity) {
         activityService.refuseBuyer(activityService.getSpecificActivity(idActivity),
-                sportsManService.findSpecificUser(idParticipant));
-        return "redirect:/activities";
+                sportsManService.findSpecificUser(idUser));
+        return "redirect:/factory/managecandidates?id="+idActivity;
     }
 
-    @RequestMapping(value = "/factory/adduser{id}", method = RequestMethod.POST)
-    public String addUser(@RequestParam(value = "candidate") Long idParticipant,
-                          @RequestParam(value = "id") Long idActivity) {
+    @RequestMapping(value = "/factory/adduser{idActivity,idUser}", method = RequestMethod.GET)
+    public String addUser(@RequestParam Long idUser,
+                             @RequestParam Long idActivity) {
         activityService.addOrRemoveParticipants(activityService.getSpecificActivity(idActivity),
-                sportsManService.findSpecificUser(idParticipant),true);
-        return "redirect:/events";
+                sportsManService.findSpecificUser(idUser),true);
+        return "redirect:/factory/managecandidates?id="+idActivity;
     }
 
-    @RequestMapping(value = "/factory/removeuser{id}", method = RequestMethod.POST)
-    public String removeUser(@RequestParam(value = "participant") Long idParticipant,
-                             @RequestParam(value = "id") Long idActivity) {
+    @RequestMapping(value = "/factory/removeuser{idActivity,idUser}", method = RequestMethod.GET)
+    public String removeUser(@RequestParam Long idUser,
+                             @RequestParam Long idActivity) {
         activityService.addOrRemoveParticipants(activityService.getSpecificActivity(idActivity),
-                sportsManService.findSpecificUser(idParticipant),false);
-        return "redirect:/events";
+                sportsManService.findSpecificUser(idUser),false);
+        return "redirect:/factory/manageparticipants?id="+idActivity;
     }
 
     @RequestMapping(value = "/user/quit{id}", method = RequestMethod.GET)
-    public String removeUser(@RequestParam(value = "id") Long idActivity, Principal principal) {
+    public String userLeave(@RequestParam(value = "id") Long idActivity, Principal principal) {
         activityService.participantDropout(activityService.getSpecificActivity(idActivity),
                 sportsManService.findCurrentUser(principal.getName()));
         return "redirect:/events";
@@ -221,11 +237,11 @@ public class ActivityController {
     }
 
     @RequestMapping(value = "/factory/inviteusertoactivity{idActivity,idUser}", method = RequestMethod.GET)
-    public String inviteContactPage(@RequestParam(value = "idActivity") Long idActivity,
+    public String inviteContactToEvent(@RequestParam(value = "idActivity") Long idActivity,
                                     @RequestParam(value = "idUser") Long idUser, Model model) {
         System.out.println(idActivity+ " " + idUser);
         activityService.inviteContact(activityService.getSpecificActivity(idActivity), sportsManService.findSpecificUser(idUser));
-        return "redirect:/inviteContactPage?id=" + idActivity;
+        return "redirect:/invitecontactpage?id=" + idActivity;
     }
 
     @RequestMapping(value = "/factory/close{id}", method = RequestMethod.GET)

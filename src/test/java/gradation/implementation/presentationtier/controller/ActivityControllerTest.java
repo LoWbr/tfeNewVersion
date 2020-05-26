@@ -247,13 +247,36 @@ public class ActivityControllerTest {
     public void refuseUser() throws Exception {
         SportsMan sportsMan = new SportsMan();
         Activity activity = new Activity();
-        /*when(sportsManService.findSpecificUser((long) 1)).thenReturn(sportsMan);
-        when(activityService.getSpecificActivity((long) 1)).thenReturn(activity);
-        doNothing().when(activityService).refuseBuyer(activity,sportsMan);*/
-        mockMvc.perform(post("/factory/refuseuser?id=1"));
-                /*.andExpect(status().is2xxSuccessful())
-                .andExpect(view().name("redirect:/activities"));*/
-        //? error 400, to correct!!
+        when(sportsManService.findSpecificUser(1L)).thenReturn(sportsMan);
+        when(activityService.getSpecificActivity(1L)).thenReturn(activity);
+        mockMvc.perform(get("/factory/refuseuser?idActivity=1&idUser=1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/factory/managecandidates?id=1"));
+    }
+
+    @Test
+    @WithMockUser(roles = {"CONFIRMED"})
+    public void manageParticipants() throws Exception {
+        Activity activity = new Activity();
+        SportsMan sportsMan = new SportsMan();
+        List<SportsMan> participants = Arrays.asList(sportsMan);
+        when(activityService.getSpecificActivity(1L)).thenReturn(activity);
+        mockMvc.perform(get("/factory/manageparticipants?id=1"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(model().size(6))
+                .andExpect(view().name("activity/usersForEvent"));
+    }
+
+    @Test
+    @WithMockUser(roles = {"CONFIRMED"})
+    public void manageCandidates() throws Exception {
+        Activity activity = new Activity();
+        SportsMan sportsMan = new SportsMan();
+        List<SportsMan> participants = Arrays.asList(sportsMan);
+        when(activityService.getSpecificActivity(1L)).thenReturn(activity);
+        mockMvc.perform(get("/factory/managecandidates?id=1"))
+                .andExpect(model().size(6))
+                .andExpect(view().name("activity/usersForEvent"));
     }
 
     @Test
@@ -261,12 +284,11 @@ public class ActivityControllerTest {
     public void addUser() throws Exception {
         SportsMan sportsMan = new SportsMan();
         Activity activity = new Activity();
-        /*when(sportsManService.findSpecificUser((long) 1)).thenReturn(sportsMan);
-        when(activityService.getSpecificActivity((long) 1)).thenReturn(activity);
-        doNothing().when(activityService).addOrRemoveParticipants(activity,sportsMan,true);*/
-        mockMvc.perform(post("/factory/adduser?id=1"));
-                /*.andExpect(status().is2xxSuccessful())
-                .andExpect(view().name("redirect:/activities"));*/
+        when(sportsManService.findSpecificUser(1L)).thenReturn(sportsMan);
+        when(activityService.getSpecificActivity(1L)).thenReturn(activity);
+        mockMvc.perform(get("/factory/adduser?idActivity=1&idUser=1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/factory/managecandidates?id=1"));
     }
 
     @Test
@@ -274,24 +296,43 @@ public class ActivityControllerTest {
     public void removeUser() throws Exception {
         SportsMan sportsMan = new SportsMan();
         Activity activity = new Activity();
-        /*when(sportsManService.findSpecificUser((long) 1)).thenReturn(sportsMan);
-        when(activityService.getSpecificActivity((long) 1)).thenReturn(activity);
-        doNothing().when(activityService).addOrRemoveParticipants(activity,sportsMan,false);*/
-        mockMvc.perform(post("/factory/adduser?id=1"));
-                /*.andExpect(status().is2xxSuccessful())
-                .andExpect(view().name("redirect:/activities"));*/
+        when(sportsManService.findSpecificUser(1L)).thenReturn(sportsMan);
+        when(activityService.getSpecificActivity(1L)).thenReturn(activity);
+        mockMvc.perform(get("/factory/removeuser?idActivity=1&idUser=1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/factory/manageparticipants?id=1"));
     }
 
+    @Test
+    @WithMockUser(roles = {"CONFIRMED"})
+    public void userLeave() throws Exception {
+        Activity activity = new Activity();
+        when(activityService.getSpecificActivity(1L)).thenReturn(activity);
+        mockMvc.perform(get("/user/quit?id=1").principal(SecurityContextHolder.getContext().getAuthentication()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/events"));
+    }
 
     @Test
     public void inviteContactPage() throws Exception {
+        SportsMan sportsMan = new SportsMan();
+        List<SportsMan> contacts = Arrays.asList(sportsMan);
+        Activity activity = new Activity();
+        given(activityService.getSpecificActivity(1L)).willReturn(activity);
+        mockMvc.perform(get("/factory/invitecontactpage?id=1").principal(SecurityContextHolder.getContext().getAuthentication()))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("activity/inviteContactToActivity"));
+    }
+
+    @Test
+    public void inviteContactToEvent() throws Exception {
         SportsMan sportsMan = new SportsMan();
         Activity activity = new Activity();
         given(activityService.getSpecificActivity(1L)).willReturn(activity);
         given(sportsManService.findSpecificUser(1L)).willReturn(sportsMan);
         mockMvc.perform(get("/factory/inviteusertoactivity?idActivity=1&idUser=1").principal(SecurityContextHolder.getContext().getAuthentication()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/inviteContactPage?id=1"));
+                .andExpect(view().name("redirect:/invitecontactpage?id=1"));
         verify(activityService, times(1)).inviteContact(activity,sportsMan);
     }
 

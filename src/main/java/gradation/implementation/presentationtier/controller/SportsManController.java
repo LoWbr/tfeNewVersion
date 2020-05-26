@@ -239,20 +239,20 @@ public class SportsManController {
 		return "sportsman/userParticipatedEvents";
 	}
 
-	@RequestMapping(value = "/user/addContact{id}", method = RequestMethod.POST)
-	public String addContact(@RequestParam(value = "contact") Long idContact,
+	@RequestMapping(value = "/user/addContact{id}", method = RequestMethod.GET)
+	public String addContact(@RequestParam Long id,
 			Principal principal) {
 		sportsManService.addOrRemoveContacts(sportsManService.findCurrentUser(principal.getName()),
-				sportsManService.findSpecificUser(idContact), true);
-		return "redirect:/user";
+				sportsManService.findSpecificUser(id), true);
+		return "redirect:/user/findNewUsers";
 	}
 
-	@RequestMapping(value = "/user/removeContact{id}", method = RequestMethod.POST)
-	public String removeContact(@RequestParam(value = "contact") Long idContact,
+	@RequestMapping(value = "/user/removeContact{id}", method = RequestMethod.GET)
+	public String removeContact(@RequestParam Long id,
 			Principal principal) {
 		sportsManService.addOrRemoveContacts(sportsManService.findCurrentUser(principal.getName()),
-				sportsManService.findSpecificUser(idContact), false);
-		return "redirect:/user";
+				sportsManService.findSpecificUser(id), false);
+		return "redirect:/user/contacts";
 	}
 
 	@RequestMapping(value = "/user/applyAsConfirmedUser", method = RequestMethod.GET)

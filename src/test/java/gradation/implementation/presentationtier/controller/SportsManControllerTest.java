@@ -298,11 +298,21 @@ public class SportsManControllerTest {
     }
 
     @Test
-    public void addContact() {
+    public void addContact() throws Exception {
+        SportsMan current = new SportsMan();
+        when(sportsManService.findCurrentUser(SecurityContextHolder.getContext().getAuthentication().getName())).thenReturn(current);
+        mockMvc.perform(get("/user/addContact?id=1").principal(SecurityContextHolder.getContext().getAuthentication()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/user/findNewUsers"));
     }
 
     @Test
-    public void removeContact() {
+    public void removeContact() throws Exception {
+        SportsMan current = new SportsMan();
+        when(sportsManService.findCurrentUser(SecurityContextHolder.getContext().getAuthentication().getName())).thenReturn(current);
+        mockMvc.perform(get("/user/removeContact?id=1").principal(SecurityContextHolder.getContext().getAuthentication()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/user/contacts"));
     }
 
     @Test

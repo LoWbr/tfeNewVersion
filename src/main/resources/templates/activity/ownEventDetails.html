@@ -12,57 +12,14 @@
 <p th:text="${activity.getName()}"></p>
 <h4>Kind of Activity</h4>
 <p th:text="${activity.getActivityName()}"></p>
-<h4>Participants</h4>
+<h3>Participants</h3>
 <p th:text="${activity.getRegistered().size()}"></p>
+<a th:href="@{/factory/manageparticipants(id=${activity.getId()})}">Manage the Participants</a>
 <h4>Creator</h4>
 <p th:text="${activity.getCreatorName()}"></p>
-<h5>Candidates</h5>
-<form th:action="@{/factory/adduser(id=${activity.getId()})}"
-      th:object="${activityForm}" method="POST">
-    <select th:name="candidate" multiple="multiple" required="required">
-<!--
-        <option value="" disabled selected> Add Candidates</option>
--->
-        <option th:each="sportsman : ${candidates}"
-                th:value="${sportsman.getId()}"
-                th:utext="${sportsman.getFirstName()}">
-        </option>
-    </select>
-    <span th:if="${activity.getOpen()}"><button class="btn btn-secondary" type="submit"
-                                             th:disabled="false">Add</button></span>
-    <span th:unless="${activity.getOpen()}"><button class="btn btn-secondary" type="submit"
-                                                 th:disabled="true">No Way</button></span>
-</form>
-<form th:action="@{/factory/refuseuser(id=${activity.getId()})}"
-      th:object="${activityForm}" method="POST">
-    <select th:name="candidate" multiple="multiple" required="required">
-        <!--
-                <option value="" disabled selected> Add Candidates</option>
-        -->
-        <option th:each="sportsman : ${candidates}"
-                th:value="${sportsman.getId()}"
-                th:utext="${sportsman.getFirstName()}">
-        </option>
-    </select>
-    <span th:if="${activity.getOpen()}"><button class="btn btn-secondary" type="submit"
-                                                th:disabled="false">Refuse</button></span>
-    <span th:unless="${activity.getOpen()}"><button class="btn btn-secondary" type="submit"
-                                                    th:disabled="true">No Way</button></span>
-</form>
-<h3>Participants</h3>
-<form th:action="@{/factory/removeuser(id=${activity.getId()})}"
-      th:object="${activityForm}" method="POST">
-    <select th:name="participant" multiple="multiple" required="required">
-<!--        <option value="" disabled selected> Remove Participant</option>-->
-        <option th:each="sportsman : ${participants}"
-                th:value="${sportsman.getId()}"
-                th:utext="${sportsman.getFirstName()}">
-        </option>
-    </select>
-    <span th:if="${activity.getOpen()}"><button class="btn btn-secondary" type="submit"
-                                             th:disabled="false">Save</button></span>
-    <span th:unless="${activity.getOpen()}"><button class="btn btn-secondary" type="submit"
-                                                 th:disabled="true">No Way</button></span>
+<h3>Candidates</h3>
+<p th:text="${activity.getCandidate().size()}"></p>
+<a th:href="@{/factory/managecandidates(id=${activity.getId()})}">Manage the Candidates</a>
 </form>
 <form th:action="@{/activeStatus(id=${activity.getId()})}"
       th:object="${status}" method="POST">

@@ -75,58 +75,11 @@
 <div class="pure-g">
     <div class="pure-u-1-8"></div>
     <div class="pure-u-3-4">
-        <div class="pure-u-1-1"><h3>Contacts</h3></div>
-        <div class="pure-u-1-1"><p th:text="${sportsMan.getContacts().size()}"></p></div>
+        <div class="pure-u-1-1"><h3>Contacts :</h3></div>
+        <div class="pure-u-1-2"><a th:href="@{/user/contacts}" th:text="${sportsMan.getContacts().size()}"> Title </a></div>
     </div>
     <div class="pure-u-1-8"></div>
 </div>
-<div class="pure-g">
-    <div class="pure-u-1-8"></div>
-    <div class="pure-u-3-4">
-        <div class="pure-u-1-1"><form class="pure-form" th:action="@{/user/addContact(id=${sportsMan.getId()})}"
-                                      th:object="${sportsManForm}" method="POST">
-            <fieldset>
-                <legend>Add Contact</legend>
-            <select class="pure-u-12-24" th:name="contact" multiple="multiple" size="1">
-                <option th:each="user : ${allUsers}"
-                        th:value="${user.getId()}"
-                        th:utext="${user.getFirstName()}">
-                </option>
-            </select>
-                <span th:if="${sportsMan.getBlocked()}"><button class="pure-button pure-button" type="submit"
-                                                                th:disabled="true">No Way</button></span>
-                <span th:unless="${sportsMan.getBlocked()}"><button class="pure-button pure-button" type="submit"
-                                                                    th:disabled="false">Save</button></span>
-            </fieldset>
-        </form>
-        </div>
-    </div>
-    <div class="pure-u-1-8"></div>
 
-</div>
-<div class="pure-g">
-    <div class="pure-u-1-8"></div>
-    <div class="pure-u-3-4">
-        <div class="pure-u-1-1"><form class="pure-form" th:action="@{/user/removeContact(id=${sportsMan.getId()})}"
-                                      th:object="${sportsManForm}" method="POST">
-            <fieldset>
-                <legend>Remove Contact</legend>
-                <select class="pure-u-12-24" th:name="contact" multiple="multiple" size="1">
-                    <option th:each="user : ${sportsMan.getContacts()}"
-                            th:value="${user.getId()}"
-                            th:utext="${user.getFirstName()}">
-                    </option>
-                </select>
-                <span th:if="${sportsMan.getBlocked()}"><button class="pure-button pure-button" type="submit"
-                                                                th:disabled="true">No Way</button></span>
-                <span th:unless="${sportsMan.getBlocked()}"><button class="pure-button pure-button" type="submit"
-                                                                    th:disabled="false">Save</button></span>
-            </fieldset>
-        </form>
-        </div>
-    </div>
-    <div class="pure-u-1-8"></div>
-
-</div>
 </body>
 </html>

@@ -6,7 +6,6 @@
 </head>
 <body>
 <th:block th:include="/navbar"></th:block>
-<h3>Find a Friend!!</h3>
 <table>
     <thead>
     <tr>
@@ -24,7 +23,9 @@
         </td>
         <td><a th:href="@{/user/sportsMan(id=${sporstman.getId()})}">Details</a></td>
         <td><a th:href="@{/user/createMessage(id=${sporstman.getId()})}">Send Message</a></td>
+        <td><a th:href="@{/user/removeContact(id=${sporstman.getId()})}">Remove</a></td>
     </tr>
     </tbody>
 </table>
+<h3>Are you looking for new Friends? <a th:href="@{/user/findNewUsers}">Click here!!</a></h3>
 </body>

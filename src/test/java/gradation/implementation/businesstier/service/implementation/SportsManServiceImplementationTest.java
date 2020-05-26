@@ -7,6 +7,7 @@ import gradation.implementation.datatier.entities.*;
 import gradation.implementation.datatier.repositories.MessageRepository;
 import gradation.implementation.datatier.repositories.SportsManRepository;
 import gradation.implementation.datatier.repositories.StatisticRepository;
+import gradation.implementation.presentationtier.form.MessageForm;
 import gradation.implementation.presentationtier.form.SportsManForm;
 import org.junit.Before;
 import org.junit.Test;
@@ -160,6 +161,25 @@ public class SportsManServiceImplementationTest {
     }
 
     @Test
+    public void getPotentialContats() {
+        SportsMan sportsMan = new SportsMan();
+        Long id = 1L;
+        SportsMan sportsMan2 = new SportsMan(), sportsMan3 = new SportsMan(), sportsMan4 = new SportsMan();
+
+        List<SportsMan> all = Arrays.asList(sportsMan2, sportsMan3,sportsMan4);
+        List<SportsMan> notContacts = Arrays.asList(sportsMan4);
+        given(sportsManServiceImplementation.getAllExceptConnectedUser(sportsMan.getId())).willReturn(all);
+        Iterable<SportsMan> result = sportsManServiceImplementation.getPotentialContacts(sportsMan);
+        assertEquals(all, result);
+        sportsMan.getContacts().add(sportsMan2);
+        sportsMan.getContacts().add(sportsMan3);
+
+        given(sportsManServiceImplementation.getAllNoContats(sportsMan.getContacts(),sportsMan.getId())).willReturn(notContacts);
+        result = sportsManServiceImplementation.getPotentialContacts(sportsMan);
+        assertEquals(notContacts, result);
+    }
+
+    @Test
     public void addOrRemoveContacts() {
         SportsMan sportsMan = new SportsMan(), sportsMan2 = new SportsMan();
         assertEquals(0, sportsMan.getContacts().size());
@@ -255,7 +275,7 @@ public class SportsManServiceImplementationTest {
         SportsMan sportsMan = new SportsMan();
         Role role = new Role();
         given(roleService.findConfirmedRole()).willReturn(role);
-        sportsMan.addRoles(roleService.findConfirmedRole());
+        sportsManServiceImplementation.promoteUser(sportsMan);
         assertEquals(1, sportsMan.getRoles().size());
         verify(roleService, times(1)).findConfirmedRole();
         verifyNoMoreInteractions(roleService);
@@ -265,19 +285,16 @@ public class SportsManServiceImplementationTest {
     @Test
     public void saveStatistic() {
         Statistic statistic = new Statistic();
-        Long id = 1L;
-        given(statisticRepository.save(statistic)).willReturn(statistic);
-        assertNotNull(statisticRepository.save(statistic));
+        sportsManServiceImplementation.saveStatistic(statistic);
         verify(statisticRepository, times(1)).save(statistic);
         verifyNoMoreInteractions(statisticRepository);
     }
 
     @Test
     public void sendMessage() {
-        Message message = new Message();
-        given(messageRepository.save(message)).willReturn(message);
-        assertNotNull(messageRepository.save(message));
-        verify(messageRepository, times(1)).save(message);
+        MessageForm messageForm = new MessageForm();
+        sportsManServiceImplementation.sendMessage(messageForm);
+        verify(messageRepository, times(1)).save(any(Message.class));
         verifyNoMoreInteractions(messageRepository);
     }
 
@@ -305,9 +322,8 @@ public class SportsManServiceImplementationTest {
         News news = new News(), news1 = new News();
         List<News> notifications = Arrays.asList(news,news1);
         given(newsService.getByUser(sportsMan)).willReturn(notifications);
-        List<News> result = newsService.getByUser(sportsMan);
-
-        assertEquals(notifications, result);
+        List<News> result = sportsManServiceImplementation.getNotifications(sportsMan);
+        assertEquals(2, result.size());
     }
 
     @Test
@@ -324,5 +340,39 @@ public class SportsManServiceImplementationTest {
 
     @Test
     public void setResultForEventToParticipant() {
+
+        Activity activity = new Activity();
+        activity.setDuration((short)60);
+        ActivityType activityType = new ActivityType();
+        activityType.setMet(2.0);
+        activity.setActivity(activityType);
+        SportsMan sportsMan = new SportsMan();
+        sportsMan.setWeight(50.0);
+        Level level = new Level(), level2 = new Level();
+        level.setRatioPoints(0.9);
+        level.setMaximumThreshold(20);
+        level.setPlace((byte) 1);
+        level2.setRatioPoints(0.3);
+        level2.setMaximumThreshold(160);
+        level2.setPlace((byte) 2);
+        sportsMan.setLevel(level);
+        sportsMan.setPoints(0);
+        Double cotation = 1d;
+        Integer energeticExpenditure =
+                Math.toIntExact(Math.round(sportsMan.getWeight() * activity.getDuration()/60 * activity.getActivity().getMet()));
+        Integer earnedPoints = Math.toIntExact((long) (energeticExpenditure * sportsMan.getLevel().getRatioPoints() * cotation));
+        given(activitySettingService.findLevelByPlace((byte) 2)).willReturn(level2);
+        sportsManServiceImplementation.setResultForEventToParticipant(activity,sportsMan,cotation);
+        assertEquals(sportsMan.getPoints(), earnedPoints);
+        assertEquals(sportsMan.getLevel().getPlace(),level2.getPlace());
+
+        sportsMan.setLevel(level);
+        sportsMan.setPoints(0);
+        cotation = 0d;
+        sportsManServiceImplementation.setResultForEventToParticipant(activity,sportsMan,cotation);
+        Integer expected = 0;
+        assertEquals(expected,sportsMan.getPoints());
+        assertEquals(sportsMan.getLevel().getPlace(),level.getPlace());
+
     }
 }
