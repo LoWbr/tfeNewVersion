@@ -64,7 +64,7 @@ public class ActivityServiceImplementation implements ActivityService {
             plannedTo = LocalDate.parse(searchActivityForm.getDate(), formatter).plusDays(1);
         }
         return this.activityRepository.filter(searchActivityForm.getActivity(), searchActivityForm.getMinimumLevel(),
-                searchActivityForm.getCity(),searchActivityForm.getDuration(), plannedTo);
+                searchActivityForm.getMaximumLevel(),searchActivityForm.getCity(),searchActivityForm.getDuration(), plannedTo);
     }
 
     @Override

@@ -239,7 +239,8 @@ public class Activity {
     }
 
     public boolean checkLevel(SportsMan sportsMan){
-        if(sportsMan.getLevel().getPlace() >= this.minimumLevel.getPlace() )
+        if(sportsMan.getLevel().getPlace() >= this.minimumLevel.getPlace() &&
+                sportsMan.getLevel().getPlace() <= this.maximumLevel.getPlace())
             return true;
         else
             return false;

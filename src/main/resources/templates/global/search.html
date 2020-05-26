@@ -43,6 +43,16 @@
                 </option>
             </select>
         </div>
+        <div class="pure-u-1-4">
+            <label>Maximum Level</label>
+            <select class="pure-u-23-24" th:field="*{maximumLevel}">
+                <option value="" selected> Minimum Level Filter </option>
+                <option th:each="level : ${allLevels}"
+                        th:value="${level.getId()}"
+                        th:utext="${level.getName()}">
+                </option>
+            </select>
+        </div>
         <div class="pure-u-1-1">
             <button class="pure-button pure-button" type="submit">Save</button>
         </div>
@@ -64,15 +74,17 @@
     <tr th:each="event : ${allEvents}">
         <td><span th:text="${event.getName()}"></span></td>
         <td>
-            <span th:if="${event.checkLevel(sportsMan)}"><a th:href="@{/activity(id=${event.getId()})}" th:text="${event.getActivityName()}"></a></span>
-            <span th:unless="${event.checkLevel(sportsMan)}" th:text="${event.getActivityName()}"></span>
+            <span th:text="${event.getActivityName()}"></span>
         </td>
         <td><span th:text="${event.getMinimumLevel().getName()}"></span></td>
+        <td><span th:text="${event.getMaximumLevel().getName()}"></span></td>
         <td><span th:text="${event.getDuration()}"></span></td>
         <td><span th:text="${event.getAddress().getCity()}"></span></td>
         <td><span th:utext="${#temporals.format(event.getPlannedTo(), 'dd-MM-yyyy')}"></span></td>
         <td sec:authorize="isAuthenticated()">
             <span th:if="${event.checkLevel(sportsMan)}" style="color: green">Open for you!!</span>
+            <span th:if="${event.checkLevel(sportsMan)}" style="color: green">
+                <a th:href="@{/activity(id=${event.getId()})}" th:text="Details"></a></span>
             <span th:unless="${event.checkLevel(sportsMan)}" style="color: red">Not Available</span>
         </td>
     </tr>

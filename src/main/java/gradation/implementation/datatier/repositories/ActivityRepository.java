@@ -26,12 +26,14 @@ public interface ActivityRepository extends CrudRepository<Activity, Long>{
             @Param("list") List<SportsMan> listNonInscrits);
 
     @Query("Select event from Activity event where (:activity is null or event.activity = :activity)" +
-            "and (:level is null or event.minimumLevel = :level) and (:city is null or event.address.city = :city)" +
+            "and (:minlevel is null or event.minimumLevel = :minlevel) and (:maxlevel is null or event.maximumLevel = :maxlevel)" +
+            "and (:city is null or event.address.city = :city)" +
             "and (:duration is null or event.duration >= :duration) and" +
             " (:plannedTo is null or event.plannedTo >= :plannedTo)")
     List<Activity> filter(
             @Param("activity") ActivityType activityType,
-            @Param("level") Level level,
+            @Param("minlevel") Level minlevel,
+            @Param("maxlevel") Level maxlevel,
             @Param("city") String city,
             @Param("duration") Short duration,
             @Param("plannedTo") LocalDate plannedTo);

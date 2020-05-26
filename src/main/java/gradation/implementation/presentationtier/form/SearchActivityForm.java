@@ -6,6 +6,7 @@ public class SearchActivityForm {
 
     private ActivityType activity;
     private Level minimumLevel;
+    private Level maximumLevel;
     private Short duration;
     private String city;
     private String country;
@@ -25,6 +26,14 @@ public class SearchActivityForm {
 
     public void setMinimumLevel(Level minimumLevel) {
         this.minimumLevel = minimumLevel;
+    }
+
+    public Level getMaximumLevel() {
+        return maximumLevel;
+    }
+
+    public void setMaximumLevel(Level maximumLevel) {
+        this.maximumLevel = maximumLevel;
     }
 
     public Short getDuration() {

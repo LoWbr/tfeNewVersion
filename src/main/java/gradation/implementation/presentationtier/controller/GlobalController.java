@@ -62,6 +62,9 @@ public class GlobalController {
         if(principal != null){
             model.addAttribute("sportsMan", sportsManService.findCurrentUser(principal.getName()));
         }
+        else{
+            model.addAttribute("sportsMan", null);
+        }
         model.addAttribute("allLevels", activitySettingService.getAllLevels());
         model.addAttribute("allKinds", activitySettingService.getAllActivityTypes());
         model.addAttribute("allEvents",activityService.getAllActivities());
