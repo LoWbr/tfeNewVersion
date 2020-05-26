@@ -110,10 +110,6 @@ public class SportsManControllerTest {
     }
 
     @Test
-    public void authWithHttpServletRequest() {
-    }
-
-    @Test
     public void updateSportsManForm() throws Exception {
         SportsMan current = new SportsMan();
         current.setDateOfBirth(LocalDate.of(1990,05,15));
@@ -155,10 +151,6 @@ public class SportsManControllerTest {
         mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/user/updateuser", sportsManForm).principal(SecurityContextHolder.getContext().getAuthentication()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/user/details"));
-    }
-
-    @Test
-    public void logout() {
     }
 
     @Test

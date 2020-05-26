@@ -89,11 +89,11 @@ public class ActivityServiceImplementationTest {
         verifyNoMoreInteractions(activityRepository);
     }
 
-    @Test
+    /*@Test
     public void findForSearch() {
 
 
-    }
+    }*/
 
     @Test
     public void saveActivity() {

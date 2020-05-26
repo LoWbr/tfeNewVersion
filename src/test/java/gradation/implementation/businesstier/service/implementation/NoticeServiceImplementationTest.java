@@ -200,7 +200,7 @@ public class NoticeServiceImplementationTest {
     public void checkNews() {
         News news = new News();
         news.setId(1L);
-        given(newsRepository.findbyId(1L)).willReturn(news);
+        given(newsRepository.findbyNewsId(1L)).willReturn(news);
         noticeServiceImplementation.checkNews(1L);
         assertTrue(news.isSeen());
     }

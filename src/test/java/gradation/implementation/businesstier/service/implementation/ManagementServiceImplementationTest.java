@@ -105,7 +105,4 @@ public class ManagementServiceImplementationTest {
         verify(roleService,times(1)).findConfirmedRole();
     }
 
-    @Test
-    public void returnDB() {
-    }
 }

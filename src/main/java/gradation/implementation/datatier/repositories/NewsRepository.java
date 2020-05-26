@@ -20,7 +20,7 @@ public interface NewsRepository extends CrudRepository<News, Long> {
             @Param("user") SportsMan sporstman);
 
     @Query("Select news from News news where news.id= :id")
-    News findbyId(
+    News findbyNewsId(
             @Param("id") Long idNews);
 
 }

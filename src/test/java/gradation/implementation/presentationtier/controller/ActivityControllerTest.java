@@ -79,10 +79,6 @@ public class ActivityControllerTest {
     }
 
     @Test
-    public void initiate() {
-    }
-
-    @Test
     public void createEvent() throws Exception {
         ActivityType activityType = new ActivityType();
         List<ActivityType> activityTypes = Arrays.asList(activityType);

@@ -122,12 +122,9 @@ public class ActivitySettingServiceImplementationTest {
     public void createType() {
         ActivityTypeForm activityTypeForm = new ActivityTypeForm();
         ActivityType activityType = new ActivityType();
-/*
-        given(activityTypeRepository.save(activityType)).willReturn(activityType);
-*/
         activitySettingServiceImplementation.createType(activityTypeForm);
-/*        verify(activityTypeRepository, times(1)).save(any(ActivityType.class));
-        verifyNoMoreInteractions(activityTypeRepository);*/
+        verify(activityTypeRepository, times(1)).save(any(ActivityType.class));
+        verifyNoMoreInteractions(activityTypeRepository);
     }
 
     @Test
@@ -180,8 +177,8 @@ public class ActivitySettingServiceImplementationTest {
         given(addressRepository.save(address)).willReturn(address);
 */
         activitySettingServiceImplementation.createAddress(activityForm);
-        /*verify(addressRepository, times(1)).save(any(Address.class));
-        verifyNoMoreInteractions(addressRepository);*/
+        verify(addressRepository, times(1)).save(any(Address.class));
+        verifyNoMoreInteractions(addressRepository);
     }
 
     @Test
