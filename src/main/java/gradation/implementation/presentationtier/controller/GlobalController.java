@@ -36,7 +36,10 @@ public class GlobalController {
 
     @RequestMapping(value = "/signIn", method = RequestMethod.GET)
     public String signIn(@RequestParam(value = "error", required = false) String error,
-                         Model model) {
+                         Model model, Principal principal) {
+        if(principal != null){
+            return "redirect:/403";
+        }
         String warning = null;
         if(error != null){
             byte[] getErrorBytes = Base64.getDecoder().decode(error);

@@ -5,10 +5,7 @@ import gradation.implementation.businesstier.service.contractinterface.*;
 import gradation.implementation.businesstier.databasebackup.MediaTypeSetting;
 import gradation.implementation.datatier.entities.*;
 
-import gradation.implementation.presentationtier.form.ActivityTypeForm;
-import gradation.implementation.presentationtier.form.LevelForm;
-import gradation.implementation.presentationtier.form.SearchNewForm;
-import gradation.implementation.presentationtier.form.TopicForm;
+import gradation.implementation.presentationtier.form.*;
 import org.apache.commons.configuration.ConfigurationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -17,12 +14,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.ServletContext;
+import javax.validation.Valid;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -130,22 +129,40 @@ public class ManagementController {
 		return "redirect:/";
 	}
 
+	@ModelAttribute
+	public void initiate(Model model){
+		model.addAttribute("activityTypeForm", new ActivityTypeForm());
+		model.addAttribute("activityTypeFormCreate", new ActivityTypeForm());
+		model.addAttribute("activityTypes", activitySettingService.getAllActivityTypes());
+		model.addAttribute("levelForm",new LevelForm());
+		model.addAttribute("activityLevels",activitySettingService.getAllLevels());
+	}
 	@RequestMapping(value = "/manage/types", method = RequestMethod.GET)
 	public String manageSportsSetting(Model model) {
 		model.addAttribute("activityTypeForm",new ActivityTypeForm());
+		model.addAttribute("activityTypeFormCreate", new ActivityTypeForm());
 		model.addAttribute("activityTypes",activitySettingService.getAllActivityTypes());
 		return "management/setSportsSetting";
 	}
 
 	@RequestMapping(value = "/manage/types/update{id}", method = RequestMethod.POST)
-	public String updateType(@RequestParam(value = "id") Long id, @ModelAttribute("activityTypeForm") ActivityTypeForm activityTypeForm) {
+	public String updateType(@RequestParam(value = "id") Long id, @Valid @ModelAttribute("activityTypeForm")
+			ActivityTypeForm activityTypeForm, BindingResult bindingResult) {
+		if(bindingResult.hasErrors()){
+			return "management/setSportsSetting";
+		}
 		activitySettingService.updateType(activitySettingService.findSpecificActivityType(id),activityTypeForm);
 		return "redirect:/manage/types";
 	}
 
 	@RequestMapping(value = "/manage/types/add", method = RequestMethod.POST)
-	public String addType(@ModelAttribute("activityTypeForm") ActivityTypeForm activityTypeForm) {
-		activitySettingService.createType(activityTypeForm);
+	public String addType(@Valid @ModelAttribute("activityTypeFormCreate") ActivityTypeForm activityTypeFormCreate,
+						  BindingResult bindingResult) {
+		if(bindingResult.hasErrors()){
+
+			return "management/setSportsSetting";
+		}
+		activitySettingService.createType(activityTypeFormCreate);
 		return "redirect:/manage/types";
 	}
 
@@ -157,7 +174,11 @@ public class ManagementController {
 	}
 
 	@RequestMapping(value = "/manage/levels/update{id}", method = RequestMethod.POST)
-	public String updateLevel(@RequestParam(value = "id") Long id, @ModelAttribute("levelForm") LevelForm levelForm) {
+	public String updateLevel(@RequestParam(value = "id") Long id, @Valid @ModelAttribute("levelForm") LevelForm levelForm,
+							  BindingResult bindingResult) {
+		if(bindingResult.hasErrors()){
+			return "management/setLevelsSetting";
+		}
 		activitySettingService.updateLevel(levelForm,activitySettingService.findSpecificLevel(id));
 		return "redirect:/manage/levels";
 	}

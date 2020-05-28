@@ -31,6 +31,7 @@ public class ActivityForm {
 
     @Max(180)
     @Min(30)
+    @NotNull
     private Short duration;
 
     @Positive(message = "Get whole number")
