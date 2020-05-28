@@ -9,6 +9,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,6 +46,18 @@ public class SportsManController {
 	@RequestMapping(value= "/sportsmans", method = RequestMethod.GET)
 	public String getSportsMen(Model model) {
 		model.addAttribute("allUsers", sportsManService.getAllUser());
+		model.addAttribute("searchUserForm", new SearchUserForm());
+		return "sportsman/users";
+	}
+	@RequestMapping(value= "/sportsmenbyfilter", method = RequestMethod.POST)
+	public String getSportsMenByFilter(Model model, @ModelAttribute("searchUserForm") SearchUserForm searchUserForm) {
+		if(searchUserForm.getFirstName().equals("")){
+			searchUserForm.setFirstName(null);
+		}
+		if(searchUserForm.getLastName().equals("")){
+			searchUserForm.setLastName(null);
+		}
+		model.addAttribute("allUsers", sportsManService.getByFilter(searchUserForm));
 		return "sportsman/users";
 	}
 

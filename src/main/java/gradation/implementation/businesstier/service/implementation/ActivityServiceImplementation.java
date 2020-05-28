@@ -5,6 +5,7 @@ import gradation.implementation.businesstier.service.contractinterface.ActivityS
 import gradation.implementation.businesstier.service.contractinterface.NewsService;
 import gradation.implementation.datatier.entities.*;
 import gradation.implementation.datatier.repositories.ActivityRepository;
+import gradation.implementation.datatier.repositories.DAOActivityImplementation;
 import gradation.implementation.datatier.repositories.StatisticRepository;
 import gradation.implementation.presentationtier.form.ActivityForm;
 import gradation.implementation.presentationtier.form.SearchActivityForm;
@@ -22,6 +23,9 @@ import java.util.List;
 public class ActivityServiceImplementation implements ActivityService {
 
     private ActivityRepository activityRepository;
+/*
+    private DAOActivityImplementation activityImplementation;
+*/
     private StatisticRepository statisticRepository;
 
     private NewsService newsService;
@@ -30,11 +34,15 @@ public class ActivityServiceImplementation implements ActivityService {
     @Autowired
     public  ActivityServiceImplementation(ActivityRepository activityRepository,
                                           StatisticRepository statisticRepository, NewsService newsService,
-                                          ActivitySettingService activitySettingService){
+                                          ActivitySettingService activitySettingService,
+                                          DAOActivityImplementation activityImplementation){
         this.activityRepository = activityRepository;
         this.statisticRepository = statisticRepository;
         this.newsService = newsService;
         this.activitySettingService = activitySettingService;
+/*
+        this.activityImplementation = activityImplementation;
+*/
 
     }
 

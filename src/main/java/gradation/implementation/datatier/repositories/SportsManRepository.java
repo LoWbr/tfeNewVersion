@@ -34,4 +34,9 @@ public interface SportsManRepository extends CrudRepository<SportsMan, Long> {
     List<SportsMan> selectAuthorityUsers(
             @Param("role") Role role);
 
+    @Query("Select sportsman from SportsMan sportsman where (:firstname is null or sportsman.firstName = :firstname) and" +
+            "(:lastname is null or sportsman.lastName = :lastname)")
+    List<SportsMan> findbyForm(
+            @Param("firstname") String firstName,
+            @Param("lastname") String lastName);
 }

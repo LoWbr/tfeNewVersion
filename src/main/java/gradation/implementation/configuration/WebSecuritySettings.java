@@ -73,16 +73,14 @@ public class WebSecuritySettings extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/**").hasAnyRole("SIMPLY")
                 .antMatchers("/", "activities", "activity{id}", "/sportsmans", "/sportsman{id}","saveUser", "/signIn",
                         "/signUp", "/contactUs", "/about", "/search").permitAll()
-                /*.anyRequest().authenticated()*/
                 .and()
                 .authorizeRequests()
                 .and()
                 .exceptionHandling().accessDeniedPage("/403")
                 .and()
                 .formLogin()
-                .loginPage("/signIn")//Par défaut, redirection pour toute opération nécessitant une connexion
+                .loginPage("/signIn")
                 .defaultSuccessUrl("/")
-                /*.failureUrl("/signIn?error=true")*/
                 .failureHandler(new MyAuthenticationFailureHandler())
                 .permitAll()
                 .and()

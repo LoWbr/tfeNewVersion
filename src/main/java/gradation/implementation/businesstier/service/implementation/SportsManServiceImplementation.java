@@ -9,6 +9,7 @@ import gradation.implementation.datatier.repositories.MessageRepository;
 import gradation.implementation.datatier.repositories.SportsManRepository;
 import gradation.implementation.datatier.repositories.StatisticRepository;
 import gradation.implementation.presentationtier.form.MessageForm;
+import gradation.implementation.presentationtier.form.SearchUserForm;
 import gradation.implementation.presentationtier.form.SportsManForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -240,6 +241,11 @@ public class SportsManServiceImplementation implements SportsManService {
             //NEWS à mettre en place pour clôture cotation
         }
 
+    }
+
+    @Override
+    public List<SportsMan> getByFilter(SearchUserForm searchUserForm) {
+        return this.sportsManRepository.findbyForm(searchUserForm.getFirstName(), searchUserForm.getLastName());
     }
 
 

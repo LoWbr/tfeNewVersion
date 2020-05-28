@@ -64,13 +64,17 @@ public class ActivityTest {
 
     @Test
     public void checkLevel() {
-        Level level = new Level(), level2 = new Level();
+        Level level = new Level(), level2 = new Level(), level3 = new Level();
         level.setPlace((byte) 1);
         level2.setPlace((byte) 2);
+        level3.setPlace((byte) 3);
         SportsMan sportsMan = new SportsMan();
         Activity activity = new Activity();
         sportsMan.setLevel(level);
         activity.setMinimumLevel(level2);
+        activity.setMaximumLevel(level2);
+        assertFalse(activity.checkLevel(sportsMan));
+        sportsMan.setLevel(level3);
         assertFalse(activity.checkLevel(sportsMan));
         sportsMan.setLevel(level2);
         assertTrue(activity.checkLevel(sportsMan));

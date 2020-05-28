@@ -1,4 +1,4 @@
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
@@ -7,22 +7,43 @@
 <body>
 <th:block th:include="/navbar"></th:block>
 <h3>Find a Friend!!</h3>
+<a th:href="@{/sportsmans}">Clear the Search</a>
+<form th:action="@{/sportsmenbyfilter}"
+      th:object="${searchUserForm}" method="POST" class="pure-form pure-form-stacked">
+    <div class="pure-g">
+        <div class="pure-u-1-4">
+            <label>City</label>
+            <input class="pure-u-23-24" type="text" th:field="*{firstName}"/>
+        </div>
+        <div class="pure-u-1-4">
+            <label>City</label>
+            <input class="pure-u-23-24" type="text" th:field="*{lastName}"/>
+        </div>
+        <div class="pure-u-1-1">
+            <button class="pure-button pure-button" type="submit">Save</button>
+        </div>
+    </div>
+</form>
 <table>
     <thead>
     <tr>
         <th> User</th>
         <th> Status</th>
+        <th> Level</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="sporstman : ${allUsers}">
-        <td><span th:text="${sporstman.getFirstName()}"> Title </span></td>
+    <tr th:each="sportsman : ${allUsers}">
+        <td><span th:text="${sportsman.getFirstName() + ' ' + sportsman.getLastName()}"> Title </span></td>
         <td>
-            <span th:if="${sporstman.getBlocked()}" th:text="BLOCKED"></span>
-            <span th:unless="${sporstman.getBlocked()}" th:text="Active"></span>
+            <span th:if="${sportsman.getBlocked()}" th:text="BLOCKED"></span>
+            <span th:unless="${sportsman.getBlocked()}" th:text="Active"></span>
         </td>
-        <td><a th:href="@{/user/sportsman(id=${sporstman.getId()})}">Details</a></td>
-        <td><a th:href="@{/user/addContact(id=${sporstman.getId()})}">Add as Contact</a></td>
+        <td><span th:text="${sportsman.getLevel().getName()}"> Title </span></td>
+        <td><a th:href="@{/user/sportsman(id=${sportsman.getId()})}">Details</a></td>
+        <td sec:authorize="isAuthenticated()">
+            <a th:href="@{/user/addContact(id=${sportsman.getId()})}">Add as Contact</a>
+        </td>
     </tr>
     </tbody>
 </table>

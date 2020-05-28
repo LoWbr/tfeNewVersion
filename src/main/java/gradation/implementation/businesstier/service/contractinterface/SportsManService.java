@@ -2,6 +2,7 @@ package gradation.implementation.businesstier.service.contractinterface;
 
 import gradation.implementation.datatier.entities.*;
 import gradation.implementation.presentationtier.form.MessageForm;
+import gradation.implementation.presentationtier.form.SearchUserForm;
 import gradation.implementation.presentationtier.form.SportsManForm;
 
 import java.util.ArrayList;
@@ -51,4 +52,5 @@ public interface SportsManService {
 
     public void setResultForEventToParticipant(Activity activity, SportsMan sportsMan, double notation);
 
+    List<SportsMan> getByFilter(SearchUserForm searchUserForm);
 }

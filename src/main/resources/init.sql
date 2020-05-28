@@ -34,18 +34,18 @@ INSERT INTO address(number, street, postal_code, city, country) VALUES
 (229,'Rue du val vallonée',52100,'Saint-Dizier','France');
 
 --Old Events
-INSERT INTO activity (name, fk_activity, fk_creator,duration,open,over,fk_minimum_level, fk_maximum_level, planned_to, fk_address) VALUES
-('Initiation Crawl',3,1,90,true,true,1,1,'2020-08-10 14:00:00',3),
-('Namur-Ottiginies',1,2,60,true,true,2,4,'2020-07-15 09:30:00',1),
-('Cross au Bois de Malonne',2,1,180,true,true,1,2,'2020-07-04 08:00:00',1),
-('Descente de la Meuse',3,3,45,true,true,1,3,'2020-06-25 17:30:00',6);
+INSERT INTO activity (name,description, fk_activity, fk_creator,duration,open,over,fk_minimum_level, fk_maximum_level, planned_to, fk_address) VALUES
+('Initiation Crawl','Swimming, Beginning',3,1,90,true,true,1,1,'2020-08-10 14:00:00',3),
+('Namur-Ottiginies','45km, intense',1,2,60,true,true,2,4,'2020-07-15 09:30:00',1),
+('Cross au Bois de Malonne','Au travers des arbres',2,1,180,true,true,1,2,'2020-07-04 08:00:00',1),
+('Descente de la Meuse','Traveling au travers de la flotte',3,3,45,true,true,1,3,'2020-06-25 17:30:00',6);
 
 --Current Events
-INSERT INTO activity (name, fk_activity, fk_creator,duration,open,over,fk_minimum_level, fk_maximum_level, planned_to, fk_address) VALUES
-('Brasse Bien Grasse',3,1,90,true,false,1,3,'2020-08-10 14:00:00',5 ),
-('Footing Mosan',2,2,60,true,false,1,2,'2020-07-15 09:30:00',6),
-('Vélo en Folie',1,3,180,true,false,1,1,'2020-07-04 08:00:00',2),
-('Run & Beer',2,1,45,true,false,1,2,'2020-06-25 17:30:00',4);
+INSERT INTO activity (name,description, fk_activity, fk_creator,duration,open,over,fk_minimum_level, fk_maximum_level, planned_to, fk_address) VALUES
+('Brasse Bien Grasse','This is a test',3,1,90,true,false,1,3,'2020-08-10 14:00:00',5 ),
+('Footing Mosan','Along the river',2,2,60,true,false,1,2,'2020-07-15 09:30:00',6),
+('Vélo en Folie','Fun and Fun, in wilderness',1,3,180,true,false,1,1,'2020-07-04 08:00:00',2),
+('Run & Beer','Plus long, plus long, plus long, plus long',2,1,45,true,false,1,2,'2020-06-25 17:30:00',4);
 
 INSERT INTO activity_registered(registered_activities_id, registered_id) VALUES
 (1,1),
