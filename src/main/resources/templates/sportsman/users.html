@@ -7,16 +7,17 @@
 <body>
 <th:block th:include="/navbar"></th:block>
 <h3>Find a Friend!!</h3>
+<div th:if="${all}">
 <a th:href="@{/sportsmans}">Clear the Search</a>
 <form th:action="@{/sportsmenbyfilter}"
       th:object="${searchUserForm}" method="POST" class="pure-form pure-form-stacked">
     <div class="pure-g">
         <div class="pure-u-1-4">
-            <label>City</label>
+            <label>FirstName</label>
             <input class="pure-u-23-24" type="text" th:field="*{firstName}"/>
         </div>
         <div class="pure-u-1-4">
-            <label>City</label>
+            <label>LastName</label>
             <input class="pure-u-23-24" type="text" th:field="*{lastName}"/>
         </div>
         <div class="pure-u-1-1">
@@ -24,6 +25,7 @@
         </div>
     </div>
 </form>
+</div>
 <table>
     <thead>
     <tr>

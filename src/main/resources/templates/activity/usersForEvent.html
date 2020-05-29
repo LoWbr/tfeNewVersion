@@ -29,7 +29,7 @@
         <td th:text="${sporstman.getFirstName()}"></td>
         <td th:if="${status}"><a th:href="@{/factory/removeuser(idActivity=${activity.getId()},idUser=${sporstman.getId()})}">Remove</a></td>
         <td th:unless="${status}"><a th:href="@{/factory/adduser(idActivity=${activity.getId()},idUser=${sporstman.getId()})}">Add</a></td>
-        <td th:unless="${status}"><a th:href="@{/factory/refuseruser(idActivity=${activity.getId()},idUser=${sporstman.getId()})}">Refuse</a></td>
+        <td th:unless="${status}"><a th:href="@{/factory/refuseuser(idActivity=${activity.getId()},idUser=${sporstman.getId()})}">Refuse</a></td>
     </tbody>
 </table>
 </body>

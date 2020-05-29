@@ -43,7 +43,7 @@
     </thead>
     <tbody>
     <tr th:each="comment : ${comments}">
-        <td><span th:text="${comment.getAuthor().getName()}"> Title </span></td>
+        <td><span th:text="${comment.getAuthor().getFirstName()}"> Title </span></td>
         <td><span th:text="${comment.getDate()}"> Title </span></td>
         <td><span th:text="${comment.getContent()}"> Title </span></td>
     </tr>

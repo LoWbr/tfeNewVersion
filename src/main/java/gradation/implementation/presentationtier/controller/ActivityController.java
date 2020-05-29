@@ -179,7 +179,7 @@ public class ActivityController {
     public String applyAsCandidate(@RequestParam(value = "id") Long id, Principal principal) {
         activityService.applyAsCandidate(activityService.getSpecificActivity(id),
                 sportsManService.findCurrentUser(principal.getName()));
-        return "redirect:/events";
+        return "redirect:/activity?id="+id;
     }
 
     @RequestMapping(value = "/factory/managecandidates{id}", method = RequestMethod.GET)
@@ -226,7 +226,7 @@ public class ActivityController {
     public String userLeave(@RequestParam(value = "id") Long idActivity, Principal principal) {
         activityService.participantDropout(activityService.getSpecificActivity(idActivity),
                 sportsManService.findCurrentUser(principal.getName()));
-        return "redirect:/events";
+        return "redirect:/user/getRegisteredEvents?id="+ sportsManService.findCurrentUser(principal.getName()).getId();
     }
 
     @RequestMapping(value = "/factory/invitecontactpage{id}", method = RequestMethod.GET)

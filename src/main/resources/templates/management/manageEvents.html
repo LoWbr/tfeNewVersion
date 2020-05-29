@@ -29,8 +29,8 @@
             <span th:unless="${event.getOpen()}" th:text="CANCELLED"></span>
         </td>
         <td>
-            <span th:if="${event.getOpen()}"><a th:href="@{manage/activities/cancel(id=${event.getId()})}">Cancel</a></span>
-            <span th:unless="${event.getOpen()}"><a th:href="@{manage/activities/open(id=${event.getId()})}">Active</a></span>
+            <span th:if="${event.getOpen()}"><a th:href="@{/manage/activities/cancel(id=${event.getId()})}">Cancel</a></span>
+            <span th:unless="${event.getOpen()}"><a th:href="@{/manage/activities/open(id=${event.getId()})}">Active</a></span>
         </td>
         <td><a th:href="@{/event(id=${event.getId()})}">Details</a></td>
     </tr>

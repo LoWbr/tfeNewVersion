@@ -5,6 +5,10 @@ import gradation.implementation.datatier.entities.SportsMan;
 import gradation.implementation.presentationtier.form.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,25 +18,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.*;
+import javax.servlet.http.*;
 import javax.validation.Valid;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Controller
 public class SportsManController {
 
-    private SportsManService sportsManService;
+	private SportsManService sportsManService;
 
-    private ActivityService activityService;
+	private ActivityService activityService;
 
-    private ManagementService managementService;
+	private ManagementService managementService;
 
-    private NewsService newsService;
+	private NewsService newsService;
 
 	@Autowired
 	public SportsManController(SportsManService sportsManService, ActivityService activityService,
@@ -43,25 +50,28 @@ public class SportsManController {
 		this.newsService = newsService;
 	}
 
-	@RequestMapping(value= "/sportsmans", method = RequestMethod.GET)
+	@RequestMapping(value = "/sportsmans", method = RequestMethod.GET)
 	public String getSportsMen(Model model) {
+		model.addAttribute("all", true);
 		model.addAttribute("allUsers", sportsManService.getAllUser());
 		model.addAttribute("searchUserForm", new SearchUserForm());
 		return "sportsman/users";
 	}
-	@RequestMapping(value= "/sportsmenbyfilter", method = RequestMethod.POST)
+
+	@RequestMapping(value = "/sportsmenbyfilter", method = RequestMethod.POST)
 	public String getSportsMenByFilter(Model model, @ModelAttribute("searchUserForm") SearchUserForm searchUserForm) {
-		if(searchUserForm.getFirstName().equals("")){
+		model.addAttribute("all", true);
+		if (searchUserForm.getFirstName().equals("")) {
 			searchUserForm.setFirstName(null);
 		}
-		if(searchUserForm.getLastName().equals("")){
+		if (searchUserForm.getLastName().equals("")) {
 			searchUserForm.setLastName(null);
 		}
 		model.addAttribute("allUsers", sportsManService.getByFilter(searchUserForm));
 		return "sportsman/users";
 	}
 
-	@RequestMapping(value="/signUp", method = RequestMethod.GET)
+	@RequestMapping(value = "/signUp", method = RequestMethod.GET)
 	public String createSportsMan(Model model) {
 		model.addAttribute("sportsManForm", new SportsManForm());
 		return "global/signUp";
@@ -69,42 +79,47 @@ public class SportsManController {
 
 	@RequestMapping(value = "saveUser", method = RequestMethod.POST)
 	public String saveSportsMan(@Valid SportsManForm sportsManForm, BindingResult bindingResult,
-                                HttpServletRequest request, HttpServletResponse response){
+								HttpServletRequest request, HttpServletResponse response) {
 
-		if(bindingResult.hasErrors()){
+		if (bindingResult.hasErrors()) {
 			return "global/signUp";
 		}
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		LocalDate dateInput = LocalDate.parse(sportsManForm.getDateofBirth(),formatter).plusDays(1);
+		LocalDate dateInput = LocalDate.parse(sportsManForm.getDateofBirth(), formatter).plusDays(1);
 		LocalDate current = LocalDate.now();
 
-		if(this.sportsManService.findCurrentUser(sportsManForm.getMail()) != null) {
+		if (this.sportsManService.findCurrentUser(sportsManForm.getMail()) != null) {
 			bindingResult.rejectValue("mail", "", "This account already exists");
 			return "global/signUp";
-		}
-		else if(Period.between(dateInput,current).getYears() < 18){
-			System.out.println(Period.between(dateInput,current).getYears());
-			bindingResult.rejectValue("dateofBirth","","You must have 18 years old to register");
+		} else if (Period.between(dateInput, current).getYears() < 18) {
+			System.out.println(Period.between(dateInput, current).getYears());
+			bindingResult.rejectValue("dateofBirth", "", "You must have 18 years old to register");
 			return "global/signUp";
-		}
-		else if(!(sportsManForm.getPassword()).equals(sportsManForm.getConfirmPassword())){
-			bindingResult.rejectValue("password","","The two passwords do not match.");
+		} else if (!(sportsManForm.getPassword()).equals(sportsManForm.getConfirmPassword())) {
+			bindingResult.rejectValue("password", "", "The two passwords do not match.");
 			return "global/signUp";
-		}
-		else{
+		} else {
 			sportsManService.createUser(sportsManForm); //NB : if update de l'email, déconnexion à mettre en place  // ou refresh!!! (à creuser!!)
-			authWithHttpServletRequest(request,sportsManForm.getMail(), sportsManForm.getPassword());
+			authWithHttpServletRequest(request, sportsManForm.getMail(), sportsManForm.getPassword());
 		}
 
 		return "redirect:/user/details";
 	}
+
 	public void authWithHttpServletRequest(HttpServletRequest request, String username, String password) {
 		try {
 			request.login(username, password);
 		} catch (ServletException e) {
 
 		}
+	}
+
+	public void refreshSession(String mail,String pwd) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
+		Authentication newAuth = new UsernamePasswordAuthenticationToken(mail, pwd, updatedAuthorities);
+		SecurityContextHolder.getContext().setAuthentication(newAuth);
 	}
 
 	@RequestMapping(value = "/user/update", method = RequestMethod.GET)
@@ -116,7 +131,8 @@ public class SportsManController {
 
 	@RequestMapping(value = "/user/updateuser", method = RequestMethod.POST)
 	public String updateSportsMan(@Valid SportsManForm sportsManForm,
-                                  BindingResult bindingResult, Principal principal, HttpServletRequest request) throws ServletException {
+                                  BindingResult bindingResult, Principal principal, HttpServletRequest logout,
+								  HttpServletRequest login) throws ServletException {
 		if(bindingResult.hasErrors()){
 			return "sportsman/updateUser";
 		}
@@ -139,16 +155,8 @@ public class SportsManController {
 		}
 		else {
 			SportsMan transition = sportsManService.findCurrentUser(principal.getName());
-			this.logout(request);// Check logout redirection // Problème
 			sportsManService.updateUser(transition, sportsManForm);
-/*
-			this.authWithHttpServletRequest(request,sportsManForm.getMail(), sportsManForm.getPassword());
-*/
-			/* To check
-			https://stackoverflow.com/questions/7889660/how-to-reload-spring-security-principal-after-updating-in-hibernate
-			https://stackoverflow.com/questions/23072235/reload-userdetails-object-from-database-every-request-in-spring-security
-			https://stackoverflow.com/questions/9910252/how-to-reload-authorities-on-user-update-with-spring-security
-			 */
+			this.refreshSession(sportsManForm.getMail(), sportsManForm.getPassword());
 		}
 		return "redirect:/user/details";
 	}
@@ -160,6 +168,14 @@ public class SportsManController {
 
 	@RequestMapping(value = "/user/details", method = RequestMethod.GET)
 	public String sportsManOwnDetails(Principal principal, Model model) {
+		boolean empty = true;
+		List<SportsMan> applications = managementService.getPromotionCandidates();
+		for (SportsMan demander: applications) {
+			if(demander.getId() == sportsManService.findCurrentUser(principal.getName()).getId()){
+				empty = false;
+			}
+		}
+		model.addAttribute("empty", empty);
 		model.addAttribute("sportsMan", sportsManService.findCurrentUser(principal.getName()));
 		model.addAttribute("allUsers",
 				sportsManService.getPotentialContacts(sportsManService.findCurrentUser(principal.getName())));
@@ -241,6 +257,8 @@ public class SportsManController {
 	//FindNotContacts
 	@RequestMapping(value = "/user/findNewUsers", method = RequestMethod.GET)
 	public String getUnknowUsers(Model model, Principal principal){
+		model.addAttribute("all",false);
+		model.addAttribute("searchUserForm", new SearchUserForm());
 		model.addAttribute("allUsers",
 				sportsManService.getPotentialContacts(sportsManService.findCurrentUser(principal.getName())));
 		return "sportsman/users";
