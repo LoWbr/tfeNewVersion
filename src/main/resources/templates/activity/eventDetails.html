@@ -33,7 +33,9 @@
     </tr>
     </tbody>
 </table>
-<div><a th:href="@{/createComment(id=${activity.getId()})}">Add Comment</a></div>
+<div>
+    <a sec:authorize="isAuthenticated()" th:href="@{/user/createcomment(id=${activity.getId()})}">Add Comment</a>
+</div>
 <div sec:authorize="isAuthenticated()">
     <div th:if="${activity.getOpen()}">
 

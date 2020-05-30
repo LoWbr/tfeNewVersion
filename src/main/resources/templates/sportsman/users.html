@@ -42,7 +42,7 @@
             <span th:unless="${sportsman.getBlocked()}" th:text="Active"></span>
         </td>
         <td><span th:text="${sportsman.getLevel().getName()}"> Title </span></td>
-        <td><a th:href="@{/user/sportsman(id=${sportsman.getId()})}">Details</a></td>
+        <td><a th:href="@{/sportsman(id=${sportsman.getId()})}">Details</a></td>
         <td sec:authorize="isAuthenticated()">
             <a th:href="@{/user/addContact(id=${sportsman.getId()})}">Add as Contact</a>
         </td>

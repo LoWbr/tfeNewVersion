@@ -2,6 +2,7 @@ package gradation.implementation.presentationtier.controller;
 
 import gradation.implementation.businesstier.service.contractinterface.*;
 import gradation.implementation.datatier.entities.Activity;
+import gradation.implementation.datatier.entities.NewsType;
 import gradation.implementation.presentationtier.form.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 @Controller
 public class ActivityController {
@@ -28,13 +30,16 @@ public class ActivityController {
     private ActivityService activityService;
     private SportsManService sportsManService;
     private ActivitySettingService activitySettingService;
+    private NewsService newsService;
+
 
     @Autowired
     public ActivityController(ActivityService activityService, SportsManService sportsManService,
-                              ActivitySettingService activitySettingService) {
+                              ActivitySettingService activitySettingService, NewsService newsService) {
         this.activityService = activityService;
         this.sportsManService = sportsManService;
         this.activitySettingService = activitySettingService;
+        this.newsService = newsService;
     }
 
     @RequestMapping(value ="/activities", method = RequestMethod.GET)
@@ -66,14 +71,21 @@ public class ActivityController {
             return "activity/createEvent";
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate dateInput = LocalDate.parse(activityForm.getPlannedTo(),formatter);
         LocalDate current = LocalDate.now();
+        LocalDate dateInput;
+        try{
+            dateInput = LocalDate.parse(activityForm.getPlannedTo(), formatter);
+        }catch (DateTimeParseException dt){
+            bindingResult.rejectValue("plannedTo", "", "Date not valid.");
+            return "activity/createEvent";
+        }
 
         LocalTime start = LocalTime.now();
         LocalTime end = LocalTime.parse(activityForm.getHour().concat(":00"));
         Duration duration = Duration.between(start, end);
 
-        if(Period.between(dateInput,current).getDays() > 0){
+        if(Period.between(dateInput,current).getDays() > 0 || Period.between(dateInput,current).getMonths() > 0 ||
+                Period.between(dateInput,current).getYears() > 0){
             bindingResult.rejectValue("plannedTo","","You have to set a valid date");
             return "activity/createEvent";
         }
@@ -94,7 +106,7 @@ public class ActivityController {
             activityService.createActivity(activityForm, sportsManService.findCurrentUser(principal.getName()),
                     activitySettingService.createAddress(activityForm));
         }
-        return "redirect:/activities";
+        return "redirect:/factory/activitiesbycreator";
     }
 
     @RequestMapping(value = "/activity{id}", method = RequestMethod.GET)
@@ -144,14 +156,21 @@ public class ActivityController {
             return "activity/createEvent";
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate dateInput = LocalDate.parse(activityForm.getPlannedTo(),formatter);
         LocalDate current = LocalDate.now();
+        LocalDate dateInput;
+        try{
+            dateInput = LocalDate.parse(activityForm.getPlannedTo(), formatter);
+        }catch (DateTimeParseException dt){
+            bindingResult.rejectValue("plannedTo", "", "Date not valid.");
+            return "activity/createEvent";
+        }
 
         LocalTime start = LocalTime.now();
         LocalTime end = LocalTime.parse(activityForm.getHour().concat(":00"));
         Duration duration = Duration.between(start, end);
 
-        if(Period.between(dateInput,current).getDays() > 0){
+        if(Period.between(dateInput,current).getDays() > 0 || Period.between(dateInput,current).getMonths() > 0 ||
+                Period.between(dateInput,current).getYears() > 0){
             bindingResult.rejectValue("plannedTo","","You have to set a valid date");
             return "activity/createEvent";
         }
@@ -242,6 +261,22 @@ public class ActivityController {
         System.out.println(idActivity+ " " + idUser);
         activityService.inviteContact(activityService.getSpecificActivity(idActivity), sportsManService.findSpecificUser(idUser));
         return "redirect:/invitecontactpage?id=" + idActivity;
+    }
+
+    @RequestMapping(value = "/factory/active{id}", method = RequestMethod.GET)
+    public String active(@RequestParam(value = "id") Long id) {
+        activityService.cancelOrActivateActivity(activityService.getSpecificActivity(id), true);
+        /*newsService.returnCancelledApplictionNewOrCloseEventNew(activityService.getSpecificActivity(id),
+                NewsType.RESTORE_EVENT);*/
+        return "redirect:/factory/activitiesbycreator";
+    }
+
+    @RequestMapping(value = "/factory/cancel{id}", method = RequestMethod.GET)
+    public String cancel(@RequestParam(value = "id") Long id) {
+        activityService.cancelOrActivateActivity(activityService.getSpecificActivity(id), false);
+        newsService.returnCancelledApplictionNewOrCloseEventNew(activityService.getSpecificActivity(id),
+                NewsType.CANCELLED_EVENT);
+        return "redirect:/factory/activitiesbycreator";
     }
 
     @RequestMapping(value = "/factory/close{id}", method = RequestMethod.GET)

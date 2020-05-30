@@ -55,7 +55,8 @@ public class ActivitySettingServiceImplementation implements ActivitySettingServ
     }
 
     @Override
-    public void createComment(Comment comment) {
+    public void createComment(CommentForm commentForm) {
+        Comment comment = new Comment(commentForm);
         this.commentRepository.save(comment);
     }
 

@@ -32,7 +32,7 @@ public class CommentController {
         this.activitySettingService = activitySettingService;
     }
 
-    @RequestMapping(value = "/createComment{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/createcomment{id}", method = RequestMethod.GET)
     public String createComment(@RequestParam Long id, Model model, Principal principal) {
         model.addAttribute("current_activity", activityService.getSpecificActivity(id));
         model.addAttribute("commentForm",
@@ -41,12 +41,11 @@ public class CommentController {
         return "activity/createComment";
     }
 
-    @RequestMapping(value="/addComment", method = RequestMethod.POST)
+    @RequestMapping(value="/user/addcomment", method = RequestMethod.POST)
     public String addComment(@ModelAttribute("CommentForm") CommentForm commentForm) {
-        Comment comment = new Comment(commentForm);
-        this.activitySettingService.createComment(comment);
-        this.newsService.returnCommentEventNew(comment.getAuthor(), comment.getActivity(), NewsType.COMMENTED_EVENT);
-        return "activity/events";
+        this.activitySettingService.createComment(commentForm);
+        this.newsService.returnCommentEventNew(commentForm.getAuthor(), commentForm.getActivity(), NewsType.COMMENTED_EVENT);
+        return "redirect:/activity?id=" + commentForm.getActivity().getId();
     }
 
 }

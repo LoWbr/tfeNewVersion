@@ -9,7 +9,7 @@
 <th:block th:include="/navbar"></th:block>
 <h3>Add a Comment on </h3>
 <h4 th:text="${current_activity.getName()}"></h4>
-<form th:action="@{/addComment}"
+<form th:action="@{/user/addcomment}"
       th:object="${commentForm}" method="POST">
     <label>Content</label>
     <textarea name="content" th:field="*{content}" rows="10" cols="30">Ask a question or give an opinion!</textarea>

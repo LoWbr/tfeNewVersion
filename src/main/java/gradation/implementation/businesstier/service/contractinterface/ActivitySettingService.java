@@ -16,7 +16,7 @@ public interface ActivitySettingService {
 
     CommentForm initiateCommentForm(Activity activity, SportsMan sportsMan);
 
-    void createComment(Comment comment);
+    void createComment(CommentForm commentForm);
 
     Iterable<ActivityType> getAllActivityTypes();
 

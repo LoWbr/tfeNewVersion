@@ -21,15 +21,8 @@
 <p th:text="${activity.getCandidate().size()}"></p>
 <a th:href="@{/factory/managecandidates(id=${activity.getId()})}">Manage the Candidates</a>
 </form>
-<form th:action="@{/activeStatus(id=${activity.getId()})}"
-      th:object="${status}" method="POST">
-    <select th:name="status">
-        <option value="" disabled selected>Event Status</option>
-        <option th:value="true" th:text="Active"></option>
-        <option th:value="false" th:text="Cancelled"></option>
-    </select>
-    <button class="btn btn-secondary" type="submit">Save</button>
-</form>
+<span th:if="${activity.getOpen()}"><a th:href="@{/factory/cancel(id=${activity.getId()})}">Cancel</a></span>
+<span th:unless="${activity.getOpen()}"><a th:href="@{/factory/active(id=${activity.getId()})}">Active</a></span>
 <a th:href="@{/factory/activity/update(id=${activity.getId()})}">MaJ</a>
 <h3>Comments</h3>
 <h3>Historic</h3>

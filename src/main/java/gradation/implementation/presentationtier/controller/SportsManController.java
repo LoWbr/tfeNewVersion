@@ -28,6 +28,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 @Controller
@@ -86,8 +87,15 @@ public class SportsManController {
 		}
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		LocalDate dateInput = LocalDate.parse(sportsManForm.getDateofBirth(), formatter).plusDays(1);
 		LocalDate current = LocalDate.now();
+		LocalDate dateInput;
+		try{
+			dateInput = LocalDate.parse(sportsManForm.getDateofBirth(), formatter).plusDays(1);
+		}catch (DateTimeParseException dt){
+			bindingResult.rejectValue("dateofBirth", "", "Date not valid.");
+			return "global/signUp";
+		}
+
 
 		if (this.sportsManService.findCurrentUser(sportsManForm.getMail()) != null) {
 			bindingResult.rejectValue("mail", "", "This account already exists");
@@ -96,7 +104,13 @@ public class SportsManController {
 			System.out.println(Period.between(dateInput, current).getYears());
 			bindingResult.rejectValue("dateofBirth", "", "You must have 18 years old to register");
 			return "global/signUp";
-		} else if (!(sportsManForm.getPassword()).equals(sportsManForm.getConfirmPassword())) {
+		}
+		else if (Period.between(dateInput, current).getYears() > 90) {
+			System.out.println(Period.between(dateInput, current).getYears());
+			bindingResult.rejectValue("dateofBirth", "", "You seems to be over 90 years.. ");
+			return "global/signUp";
+		}
+		else if (!(sportsManForm.getPassword()).equals(sportsManForm.getConfirmPassword())) {
 			bindingResult.rejectValue("password", "", "The two passwords do not match.");
 			return "global/signUp";
 		} else {
@@ -137,20 +151,34 @@ public class SportsManController {
 			return "sportsman/updateUser";
 		}
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		LocalDate dateInput = LocalDate.parse(sportsManForm.getDateofBirth(),formatter).plusDays(1);
 		LocalDate current = LocalDate.now();
-
-		if(this.sportsManService.findCurrentUser(sportsManForm.getMail()) != null &&
-				! this.sportsManService.findCurrentUser(sportsManForm.getMail()).getId().equals(sportsManForm.getId())) {
-			bindingResult.rejectValue("mail", "", "This account already exists");
-			return "sportsman/updateUser";
+		LocalDate dateInput;
+		try{
+			dateInput = LocalDate.parse(sportsManForm.getDateofBirth(), formatter).plusDays(1);
+		}catch (DateTimeParseException dt){
+			bindingResult.rejectValue("dateofBirth", "", "Date not valid.");
+			return "global/signUp";
 		}
-		else if(Period.between(dateInput,current).getYears() < 18){
+
+		if(Period.between(dateInput,current).getYears() < 18){
 			bindingResult.rejectValue("dateofBirth","","You must have 18 years old to register");
 			return "sportsman/updateUser";
 		}
+		else if (Period.between(dateInput, current).getYears() > 90) {
+			System.out.println(Period.between(dateInput, current).getYears());
+			bindingResult.rejectValue("dateofBirth", "", "You seems to be over 90 years.. ");
+			return "global/signUp";
+		}
 		else if(!(sportsManForm.getPassword()).equals(sportsManForm.getConfirmPassword())){
 			bindingResult.rejectValue("password","","The two passwords do not match.");
+			return "sportsman/updateUser";
+		}
+		if(this.sportsManService.findCurrentUser(sportsManForm.getMail()) != null &&
+				this.sportsManService.findCurrentUser(principal.getName()).getId() != sportsManForm.getId()) {
+			System.out.println(sportsManService.findCurrentUser(principal.getName()).getId());
+			System.out.println(sportsManService.findCurrentUser(principal.getName()).getEmail());
+			System.out.println(sportsManForm.getMail() + " " + sportsManForm.getId());
+			bindingResult.rejectValue("mail", "", "This account already exists");
 			return "sportsman/updateUser";
 		}
 		else {
@@ -185,7 +213,7 @@ public class SportsManController {
 	}
 
 	//Show User Details
-	@RequestMapping(value = "/user/sportsman{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/sportsman{id}", method = RequestMethod.GET)
 	public String getSportsManDetail(@RequestParam Long id, Model model){
 		model.addAttribute("sportsMan",sportsManService.findSpecificUser(id));
 		return "sportsman/externDetails";

@@ -40,7 +40,7 @@
     </div>
             <div class="pure-u-1-4">
                 <label th:for="${sportsManForm}">Weight</label>
-                <input class="pure-u-20-24" type="number" th:field="*{weight}">
+                <input class="pure-u-20-24" type="number" step="any" th:field="*{weight}">
                 <div>
                     <span class="text-danger" th:errors="*{weight}"> </span>
                 </div>
