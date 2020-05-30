@@ -1,12 +1,12 @@
 package gradation.implementation.presentationtier.controller;
 
-import gradation.implementation.businesstier.scheduling.Tasks;
+import gradation.implementation.businesstier.databasebackup.contract.MediaTypeSetting;
+import gradation.implementation.businesstier.scheduling.contract.SchedulingTasks;
 import gradation.implementation.businesstier.service.contractinterface.*;
-import gradation.implementation.businesstier.databasebackup.MediaTypeSetting;
+import gradation.implementation.businesstier.databasebackup.implementation.MediaTypeSettingImplementation;
 import gradation.implementation.datatier.entities.*;
 
 import gradation.implementation.presentationtier.form.*;
-import org.apache.commons.configuration.ConfigurationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -24,13 +24,14 @@ import javax.servlet.ServletContext;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.Properties;
 
 @Controller
 public class ManagementController {
+
+	private static String folderPath = "/home/laurent/ultimateProjects/phase3/tfe_implementation/backupForDownload";
+	private static String filename = "Gradation_DB_BackUp.sql";
 
 	private ActivityService activityService;
 	private SportsManService sportsManService;
@@ -38,19 +39,19 @@ public class ManagementController {
 	private NewsService newsService;
 	private ActivitySettingService activitySettingService;
 	private ServletContext servletContext;
-
-	public Tasks tasks = new Tasks();
+	private SchedulingTasks schedulingTasks;
 
 	@Autowired
 	public ManagementController(ActivityService activityService, SportsManService sportsManService,
 			ManagementService managementService, NewsService newsService, ActivitySettingService activitySettingService,
-								ServletContext servletContext) {
+								ServletContext servletContext, SchedulingTasks schedulingTasks) {
 		this.activityService = activityService;
 		this.sportsManService = sportsManService;
 		this.managementService = managementService;
 		this.newsService = newsService;
 		this.activitySettingService = activitySettingService;
 		this.servletContext = servletContext;
+		this.schedulingTasks = schedulingTasks;
 	}
 
 	@RequestMapping(value="/manage/users", method = RequestMethod.GET)
@@ -186,11 +187,11 @@ public class ManagementController {
 	@RequestMapping(value = "/manage/history", method = RequestMethod.GET)
 	public String getHistory(@ModelAttribute("searchNewForm") SearchNewForm searchNewForm,
 							 Model model, @RequestParam(required = false) Boolean there) {
-		try {
+		/*try {
 			model.addAttribute("active", this.getStatus());
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 		model.addAttribute("allTypes", newsService.getAllNewsType());
 		model.addAttribute("allUsers", sportsManService.getAllUser());
 
@@ -206,11 +207,11 @@ public class ManagementController {
 		if(searchNewForm.getNameSportsman().equals("")){
 			searchNewForm.setNameSportsman(null);
 		}
-		try {
+		/*try {
 			model.addAttribute("active", this.getStatus());
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 		model.addAttribute("allTypes", newsService.getAllNewsType());
 		model.addAttribute("allUsers", sportsManService.getAllUser());
 		model.addAttribute("allActs",newsService.findForSearch(searchNewForm));
@@ -218,8 +219,8 @@ public class ManagementController {
 		return "management/searchNew";
 	}
 
-	public boolean getStatus() throws IOException {
-		if (tasks.getStatus()){
+	/*public boolean getStatus() throws IOException {
+		if (schedulingTasks.getStatus()){
 			return true;
 		}
 		return false;
@@ -229,30 +230,26 @@ public class ManagementController {
 	public String launchBackUpProcess(@RequestParam(value = "up") boolean up){
 		if(up){
 			try {
-				this.tasks.activeProcess("src/main/resources/settingVariables.properties");
+				this.schedulingTasks.activeProcess("src/main/resources/settingVariables.properties");
 			} catch (ConfigurationException e) {
 				e.printStackTrace();
 			}
 		}else{
 			try {
-				this.tasks.stopProcess("src/main/resources/settingVariables.properties");
+				this.schedulingTasks.stopProcess("src/main/resources/settingVariables.properties");
 			} catch (ConfigurationException e) {
 				e.printStackTrace();
 			}
 		}
 		return "redirect:/manage/history";
-	}
+	}*/
 
 	@RequestMapping(value = "/manage/backupdb/download", method = RequestMethod.GET)
 	public ResponseEntity<InputStreamResource> makeDBBackUp() throws IOException, InterruptedException, NullPointerException {
 
 		this.managementService.returnDB();
-
-		String folderPath = "/home/laurent/ultimateProjects/phase3/tfe_implementation/backupForDownload";
-		String filename = "Gradation_DB_BackUp.sql";
-		MediaType mediaType = MediaTypeSetting.returnForFileName(this.servletContext, filename);
+		MediaType mediaType = MediaTypeSettingImplementation.returnForFileName(this.servletContext, filename);
 		File file = new File(folderPath + "/" + filename);
-		System.out.println(file.getAbsolutePath());
 		InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachement;filename=" + file.getName())

@@ -1,10 +1,14 @@
-package gradation.implementation.businesstier.databasebackup;
+package gradation.implementation.businesstier.databasebackup.implementation;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletContext;
 
-public class MediaTypeSetting {
+@ConditionalOnProperty(name="app.service", havingValue = "main")
+@Service
+public class MediaTypeSettingImplementation {
 
     public static MediaType returnForFileName(ServletContext servletContext, String fileName) {
 

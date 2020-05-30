@@ -1,10 +1,16 @@
-package gradation.implementation.businesstier.databasebackup;
+package gradation.implementation.businesstier.databasebackup.implementation;
+
+import gradation.implementation.businesstier.databasebackup.contract.DataBackUP;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-public class DatabaseBackUp{
+@ConditionalOnProperty(name="app.service", havingValue = "main")
+@Service
+public class DatabaseBackUpImplementation implements DataBackUP {
 
     private final String pathForTemporaryBackUp = "/home/laurent/ultimateProjects/phase3/tfe_implementation/backupForDownload";
     private final String pathForCyclicBackUp = "/home/laurent/ultimateProjects/phase3/tfe_implementation/backup";

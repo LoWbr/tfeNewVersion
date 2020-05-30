@@ -1,6 +1,6 @@
 package gradation.implementation.businesstier.service.implementation;
 
-import gradation.implementation.businesstier.databasebackup.DatabaseBackUp;
+import gradation.implementation.businesstier.databasebackup.contract.DataBackUP;
 import gradation.implementation.businesstier.service.contractinterface.ManagementService;
 import gradation.implementation.businesstier.service.contractinterface.NewsService;
 import gradation.implementation.businesstier.service.contractinterface.RoleService;
@@ -32,16 +32,17 @@ public class ManagementServiceImplementation implements ManagementService {
     private NewsService newsService;
     private RoleService roleService;
 
-    private DatabaseBackUp databaseBackUp = new DatabaseBackUp();
+    private DataBackUP dataBackUP;
 
     @Autowired
     public ManagementServiceImplementation(PromotionRequestRepository promotionRequestRepository,
                                            TopicRepository topicRepository, NewsService newsService,
-                                           RoleService roleService ){
+                                           RoleService roleService, DataBackUP dataBackUP ){
         this.promotionRequestRepository = promotionRequestRepository;
         this.topicRepository = topicRepository;
         this.newsService = newsService;
         this.roleService = roleService;
+        this.dataBackUP = dataBackUP;
     }
 
     @Override
@@ -86,7 +87,7 @@ public class ManagementServiceImplementation implements ManagementService {
     public void returnDB() {
 
         try {
-            databaseBackUp.saveForDownload();
+            dataBackUP.saveForDownload();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
