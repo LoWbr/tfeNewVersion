@@ -199,9 +199,9 @@ public class Activity {
         this.name = activityForm.getName();
         this.description = activityForm.getDescription();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        this.plannedTo = LocalDate.parse(activityForm.getPlannedTo(),formatter).plusDays(1);
-        String test = activityForm.getHour().concat(":00");
-        this.hour = LocalTime.parse(test).plusHours(1);
+        this.plannedTo = LocalDate.parse(activityForm.getPlannedTo(),formatter);
+        String hour = activityForm.getHour().concat(":00");
+        this.hour = LocalTime.parse(hour);
         this.minimumLevel = activityForm.getMinimumLevel();
         this.maximumLevel = activityForm.getMaximumLevel();
         this.duration = activityForm.getDuration();
@@ -225,9 +225,9 @@ public class Activity {
         this.activity = activityForm.getActivity();
         this.description = activityForm.getDescription();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        this.plannedTo = LocalDate.parse(activityForm.getPlannedTo(),formatter).plusDays(1);
-        String test = activityForm.getHour().concat(":00");
-        this.hour = LocalTime.parse(test).plusHours(1);
+        this.plannedTo = LocalDate.parse(activityForm.getPlannedTo(),formatter);
+        String hour = activityForm.getHour().concat(":00");
+        this.hour = LocalTime.parse(hour);
         this.duration = activityForm.getDuration();
         this.minimumLevel = activityForm.getMinimumLevel();
         this.maximumLevel = activityForm.getMaximumLevel();

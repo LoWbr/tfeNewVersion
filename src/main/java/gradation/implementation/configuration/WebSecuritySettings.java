@@ -89,14 +89,14 @@ public class WebSecuritySettings extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/")
                 .deleteCookies("my-remember-me-cookie")
                 .permitAll()
-                .and()
+                /*.and()
                 .rememberMe()
                 .key("my-secure-key")
                 .rememberMeCookieName("my-remember-me-cookie")
                 .tokenRepository(persistentTokenRepository())
                 .tokenValiditySeconds(24 * 60 * 60)
                 .and()
-                .exceptionHandling()
+                .exceptionHandling()*/
         ;
     }
 
@@ -110,10 +110,10 @@ public class WebSecuritySettings extends WebSecurityConfigurerAdapter {
         }
     }
 
-    PersistentTokenRepository persistentTokenRepository() {
+    /*PersistentTokenRepository persistentTokenRepository() {
         JdbcTokenRepositoryImpl tokenRepositoryImpl = new JdbcTokenRepositoryImpl();
         tokenRepositoryImpl.setDataSource(dataSource);
         return tokenRepositoryImpl;
-    }
+    }*/
 
 }
