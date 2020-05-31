@@ -5,6 +5,13 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.util.Date;
+import java.util.TimeZone;
 
 @Entity
 public class Comment {
@@ -14,7 +21,6 @@ public class Comment {
     @Column(updatable = false, nullable = false)
     private Long id;
 
-    @CreationTimestamp
     private Timestamp date;
 
     @ManyToOne
@@ -75,8 +81,10 @@ public class Comment {
         this.activity = commentForm.getActivity();
         this.author = commentForm.getAuthor();
         this.content = commentForm.getContent();
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        this.date = timestamp;
+        ZonedDateTime current = ZonedDateTime.now().plusHours(2);
+        Timestamp timestamp = Timestamp.valueOf(current.toLocalDateTime());
+        String value = timestamp.toString();
+        this.date = Timestamp.valueOf(value);
     }
 
     @Override

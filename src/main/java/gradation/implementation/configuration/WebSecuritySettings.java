@@ -89,14 +89,15 @@ public class WebSecuritySettings extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/")
                 .deleteCookies("my-remember-me-cookie")
                 .permitAll()
-                /*.and()
+                .and()
                 .rememberMe()
-                .key("my-secure-key")
-                .rememberMeCookieName("my-remember-me-cookie")
-                .tokenRepository(persistentTokenRepository())
+                .key("unique")
+                .userDetailsService(customUserDetailsService)
+                /*.rememberMeCookieName("my-remember-me-cookie")
+                .tokenRepository(persistentTokenRepository())*/
                 .tokenValiditySeconds(24 * 60 * 60)
                 .and()
-                .exceptionHandling()*/
+                .exceptionHandling()
         ;
     }
 
