@@ -90,4 +90,5 @@ public class CommentTest {
         comment.setContent(test);
         assertNotNull(comment.getContent());
     }
+
 }

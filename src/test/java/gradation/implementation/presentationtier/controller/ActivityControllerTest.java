@@ -2,6 +2,7 @@ package gradation.implementation.presentationtier.controller;
 
 import gradation.implementation.businesstier.service.contractinterface.ActivityService;
 import gradation.implementation.businesstier.service.contractinterface.ActivitySettingService;
+import gradation.implementation.businesstier.service.contractinterface.NewsService;
 import gradation.implementation.businesstier.service.contractinterface.SportsManService;
 import gradation.implementation.datatier.entities.*;
 import gradation.implementation.presentationtier.form.ActivityForm;
@@ -44,6 +45,8 @@ public class ActivityControllerTest {
     private ActivityService activityService;
     @Mock
     private SportsManService sportsManService;
+    @Mock
+    private NewsService newsService;
     @Mock
     private ActivitySettingService activitySettingService;
     @InjectMocks
@@ -96,12 +99,12 @@ public class ActivityControllerTest {
     @Test
     public void saveEvent() throws Exception {
         SportsMan sportsMan = new SportsMan();
-        when(this.sportsManService.findCurrentUser(SecurityContextHolder.getContext().getAuthentication().getName()))
-                .thenReturn(sportsMan);
+        /*when(this.sportsManService.findCurrentUser(SecurityContextHolder.getContext().getAuthentication().getName()))
+                .thenReturn(sportsMan);*/
         ActivityForm activityForm = new ActivityForm();
         activityForm.setDescription("test");
         activityForm.setPlannedTo("2020-04-08");
-        activityForm.setHour("06:15");
+        activityForm.setHour("14:30");
         activityForm.setDuration((short) 60);
         activityForm.setCountry("test");
         activityForm.setStreet("test");
@@ -118,18 +121,22 @@ public class ActivityControllerTest {
         mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/factory/saveactivity",activityForm))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("activity/createEvent"));
-        activityForm.setPlannedTo("2020-08-08");
+        activityForm.setPlannedTo("20201-08-08");
         mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/factory/saveactivity",activityForm))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("activity/createEvent"));
-        activityForm.setHour("14:15");
+        activityForm.setPlannedTo("2020-06-01");
+        mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/factory/saveactivity",activityForm))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("activity/createEvent"));
+        activityForm.setHour("23:15");
         mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/factory/saveactivity",activityForm))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("activity/createEvent"));
         activityForm.setMaximumLevel(level0);
         mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/factory/saveactivity",activityForm).principal(SecurityContextHolder.getContext().getAuthentication()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/factory/activitiesbycreator"));
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("activity/createEvent"));
     }
 
     @Test
@@ -139,6 +146,13 @@ public class ActivityControllerTest {
         mockMvc.perform(get("/activity?id=1"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(model().size(6))
+                .andExpect(view().name("activity/eventDetails"));
+        SportsMan sportsMan = new SportsMan();
+        when(this.sportsManService.findCurrentUser(SecurityContextHolder.getContext().getAuthentication().getName()))
+                .thenReturn(sportsMan);
+        mockMvc.perform(get("/activity?id=1").principal(SecurityContextHolder.getContext().getAuthentication()))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(model().size(7))
                 .andExpect(view().name("activity/eventDetails"));
     }
 
@@ -192,7 +206,7 @@ public class ActivityControllerTest {
         ActivityForm activityForm = new ActivityForm();
         activityForm.setDescription("test");
         activityForm.setPlannedTo("2020-04-08");
-        activityForm.setHour("06:15");
+        activityForm.setHour("14:30");
         activityForm.setDuration((short) 60);
         activityForm.setCountry("test");
         activityForm.setStreet("test");
@@ -206,21 +220,26 @@ public class ActivityControllerTest {
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("activity/createEvent"));
         activityForm.setName("TestTEstTEST_TEST");
+        mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/factory/saveactivity",activityForm))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("activity/createEvent"));
+        activityForm.setPlannedTo("20201-08-08");
         mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/factory/updateactivity",activityForm))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("activity/createEvent"));
-        activityForm.setPlannedTo("2020-08-08");
+        activityForm.setPlannedTo("2020-06-01");
         mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/factory/updateactivity",activityForm))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("activity/createEvent"));
-        activityForm.setHour("14:15");
+        activityForm.setHour("23:15");
         mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/factory/updateactivity",activityForm))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("activity/createEvent"));
         activityForm.setMaximumLevel(level0);
         mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/factory/updateactivity",activityForm))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/activities"));
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("activity/createEvent"));
+        System.out.println(LocalTime.now());
     }
 
     @Test
@@ -333,6 +352,28 @@ public class ActivityControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/invitecontactpage?id=1"));
         verify(activityService, times(1)).inviteContact(activity,sportsMan);
+    }
+
+    @Test
+    public void active() throws Exception {
+        Activity activity = new Activity();
+        activity.setOpen(false);
+        when(activityService.getSpecificActivity(1L)).thenReturn(activity);
+        mockMvc.perform(get("/factory/active?id=1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/factory/activitiesbycreator"));
+    }
+
+    @Test
+    public void cancel() throws Exception {
+        Activity activity = new Activity();
+        activity.setOpen(true);
+        activity.setId(1L);
+        when(activityService.getSpecificActivity(1L)).thenReturn(activity);
+        mockMvc.perform(get("/factory/cancel?id=1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/factory/activitiesbycreator"));
+        verify(newsService,times(1)).returnCancelledApplictionNewOrCloseEventNew(activity, NewsType.CANCELLED_EVENT);
     }
 
     @Test

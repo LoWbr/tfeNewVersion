@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -85,9 +86,10 @@ public class SportsManControllerTest {
     @Test
     public void saveSportsMan() throws Exception {
         SportsMan current = new SportsMan();
+        current.setEmail("test@gmail.com");
+        current.setId(1L);
         SportsManForm sportsManForm = new SportsManForm();
         sportsManForm.setFirstname("Test");
-        sportsManForm.setLastname("testLastName");
         sportsManForm.setMail("test@gmail.com");
         sportsManForm.setDescription("complete");
         sportsManForm.setWeight(70.0);
@@ -102,8 +104,20 @@ public class SportsManControllerTest {
         sportsManForm.setLastname("testLastName");
         mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/saveUser",sportsManForm))
                 .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("global/signUp"));
+        sportsManForm.setDateofBirth("20101-05-22");
+        mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/saveUser",sportsManForm))
+                .andExpect(status().is2xxSuccessful())
         .andExpect(view().name("global/signUp"));
+        sportsManForm.setDateofBirth("1900-05-22");
+        mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/saveUser",sportsManForm))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("global/signUp"));
         sportsManForm.setDateofBirth("1990-05-22");
+        mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/saveUser",sportsManForm))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("global/signUp"));
+        sportsManForm.setId(2L);
         mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/saveUser",sportsManForm))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("global/signUp"));
@@ -140,6 +154,14 @@ public class SportsManControllerTest {
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("sportsman/updateUser"));
         sportsManForm.setLastname("testLastName");
+        mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/user/updateuser",sportsManForm).principal(SecurityContextHolder.getContext().getAuthentication()))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("sportsman/updateUser"));
+        sportsManForm.setDateofBirth("20101-05-22");
+        mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/user/updateuser",sportsManForm).principal(SecurityContextHolder.getContext().getAuthentication()))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("sportsman/updateUser"));
+        sportsManForm.setDateofBirth("1900-05-22");
         mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/user/updateuser", sportsManForm).principal(SecurityContextHolder.getContext().getAuthentication()))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("sportsman/updateUser"));
@@ -156,14 +178,22 @@ public class SportsManControllerTest {
     @Test
     public void sportsManOwnDetails() throws Exception {
         SportsMan sportsMan = new SportsMan();
+        List<SportsMan> applications = new ArrayList<>();
         when(this.sportsManService.findCurrentUser(SecurityContextHolder.getContext().getAuthentication().getName()))
                 .thenReturn(sportsMan);
+        when(this.managementService.getPromotionCandidates()).thenReturn(applications);
         mockMvc.perform(get("/user/details").principal(SecurityContextHolder.getContext() .getAuthentication()))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("sportsman/userDetails"))
                 .andExpect(model().size(4))
                 .andExpect(model().attributeExists("sportsMan", "allUsers", "statistics", "empty"));
-        verify(sportsManService, times(3)).findCurrentUser(SecurityContextHolder.getContext().
+        applications.add(sportsMan);
+        mockMvc.perform(get("/user/details").principal(SecurityContextHolder.getContext() .getAuthentication()))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("sportsman/userDetails"))
+                .andExpect(model().size(4))
+                .andExpect(model().attributeExists("sportsMan", "allUsers", "statistics", "empty"));
+        verify(sportsManService, times(7)).findCurrentUser(SecurityContextHolder.getContext().
                 getAuthentication().getName());
     }
 

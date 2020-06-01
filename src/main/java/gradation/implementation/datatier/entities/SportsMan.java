@@ -53,10 +53,10 @@ public class SportsMan  {
     private List<Activity> registeredActivities;
 
     @OneToMany(mappedBy = "author")
-    private List<Message> SenddMessages;
+    private List<Message> sentMessages;
 
     @ManyToMany(mappedBy = "addressees")
-    private List<Message> ReceivedMessages;
+    private List<Message> receivedMessages;
 
     @ManyToMany
     private List<SportsMan> contacts = new ArrayList<>();
@@ -64,6 +64,9 @@ public class SportsMan  {
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "user_role")
     private List<Role> roles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "sportsMan")
+    private List<Statistic> statistics = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -193,13 +196,36 @@ public class SportsMan  {
         roles.add(role);
     }
 
-
     public void addContact(SportsMan sportsMan) {
         this.contacts.add(sportsMan);
     }
 
     public void removeContact(SportsMan sportsMan) {
         this.contacts.remove(sportsMan);
+    }
+
+    public List<Message> getSentMessages() {
+        return sentMessages;
+    }
+
+    public void setSentMessages(List<Message> sendMessages) {
+        this.sentMessages = sendMessages;
+    }
+
+    public List<Message> getReceivedMessages() {
+        return receivedMessages;
+    }
+
+    public void setReceivedMessages(List<Message> receivedMessages) {
+        this.receivedMessages = receivedMessages;
+    }
+
+    public List<Statistic> getStatistics() {
+        return statistics;
+    }
+
+    public void setStatistics(List<Statistic> statistics) {
+        this.statistics = statistics;
     }
 
     public SportsMan() {

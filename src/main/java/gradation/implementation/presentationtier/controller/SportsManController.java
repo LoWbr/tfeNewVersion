@@ -157,7 +157,7 @@ public class SportsManController {
 			dateInput = LocalDate.parse(sportsManForm.getDateofBirth(), formatter).plusDays(1);
 		}catch (DateTimeParseException dt){
 			bindingResult.rejectValue("dateofBirth", "", "Date not valid.");
-			return "global/signUp";
+			return "sportsman/updateUser";
 		}
 
 		if(Period.between(dateInput,current).getYears() < 18){
@@ -165,9 +165,8 @@ public class SportsManController {
 			return "sportsman/updateUser";
 		}
 		else if (Period.between(dateInput, current).getYears() > 90) {
-			System.out.println(Period.between(dateInput, current).getYears());
 			bindingResult.rejectValue("dateofBirth", "", "You seems to be over 90 years.. ");
-			return "global/signUp";
+			return "sportsman/updateUser";
 		}
 		else if(!(sportsManForm.getPassword()).equals(sportsManForm.getConfirmPassword())){
 			bindingResult.rejectValue("password","","The two passwords do not match.");
@@ -175,9 +174,6 @@ public class SportsManController {
 		}
 		if(this.sportsManService.findCurrentUser(sportsManForm.getMail()) != null &&
 				this.sportsManService.findCurrentUser(principal.getName()).getId() != sportsManForm.getId()) {
-			System.out.println(sportsManService.findCurrentUser(principal.getName()).getId());
-			System.out.println(sportsManService.findCurrentUser(principal.getName()).getEmail());
-			System.out.println(sportsManForm.getMail() + " " + sportsManForm.getId());
 			bindingResult.rejectValue("mail", "", "This account already exists");
 			return "sportsman/updateUser";
 		}
@@ -189,10 +185,10 @@ public class SportsManController {
 		return "redirect:/user/details";
 	}
 
-	public void logout(HttpServletRequest request) throws ServletException {
+	/*public void logout(HttpServletRequest request) throws ServletException {
 		SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
 		securityContextLogoutHandler.logout(request, null, null);
-	}
+	}*/
 
 	@RequestMapping(value = "/user/details", method = RequestMethod.GET)
 	public String sportsManOwnDetails(Principal principal, Model model) {

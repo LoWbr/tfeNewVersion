@@ -206,6 +206,24 @@ public class ManagementControllerTest {
     }
 
     @Test
+    public void manageActivityTypeForm() throws Exception {
+        ActivityType activityType = new ActivityType();
+        when(activitySettingService.findSpecificActivityType(1L)).thenReturn(activityType);
+        mockMvc.perform(get("/manage/updatetypeform?id=1"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("management/settingUpdatePage"))
+                .andExpect(model().size(1));
+    }
+
+    @Test
+    public void manageActivityTypeFormAdd() throws Exception {
+        mockMvc.perform(get("/manage/addtypeform"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("management/settingUpdatePage"))
+                .andExpect(model().size(1));
+    }
+
+    @Test
     @WithMockUser(roles = {"ADMINISTRATOR"})
     public void updateType() throws Exception {
         ActivityType type1 = new ActivityType();
@@ -250,6 +268,17 @@ public class ManagementControllerTest {
                 .andExpect(view().name("management/setLevelsSetting"))
                 .andExpect(model().size(1))
                 .andExpect(model().attributeExists("activityLevels"));
+    }
+
+    @Test
+    @WithMockUser(roles = {"ADMINISTRATOR"})
+    public void manageLevelForm() throws Exception {
+        Level level = new Level();
+        when(activitySettingService.findSpecificLevel(1L)).thenReturn(level);
+        mockMvc.perform(get("/manage/updatelevelform?id=1"))
+                .andExpect(status().is2xxSuccessful())
+        .andExpect(view().name("management/settingUpdatePage"))
+                .andExpect(model().size(2));
     }
 
     @Test

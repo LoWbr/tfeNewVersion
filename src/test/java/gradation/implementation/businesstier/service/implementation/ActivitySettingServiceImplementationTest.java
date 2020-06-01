@@ -75,6 +75,15 @@ public class ActivitySettingServiceImplementationTest {
     }
 
     @Test
+    public void findLevelByPlace(){
+        Level level = new Level();
+        level.setPlace((byte)5);
+        given(levelRepository.findSpecific((byte)5)).willReturn(level);
+        Level level1 = this.activitySettingServiceImplementation.findLevelByPlace((byte)5);
+        assertEquals(level, level1);
+    }
+
+    @Test
     public void initiateCommentForm() {
         Activity activity = new Activity();
         SportsMan sportsMan = new SportsMan();
@@ -86,8 +95,13 @@ public class ActivitySettingServiceImplementationTest {
     @Test
     public void createComment() {
         Comment comment = new Comment();
-        given(commentRepository.save(comment)).willReturn(comment);
-        assertNotNull(commentRepository.save(comment));
+        Activity activity = new Activity();
+        SportsMan sportsMan = new SportsMan();
+        CommentForm commentForm = new CommentForm(sportsMan,activity);
+        commentForm.setContent("test");
+        this.activitySettingServiceImplementation.createComment(commentForm);
+        verify(commentRepository,times(1)).save(any(Comment.class));
+
     }
 
     @Test

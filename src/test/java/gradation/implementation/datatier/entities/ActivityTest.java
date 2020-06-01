@@ -5,10 +5,39 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class ActivityTest {
+
+    @Test
+    public void getActivityName(){
+        ActivityType activityType = new ActivityType();
+        activityType.setName("Test");
+        Activity activity = new Activity();
+        activity.setTypeActivity(activityType);
+        assertEquals("Test", activity.getActivityName());
+    }
+
+    @Test
+    public void setParticipants(){
+        Activity activity = new Activity();
+        SportsMan sportsMan = new SportsMan();
+        List<SportsMan> test = Arrays.asList(sportsMan);
+        activity.setParticipants(test);
+        assertEquals(1, activity.getParticipants().size());
+    }
+
+    @Test
+    public void setCandidates(){
+        Activity activity = new Activity();
+        SportsMan sportsMan = new SportsMan();
+        List<SportsMan> test = Arrays.asList(sportsMan);
+        activity.setCandidates(test);
+        assertEquals(1, activity.getCandidates().size());
+    }
 
     @Test
     public void addParticipant() {

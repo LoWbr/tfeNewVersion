@@ -87,14 +87,4 @@ public class Comment {
         this.date = Timestamp.valueOf(value);
     }
 
-    @Override
-    public String toString() {
-        return "Comment{" +
-                "id=" + id +
-                ", date=" + date +
-                ", author=" + author +
-                ", activity=" + activity +
-                ", content='" + content + '\'' +
-                '}';
-    }
 }

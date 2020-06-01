@@ -4,6 +4,7 @@ import gradation.implementation.businesstier.service.contractinterface.*;
 import gradation.implementation.datatier.entities.*;
 import gradation.implementation.datatier.repositories.*;
 import gradation.implementation.presentationtier.form.ActivityForm;
+import gradation.implementation.presentationtier.form.SearchActivityForm;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +16,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -88,11 +90,32 @@ public class ActivityServiceImplementationTest {
         verifyNoMoreInteractions(activityRepository);
     }
 
-    /*@Test
+    @Test
     public void findForSearch() {
-
-
-    }*/
+        Activity activity = new Activity(), activity1 = new Activity();
+        activity.setPlannedTo(LocalDate.of(2020,9,30));
+        List<Activity> nodate = Arrays.asList(activity, activity1);
+        List<Activity> withdate = Arrays.asList(activity);
+        SearchActivityForm searchActivityForm = new SearchActivityForm();
+        ActivityType activityType  = new ActivityType();
+        Level level1 = new Level();
+        searchActivityForm.setActivity(activityType);
+        searchActivityForm.setMinimumLevel(level1);
+        searchActivityForm.setMaximumLevel(level1);
+        searchActivityForm.setCity("Test");
+        searchActivityForm.setDuration((short) 40);
+        given(activityRepository.filter(searchActivityForm.getActivity(), searchActivityForm.getMinimumLevel(),
+                searchActivityForm.getMaximumLevel(), searchActivityForm.getCity(), searchActivityForm.getDuration(),
+                null)).willReturn(nodate);
+        List<Activity> all = this.activityServiceImplementation.findForSearch(searchActivityForm);
+        assertEquals(all.size(), nodate.size());
+        /*searchActivityForm.setDate("2020-08-10");
+        given(activityRepository.filter(searchActivityForm.getActivity(), searchActivityForm.getMinimumLevel(),
+                searchActivityForm.getMaximumLevel(), searchActivityForm.getCity(), searchActivityForm.getDuration(),
+                LocalDate.of(2020,10,10))).willReturn(withdate);
+        List<Activity> test = this.activityServiceImplementation.findForSearch(searchActivityForm);
+        assertEquals(test.size(), withdate.size());*/
+    }
 
     @Test
     public void saveActivity() {
