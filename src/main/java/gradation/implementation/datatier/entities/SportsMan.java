@@ -247,4 +247,8 @@ public class SportsMan  {
         return Period.between(dateOfBirth,current).getYears();
     }
 
+    public Statistic generateStatistic(Activity activity, Integer earnedPoints, Integer energeticExpenditure) {
+        Statistic statistic = new Statistic(this, activity, earnedPoints, energeticExpenditure);
+        return statistic;
+    }
 }

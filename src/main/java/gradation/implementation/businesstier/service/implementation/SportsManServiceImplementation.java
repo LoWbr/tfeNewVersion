@@ -229,14 +229,14 @@ public class SportsManServiceImplementation implements SportsManService {
                 newsService.returnApplicationResultNewOrLevelUpNew(sportsMan,null,NewsType.LEVEL_UP);
             }
             this.saveUser(sportsMan);
-            Statistic statistic = new Statistic(sportsMan, activity, earnedPoints, energeticExpenditure);
+            Statistic statistic = sportsMan.generateStatistic(activity, earnedPoints, energeticExpenditure);
             this.saveStatistic(statistic);
             //NEWS à mettre en place pour clôture cotation
         }
         else{
             Integer energeticExpenditure = 0;
             Integer earnedPoints = 0;
-            Statistic statistic = new Statistic(sportsMan, activity, earnedPoints, energeticExpenditure);
+            Statistic statistic = sportsMan.generateStatistic(activity, earnedPoints, energeticExpenditure);
             this.saveStatistic(statistic);
             //NEWS à mettre en place pour clôture cotation
         }
