@@ -130,57 +130,64 @@ public class ManagementController {
 		return "redirect:/";
 	}
 
-	@ModelAttribute
-	public void initiate(Model model){
-		model.addAttribute("activityTypeForm", new ActivityTypeForm());
-		model.addAttribute("activityTypeFormCreate", new ActivityTypeForm());
-		model.addAttribute("activityTypes", activitySettingService.getAllActivityTypes());
-		model.addAttribute("levelForm",new LevelForm());
-		model.addAttribute("activityLevels",activitySettingService.getAllLevels());
-	}
 	@RequestMapping(value = "/manage/types", method = RequestMethod.GET)
 	public String manageSportsSetting(Model model) {
-		model.addAttribute("activityTypeForm",new ActivityTypeForm());
-		model.addAttribute("activityTypeFormCreate", new ActivityTypeForm());
 		model.addAttribute("activityTypes",activitySettingService.getAllActivityTypes());
 		return "management/setSportsSetting";
 	}
 
-	@RequestMapping(value = "/manage/types/update{id}", method = RequestMethod.POST)
-	public String updateType(@RequestParam(value = "id") Long id, @Valid @ModelAttribute("activityTypeForm")
-			ActivityTypeForm activityTypeForm, BindingResult bindingResult) {
+	@RequestMapping(value = "/manage/updatetypeform{id}", method = RequestMethod.GET)
+	public String manageActivityTypeForm(@RequestParam(value = "id") Long id, Model model) {
+		model.addAttribute("activityTypeForm",new ActivityTypeForm(activitySettingService.findSpecificActivityType(id)));
+		return "management/settingUpdatePage";
+	}
+
+	@RequestMapping(value = "/manage/addtypeform", method = RequestMethod.GET)
+	public String manageActivityTypeFormAdd(Model model) {
+		model.addAttribute("activityTypeForm",new ActivityTypeForm());
+		return "management/settingUpdatePage";
+	}
+
+	@RequestMapping(value = "/manage/types/update", method = RequestMethod.POST)
+	public String updateType(@Valid ActivityTypeForm activityTypeForm, BindingResult bindingResult) {
 		if(bindingResult.hasErrors()){
-			return "management/setSportsSetting";
+			return "management/settingUpdatePage";
 		}
-		activitySettingService.updateType(activitySettingService.findSpecificActivityType(id),activityTypeForm);
+		activitySettingService.updateType(activitySettingService.findSpecificActivityType(activityTypeForm.getId()),activityTypeForm);
 		return "redirect:/manage/types";
 	}
 
 	@RequestMapping(value = "/manage/types/add", method = RequestMethod.POST)
-	public String addType(@Valid @ModelAttribute("activityTypeFormCreate") ActivityTypeForm activityTypeFormCreate,
+	public String addType(@Valid @ModelAttribute("activityTypeForm") ActivityTypeForm activityTypeForm,
 						  BindingResult bindingResult) {
 		if(bindingResult.hasErrors()){
 
-			return "management/setSportsSetting";
+			return "management/settingUpdatePage";
 		}
-		activitySettingService.createType(activityTypeFormCreate);
+		activitySettingService.createType(activityTypeForm);
 		return "redirect:/manage/types";
 	}
 
 	@RequestMapping(value = "/manage/levels", method = RequestMethod.GET)
 	public String manageLevelsSetting(Model model) {
-		model.addAttribute("levelForm",new LevelForm());
 		model.addAttribute("activityLevels",activitySettingService.getAllLevels());
 		return "management/setLevelsSetting";
 	}
 
-	@RequestMapping(value = "/manage/levels/update{id}", method = RequestMethod.POST)
-	public String updateLevel(@RequestParam(value = "id") Long id, @Valid @ModelAttribute("levelForm") LevelForm levelForm,
-							  BindingResult bindingResult) {
+	@RequestMapping(value = "/manage/updatelevelform{id}", method = RequestMethod.GET)
+	public String manageLevelForm(@RequestParam(value = "id") Long id, Model model) {
+		model.addAttribute("levelForm",new LevelForm(activitySettingService.findSpecificLevel(id)));
+		model.addAttribute("level",activitySettingService.findSpecificLevel(id));
+		return "management/settingUpdatePage";
+	}
+
+	@RequestMapping(value = "/manage/levels/update", method = RequestMethod.POST)
+	public String updateLevel(@Valid LevelForm levelForm, BindingResult bindingResult) {
 		if(bindingResult.hasErrors()){
-			return "management/setLevelsSetting";
+			return "management/settingUpdatePage";
 		}
-		activitySettingService.updateLevel(levelForm,activitySettingService.findSpecificLevel(id));
+		activitySettingService.updateLevel(levelForm,
+				activitySettingService.findSpecificLevel(levelForm.getId()));
 		return "redirect:/manage/levels";
 	}
 

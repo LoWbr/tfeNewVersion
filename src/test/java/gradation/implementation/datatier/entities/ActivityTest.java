@@ -47,8 +47,8 @@ public class ActivityTest {
         activity.update(activityForm, address);
         assertEquals("Test", activity.getName());
         assertEquals("test", activity.getDescription());
-        assertEquals(LocalTime.of(14,15), activity.getHour().minusHours(1));
-        assertEquals(LocalDate.of(2020,8,8),activity.getPlannedTo().minusDays(1));
+        assertEquals(LocalTime.of(14,15), activity.getHour());
+        assertEquals(LocalDate.of(2020,8,8),activity.getPlannedTo());
         assertEquals(new Short((short) 60), activity.getDuration());
 
     }

@@ -1,8 +1,12 @@
 package gradation.implementation.presentationtier.form;
 
+import gradation.implementation.datatier.entities.ActivityType;
+
 import javax.validation.constraints.*;
 
 public class ActivityTypeForm {
+
+    private Long id;
 
     @NotBlank(message = "This field cannot be empty!!")
     @Size(min= 10, max=30, message="Between 10 & 30 characters")
@@ -14,6 +18,22 @@ public class ActivityTypeForm {
     @Digits(integer=2, fraction=1, message = "only one decimal")
     @NotNull
     private Double met;
+
+    public ActivityTypeForm(){}
+
+    public ActivityTypeForm(ActivityType activityType) {
+        this.id = activityType.getId();
+        this.name = activityType.getName();
+        this.met = activityType.getMet();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

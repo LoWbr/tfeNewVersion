@@ -68,8 +68,8 @@ public class SportsManControllerTest {
         mockMvc.perform(get("/sportsmans"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("sportsman/users"))
-                .andExpect(model().size(1))
-                .andExpect(model().attributeExists("allUsers"));
+                .andExpect(model().size(3))
+                .andExpect(model().attributeExists("allUsers","all","searchUserForm"));
     }
 
     @Test
@@ -161,8 +161,8 @@ public class SportsManControllerTest {
         mockMvc.perform(get("/user/details").principal(SecurityContextHolder.getContext() .getAuthentication()))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("sportsman/userDetails"))
-                .andExpect(model().size(3))
-                .andExpect(model().attributeExists("sportsMan", "allUsers", "statistics"));
+                .andExpect(model().size(4))
+                .andExpect(model().attributeExists("sportsMan", "allUsers", "statistics", "empty"));
         verify(sportsManService, times(3)).findCurrentUser(SecurityContextHolder.getContext().
                 getAuthentication().getName());
     }
@@ -171,7 +171,7 @@ public class SportsManControllerTest {
     public void getSportsManDetail() throws Exception {
         SportsMan sportsMan = new SportsMan();
         when(this.sportsManService.findSpecificUser(1L)).thenReturn(sportsMan);
-        mockMvc.perform(get("/user/sportsman?id=1"))
+        mockMvc.perform(get("/sportsman?id=1"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("sportsman/externDetails"))
                 .andExpect(model().size(1))

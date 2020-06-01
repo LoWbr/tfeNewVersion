@@ -1,9 +1,13 @@
 package gradation.implementation.presentationtier.form;
 
 
+import gradation.implementation.datatier.entities.Level;
+
 import javax.validation.constraints.*;
 
 public class LevelForm {
+
+    private Long id;
 
     @NotBlank(message = "This field cannot be empty!!")
     @Size(min= 10, max=30, message="Between 10 & 30 characters")
@@ -19,6 +23,14 @@ public class LevelForm {
     @Digits(integer=1, fraction=1, message = "only one decimal")
     @NotNull
     private Double ratioPoints;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -50,6 +62,15 @@ public class LevelForm {
 
     public void setRatioPoints(Double ratioPoints) {
         this.ratioPoints = ratioPoints;
+    }
+
+    public LevelForm(){}
+
+    public LevelForm(Level level){
+        this.id = level.getId();
+        this.ratioPoints = level.getRatioPoints();
+        this.maximumThreshold = level.getMaximumThreshold();
+        this.name = level.getName();
     }
 
 }

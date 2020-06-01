@@ -130,7 +130,7 @@ public class ActivityControllerTest {
         activityForm.setMaximumLevel(level0);
         mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/factory/saveactivity",activityForm).principal(SecurityContextHolder.getContext().getAuthentication()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/activities"));
+                .andExpect(view().name("redirect:/factory/activitiesbycreator"));
     }
 
     @Test
@@ -235,7 +235,7 @@ public class ActivityControllerTest {
         mockMvc.perform(get("/user/postulate?id=1").principal(SecurityContextHolder.getContext().getAuthentication()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(model().size(3))
-                .andExpect(view().name("redirect:/events"));
+                .andExpect(view().name("redirect:/activity?id=1"));
     }
 
     @Test
@@ -303,10 +303,14 @@ public class ActivityControllerTest {
     @WithMockUser(roles = {"CONFIRMED"})
     public void userLeave() throws Exception {
         Activity activity = new Activity();
+        SportsMan sportsMan = new SportsMan();
+        sportsMan.setId(1L);
+        when(this.sportsManService.findCurrentUser(SecurityContextHolder.getContext().getAuthentication().getName()))
+                .thenReturn(sportsMan);
         when(activityService.getSpecificActivity(1L)).thenReturn(activity);
         mockMvc.perform(get("/user/quit?id=1").principal(SecurityContextHolder.getContext().getAuthentication()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/events"));
+                .andExpect(view().name("redirect:/user/getRegisteredEvents?id=1"));
     }
 
     @Test

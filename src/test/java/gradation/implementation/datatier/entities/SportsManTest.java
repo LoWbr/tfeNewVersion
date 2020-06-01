@@ -58,7 +58,7 @@ public class SportsManTest {
         assertEquals("test@gmail.com", sportsMan.getEmail());
         assertEquals("complete", sportsMan.getDescription());
         assertEquals(new Double(70.0),sportsMan.getWeight());
-        assertEquals(LocalDate.of(1990,05,22), sportsMan.getDateOfBirth().minusDays(1));
+        assertEquals(LocalDate.of(1990,05,22), sportsMan.getDateOfBirth());
     }
 
     @Test

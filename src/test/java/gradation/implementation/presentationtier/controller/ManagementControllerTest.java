@@ -201,17 +201,25 @@ public class ManagementControllerTest {
         mockMvc.perform(get("/manage/types"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("management/setSportsSetting"))
-                .andExpect(model().size(2))
-                .andExpect(model().attributeExists("activityTypeForm","activityTypes"));
+                .andExpect(model().size(1))
+                .andExpect(model().attributeExists("activityTypes"));
     }
 
     @Test
     @WithMockUser(roles = {"ADMINISTRATOR"})
     public void updateType() throws Exception {
         ActivityType type1 = new ActivityType();
-        ActivityTypeForm form = new ActivityTypeForm();
-        when(activitySettingService.findSpecificActivityType((long) 1)).thenReturn(type1);
-        mockMvc.perform(post("/manage/types/update?id=1"))
+        type1.setId(1L);
+        type1.setMet(2.5);
+        type1.setName("tttttttttttttt");
+        ActivityTypeForm form = new ActivityTypeForm(type1);
+        when(activitySettingService.findSpecificActivityType(1L)).thenReturn(type1);
+        mockMvc.perform(post("/manage/types/update"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("management/settingUpdatePage"));
+        form.setName("Testtesttest");
+        form.setMet(2.6);
+        mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/manage/types/update",form))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/manage/types"));
 
@@ -222,6 +230,11 @@ public class ManagementControllerTest {
     public void addType() throws Exception {
         ActivityTypeForm form = new ActivityTypeForm();
         mockMvc.perform(post("/manage/types/add"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("management/settingUpdatePage"));
+        form.setName("Testtesttest");
+        form.setMet(2.6);
+        mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/manage/types/add",form))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/manage/types"));
     }
@@ -235,8 +248,8 @@ public class ManagementControllerTest {
         mockMvc.perform(get("/manage/levels"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("management/setLevelsSetting"))
-                .andExpect(model().size(2))
-                .andExpect(model().attributeExists("levelForm","activityLevels"));
+                .andExpect(model().size(1))
+                .andExpect(model().attributeExists("activityLevels"));
     }
 
     @Test
@@ -245,7 +258,14 @@ public class ManagementControllerTest {
         Level level = new Level();
         LevelForm form = new LevelForm();
         when(activitySettingService.findSpecificLevel((long) 1)).thenReturn(level);
-        mockMvc.perform(post("/manage/levels/update?id=1"))
+        mockMvc.perform(post("/manage/levels/update"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("management/settingUpdatePage"));
+        form.setRatioPoints(0.2);
+        form.setMaximumThreshold(15000);
+        form.setName("ttestttesst");
+        form.setId(1L);
+        mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/manage/levels/update",form))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/manage/levels"));
     }
@@ -255,7 +275,7 @@ public class ManagementControllerTest {
     public void getHistory() throws Exception {
         mockMvc.perform(get("/manage/history"))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(model().size(6))
+                .andExpect(model().size(5))
                 .andExpect(view().name("management/searchNew"));
     }
 
@@ -267,7 +287,7 @@ public class ManagementControllerTest {
         searchNewForm.setNewsType(NewsType.MESSAGE_SEND);
         mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/manage/history/filter", searchNewForm))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(model().size(6))
+                .andExpect(model().size(5))
                 .andExpect(view().name("management/searchNew"));
     }
 
