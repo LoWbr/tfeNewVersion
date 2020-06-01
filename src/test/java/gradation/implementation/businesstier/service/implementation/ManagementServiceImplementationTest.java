@@ -1,15 +1,11 @@
 package gradation.implementation.businesstier.service.implementation;
 
-import gradation.implementation.businesstier.service.contractinterface.ActivitySettingService;
 import gradation.implementation.businesstier.service.contractinterface.NewsService;
 import gradation.implementation.businesstier.service.contractinterface.RoleService;
-import gradation.implementation.datatier.entities.Activity;
 import gradation.implementation.datatier.entities.PromotionRequest;
 import gradation.implementation.datatier.entities.SportsMan;
 import gradation.implementation.datatier.entities.Topic;
-import gradation.implementation.datatier.repositories.ActivityRepository;
 import gradation.implementation.datatier.repositories.PromotionRequestRepository;
-import gradation.implementation.datatier.repositories.StatisticRepository;
 import gradation.implementation.datatier.repositories.TopicRepository;
 import gradation.implementation.presentationtier.form.TopicForm;
 import org.junit.Before;
@@ -27,7 +23,6 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.refEq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -64,10 +59,10 @@ public class ManagementServiceImplementationTest {
         SportsMan sportsMan = new SportsMan();
         sportsMan.setFirstName("Test");
         PromotionRequest promotionRequest = new PromotionRequest();
-        promotionRequest.setCandidate(sportsMan);
+        promotionRequest.setApplier(sportsMan);
         given(promotionRequestRepository.findByCandidate(sportsMan)).willReturn(promotionRequest);
         PromotionRequest result = managementServiceImplementation.findSpecific(sportsMan);
-        assertEquals(sportsMan.getFirstName(),result.getCandidate().getFirstName());
+        assertEquals(sportsMan.getFirstName(),result.getApplier().getFirstName());
 
     }
 
@@ -83,7 +78,7 @@ public class ManagementServiceImplementationTest {
     public void getPromotionCandidates() {
         SportsMan sportsMan = new SportsMan();
         PromotionRequest promotionRequest = new PromotionRequest();
-        promotionRequest.setCandidate(sportsMan);
+        promotionRequest.setApplier(sportsMan);
         List<PromotionRequest> promotionRequests = Arrays.asList(promotionRequest);
         given(promotionRequestRepository.findAll()).willReturn(promotionRequests);
         List<SportsMan> result = managementServiceImplementation.getPromotionCandidates();

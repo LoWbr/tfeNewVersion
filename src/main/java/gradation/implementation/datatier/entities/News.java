@@ -11,15 +11,15 @@ public class News{
     private Long id;
 
     @OneToOne
-    @JoinColumn(name="fk_target", referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "id")
     private SportsMan target;
 
     @OneToOne
-    @JoinColumn(name="fk_source", referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "id")
     private SportsMan source;
 
     @OneToOne
-    @JoinColumn(name="fk_activity", referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "id")
     private Activity activity;
 
     @Enumerated(EnumType.STRING)

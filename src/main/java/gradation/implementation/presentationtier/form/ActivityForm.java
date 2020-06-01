@@ -175,7 +175,7 @@ public class ActivityForm {
         this.description = activity.getDescription();
         this.plannedTo = activity.getPlannedTo().toString();
         this.hour = activity.getHour().toString();
-        this.activity = activity.getActivity();
+        this.activity = activity.getTypeActivity();
         this.minimumLevel = activity.getMinimumLevel();
         this.maximumLevel = activity.getMaximumLevel();
         this.duration = activity.getDuration();

@@ -13,7 +13,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -131,38 +130,38 @@ public class ActivityServiceImplementationTest {
     public void applyAsCandidate() {
         Activity activity = new Activity();
         SportsMan sportsMan = new SportsMan();
-        assertEquals(0,activity.getCandidate().size());
+        assertEquals(0,activity.getCandidates().size());
         activityServiceImplementation.applyAsCandidate(activity,sportsMan);
-        assertEquals(1,activity.getCandidate().size());
+        assertEquals(1,activity.getCandidates().size());
     }
 
     @Test
     public void refuseBuyer() {
         Activity activity = new Activity();
         SportsMan sportsMan = new SportsMan();
-        activity.getCandidate().add(sportsMan);
+        activity.getCandidates().add(sportsMan);
         activityServiceImplementation.refuseBuyer(activity,sportsMan);
-        assertEquals(0,activity.getCandidate().size());
+        assertEquals(0,activity.getCandidates().size());
     }
 
     @Test
     public void addOrRemoveParticipants() {
         Activity activity = new Activity();
         SportsMan sportsMan = new SportsMan();
-        activity.getCandidate().add(sportsMan);
+        activity.getCandidates().add(sportsMan);
         activityServiceImplementation.addOrRemoveParticipants(activity,sportsMan,true);
-        assertEquals(1,activity.getRegistered().size());
+        assertEquals(1,activity.getParticipants().size());
         activityServiceImplementation.addOrRemoveParticipants(activity,sportsMan,false);
-        assertEquals(0,activity.getRegistered().size());
+        assertEquals(0,activity.getParticipants().size());
     }
 
     @Test
     public void participantDropout() {
         Activity activity = new Activity();
         SportsMan sportsMan = new SportsMan();
-        activity.getRegistered().add(sportsMan);
+        activity.getParticipants().add(sportsMan);
         activityServiceImplementation.participantDropout(activity,sportsMan);
-        assertEquals(0, activity.getRegistered().size());
+        assertEquals(0, activity.getParticipants().size());
     }
 
     @Test
@@ -192,14 +191,14 @@ public class ActivityServiceImplementationTest {
         Activity activity = new Activity();
         SportsMan sportsMan = new SportsMan();
         activityServiceImplementation.inviteContact(activity, sportsMan);
-        assertEquals(1, activity.getRegistered().size());
+        assertEquals(1, activity.getParticipants().size());
     }
 
     @Test
     public void checkAllCotationsForRegistered() {
         Activity activity = new Activity();
         SportsMan sportsMan = new SportsMan();
-        activity.getRegistered().add(sportsMan);
+        activity.getParticipants().add(sportsMan);
         List<Statistic> allStat = new ArrayList<>();
         given(statisticRepository.findByActivity(activity)).willReturn(allStat);
         assertFalse(activityServiceImplementation.checkAllCotationsForRegistered(activity));

@@ -24,11 +24,11 @@ public class Comment {
     private Timestamp date;
 
     @ManyToOne
-    @JoinColumn(name="fk_author", referencedColumnName = "id", nullable = false)
+    @JoinColumn(referencedColumnName = "id", nullable = false)
     private SportsMan author;
 
     @ManyToOne
-    @JoinColumn(name="fk_activity", referencedColumnName = "id", nullable = false)
+    @JoinColumn(referencedColumnName = "id", nullable = false)
     private Activity activity;
 
     @Lob

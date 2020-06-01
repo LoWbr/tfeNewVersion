@@ -125,7 +125,7 @@ public class NoticeServiceImplementationTest {
         News newsCancelled = new News(), newsClosed = new News();
         SportsMan sportsMan = new SportsMan(), creator = new SportsMan();
         Activity activity = new Activity();
-        activity.getRegistered().add(sportsMan);
+        activity.getParticipants().add(sportsMan);
         activity.setCreator(creator);
         given(newsRepository.save(newsCancelled)).willReturn(newsCancelled);
         noticeServiceImplementation.returnCancelledApplictionNewOrCloseEventNew(activity,NewsType.CANCELLED_EVENT);
@@ -178,7 +178,7 @@ public class NoticeServiceImplementationTest {
         SportsMan sportsMan = new SportsMan();
         List<SportsMan> addressee = Arrays.asList(sportsMan);
         Message message = new Message();
-        message.setAddressee(addressee);
+        message.setAddressees(addressee);
         News news = new News();
         given(newsRepository.save(news)).willReturn(news);
         noticeServiceImplementation.returnSendMessageNew(message,NewsType.MESSAGE_SEND);

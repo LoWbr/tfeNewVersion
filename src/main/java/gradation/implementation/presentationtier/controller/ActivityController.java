@@ -116,7 +116,7 @@ public class ActivityController {
         }
         Activity activity = activityService.getSpecificActivity(id);
         model.addAttribute("activity", activity);//Raccourci encore faisable
-        model.addAttribute("participants", activity.getRegistered());
+        model.addAttribute("participants", activity.getParticipants());
         model.addAttribute("comments", activitySettingService.findCommentsForActivity(activity));
         return "activity/eventDetails";
     }
@@ -132,8 +132,8 @@ public class ActivityController {
     public String ownEventDetails(@RequestParam Long id, Model model) {
         Activity activity = activityService.getSpecificActivity(id);
         model.addAttribute("activity", activity);//Raccourci encore faisable
-        model.addAttribute("candidates", activity.getCandidate());
-        model.addAttribute("participants", activity.getRegistered());
+        model.addAttribute("candidates", activity.getCandidates());
+        model.addAttribute("participants", activity.getParticipants());
         model.addAttribute("comments", activitySettingService.findCommentsForActivity(activity));
         return "activity/ownEventDetails";
     }
@@ -203,7 +203,7 @@ public class ActivityController {
 
     @RequestMapping(value = "/factory/managecandidates{id}", method = RequestMethod.GET)
     public String manageCandidates(@RequestParam Long id, Model model) {
-        model.addAttribute("users",activityService.getSpecificActivity(id).getCandidate());
+        model.addAttribute("users",activityService.getSpecificActivity(id).getCandidates());
         model.addAttribute("activity",activityService.getSpecificActivity(id));
         model.addAttribute("status", false);
         return "activity/usersForEvent";
@@ -211,7 +211,7 @@ public class ActivityController {
 
     @RequestMapping(value = "/factory/manageparticipants{id}", method = RequestMethod.GET)
     public String manageParticipants(@RequestParam Long id, Model model) {
-        model.addAttribute("users",activityService.getSpecificActivity(id).getRegistered());
+        model.addAttribute("users",activityService.getSpecificActivity(id).getParticipants());
         model.addAttribute("activity",activityService.getSpecificActivity(id));
         model.addAttribute("status", true);
         return "activity/usersForEvent";

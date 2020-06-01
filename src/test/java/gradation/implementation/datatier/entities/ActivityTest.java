@@ -14,9 +14,9 @@ public class ActivityTest {
     public void addParticipant() {
         SportsMan sportsMan = new SportsMan();
         Activity activity = new Activity();
-        assertEquals(0, activity.getRegistered().size());
+        assertEquals(0, activity.getParticipants().size());
         activity.addParticipant(sportsMan);
-        assertEquals(1, activity.getRegistered().size());
+        assertEquals(1, activity.getParticipants().size());
     }
 
     @Test
@@ -24,9 +24,9 @@ public class ActivityTest {
         SportsMan sportsMan = new SportsMan();
         Activity activity = new Activity();
         activity.addParticipant(sportsMan);
-        assertEquals(1, activity.getRegistered().size());
+        assertEquals(1, activity.getParticipants().size());
         activity.removeParticipant(sportsMan);
-        assertEquals(0, activity.getRegistered().size());
+        assertEquals(0, activity.getParticipants().size());
     }
 
     @Test
@@ -85,7 +85,7 @@ public class ActivityTest {
         SportsMan sportsMan = new SportsMan();
         Activity activity = new Activity();
         assertFalse(activity.checkApplication(sportsMan));
-        activity.getCandidate().add(sportsMan);
+        activity.getCandidates().add(sportsMan);
         assertTrue(activity.checkApplication(sportsMan));
     }
 
@@ -94,7 +94,7 @@ public class ActivityTest {
         SportsMan sportsMan = new SportsMan();
         Activity activity = new Activity();
         assertFalse(activity.checkPresence(sportsMan));
-        activity.getRegistered().add(sportsMan);
+        activity.getParticipants().add(sportsMan);
         assertTrue(activity.checkPresence(sportsMan));
     }
 }

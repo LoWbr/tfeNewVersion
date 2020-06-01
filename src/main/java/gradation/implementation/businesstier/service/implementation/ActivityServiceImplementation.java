@@ -96,14 +96,14 @@ public class ActivityServiceImplementation implements ActivityService {
 
     @Override
     public void applyAsCandidate(Activity activity, SportsMan sportsMan) {
-        activity.getCandidate().add(sportsMan);
+        activity.getCandidates().add(sportsMan);
         this.newsService.returnApplicationEventNew(activity, sportsMan, NewsType.APPLY_FOR_EVENT);
         this.saveActivity(activity);
     }
 
     @Override
     public void refuseBuyer(Activity activity, SportsMan sportsMan) {
-        activity.getCandidate().remove(sportsMan);
+        activity.getCandidates().remove(sportsMan);
         this.newsService.returnRegistrationResultNew(sportsMan, activity,NewsType.REFUSED_REGISTRATION);
         this.saveActivity(activity);
     }
@@ -112,7 +112,7 @@ public class ActivityServiceImplementation implements ActivityService {
     public void addOrRemoveParticipants(Activity activity, SportsMan sportsMan, boolean flag) {
         if(flag){
             activity.addParticipant(sportsMan);
-            activity.getCandidate().remove(sportsMan);
+            activity.getCandidates().remove(sportsMan);
             this.newsService.returnRegistrationResultNew(sportsMan, activity,NewsType.VALIDED_REGISTRATION);
         }
         else{
@@ -155,7 +155,7 @@ public class ActivityServiceImplementation implements ActivityService {
 
     @Override
     public boolean checkAllCotationsForRegistered(Activity activity) {
-        if(activity.getRegistered().size() == this.statisticRepository.findByActivity(activity).size()){
+        if(activity.getParticipants().size() == this.statisticRepository.findByActivity(activity).size()){
             return true;
         }
         else{

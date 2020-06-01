@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface PromotionRequestRepository extends CrudRepository<PromotionRequest, Long> {
 
-    @Query("Select promotionrequest from PromotionRequest promotionrequest where promotionrequest.candidate = :id")
+    @Query("Select promotionrequest from PromotionRequest promotionrequest where promotionrequest.applier = :id")
     PromotionRequest findByCandidate(
             @Param("id") SportsMan sportsMan);
 

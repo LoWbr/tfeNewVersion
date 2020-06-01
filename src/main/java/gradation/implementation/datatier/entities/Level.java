@@ -18,7 +18,6 @@ public class Level {
 
     private Integer maximumThreshold;
 
-    @Column(name = "ratio_points")
     private Double ratioPoints;
 
     public Long getId() {

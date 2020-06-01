@@ -15,12 +15,12 @@ public class Message {
     private Long id;
 
     @ManyToMany
-    @JoinColumn(name="fk_target", referencedColumnName = "id")
-    private List<SportsMan> addressee;
+    @JoinColumn(referencedColumnName = "id")
+    private List<SportsMan> addressees;
 
     @ManyToOne
-    @JoinColumn(name="fk_source", referencedColumnName = "id")
-    private SportsMan originator;
+    @JoinColumn(referencedColumnName = "id")
+    private SportsMan author;
 
     private String about;
 
@@ -32,8 +32,8 @@ public class Message {
     public Message(){}
 
     public Message(MessageForm messageForm) {
-        this.originator = messageForm.getOriginator();
-        this.addressee = messageForm.getAddressee();
+        this.author = messageForm.getOriginator();
+        this.addressees = messageForm.getAddressee();
         this.about = messageForm.getAbout();
         this.content = messageForm.getContent();
         this.timeOfDispatch = LocalDateTime.now();
@@ -48,20 +48,20 @@ public class Message {
         this.id = id;
     }
 
-    public List<SportsMan> getAddressee() {
-        return addressee;
+    public List<SportsMan> getAddressees() {
+        return addressees;
     }
 
-    public void setAddressee(List<SportsMan> addressee) {
-        this.addressee = addressee;
+    public void setAddressees(List<SportsMan> addressee) {
+        this.addressees = addressee;
     }
 
-    public SportsMan getOriginator() {
-        return originator;
+    public SportsMan getAuthor() {
+        return author;
     }
 
-    public void setOriginator(SportsMan originator) {
-        this.originator = originator;
+    public void setAuthor(SportsMan originator) {
+        this.author = originator;
     }
 
     public String getAbout() {

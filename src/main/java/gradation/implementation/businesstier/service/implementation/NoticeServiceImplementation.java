@@ -94,14 +94,14 @@ public class NoticeServiceImplementation implements NewsService {
             content = "The activity was cancelled by the administrator";
             News announceToCreator = new News(activity.getCreator(), null, activity, newsType,content, false);
             this.newsRepository.save(announceToCreator);
-            for (SportsMan registered : activity.getRegistered()) {
+            for (SportsMan registered : activity.getParticipants()) {
                 News announceToRegistered = new News(registered, null, activity, newsType, content,false);
                 this.newsRepository.save(announceToRegistered);
             }
         }
         else{
             content = "The event is now closed";
-            for (SportsMan registered : activity.getRegistered()) {
+            for (SportsMan registered : activity.getParticipants()) {
                 News announceToRegistered = new News(registered, activity.getCreator(), activity, newsType,content, false);
                 this.newsRepository.save(announceToRegistered);
             }
@@ -139,9 +139,9 @@ public class NoticeServiceImplementation implements NewsService {
 
     @Override
     public void returnSendMessageNew(Message message, NewsType newsType) {
-        for (SportsMan sportsman:message.getAddressee()) {
+        for (SportsMan sportsman:message.getAddressees()) {
             String content = message.getContent();
-            News announceToCreator = new News(sportsman,message.getOriginator(),null,newsType, content,false);
+            News announceToCreator = new News(sportsman,message.getAuthor(),null,newsType, content,false);
             this.newsRepository.save(announceToCreator);
         }
     }

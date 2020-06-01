@@ -7,19 +7,13 @@ import gradation.implementation.businesstier.service.contractinterface.RoleServi
 import gradation.implementation.datatier.entities.*;
 import gradation.implementation.datatier.repositories.PromotionRequestRepository;
 import gradation.implementation.datatier.repositories.TopicRepository;
-import gradation.implementation.presentationtier.form.ActivityTypeForm;
-import gradation.implementation.presentationtier.form.LevelForm;
 import gradation.implementation.presentationtier.form.TopicForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @ConditionalOnProperty(name="app.service", havingValue = "main")
@@ -65,7 +59,7 @@ public class ManagementServiceImplementation implements ManagementService {
         List<SportsMan> candidates = new ArrayList<>();
         Iterable<PromotionRequest> allPromotions = this.promotionRequestRepository.findAll();
         for (PromotionRequest promotion: allPromotions) {
-            candidates.add(promotion.getCandidate());
+            candidates.add(promotion.getApplier());
         }
         return candidates;
     }

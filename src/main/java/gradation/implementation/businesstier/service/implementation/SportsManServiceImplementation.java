@@ -202,7 +202,7 @@ public class SportsManServiceImplementation implements SportsManService {
 
         List<SportsMan> toTreat = new ArrayList<>();
         //All for the event
-        List<SportsMan> registered = activity.getRegistered();
+        List<SportsMan> registered = activity.getParticipants();
         //All who do not have statistic for this event
         for (SportsMan sportsMan: registered) {
             if(this.statisticRepository.findForActivityAndSportsMan(activity, sportsMan).size() == 0){
@@ -219,7 +219,7 @@ public class SportsManServiceImplementation implements SportsManService {
         if (notation != 0) {
             double durationInHours = (double) activity.getDuration() / 60;
             //Calcul de la dépense énergétique
-            Integer energeticExpenditure = Math.toIntExact(Math.round(sportsMan.getWeight() * durationInHours * activity.getActivity().getMet()));
+            Integer energeticExpenditure = Math.toIntExact(Math.round(sportsMan.getWeight() * durationInHours * activity.getTypeActivity().getMet()));
             //Calcul des points acquis : base du ratio du niveau utilisateur, et de la cotation
             Integer earnedPoints = Math.toIntExact((long) (energeticExpenditure * sportsMan.getLevel().getRatioPoints() * notation));
             sportsMan.addPoints(earnedPoints);

@@ -25,7 +25,7 @@ public interface ActivityRepository extends CrudRepository<Activity, Long>{
     List<SportsMan> findNotRegistered(
             @Param("list") List<SportsMan> listNonInscrits);
 
-    @Query("Select event from Activity event where (:activity is null or event.activity = :activity)" +
+    @Query("Select event from Activity event where (:activity is null or event.typeActivity = :activity)" +
             "and (:minlevel is null or event.minimumLevel = :minlevel) and (:maxlevel is null or event.maximumLevel = :maxlevel)" +
             "and (:city is null or event.address.city = :city)" +
             "and (:duration is null or event.duration >= :duration) and" +

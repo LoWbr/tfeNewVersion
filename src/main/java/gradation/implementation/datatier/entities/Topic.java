@@ -18,7 +18,7 @@ public class Topic {
     private Timestamp date;
 
     @ManyToOne
-    @JoinColumn(name="fk_author", referencedColumnName = "id", nullable = false)
+    @JoinColumn(referencedColumnName = "id", nullable = false)
     private SportsMan author;
 
     @Lob

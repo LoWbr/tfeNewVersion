@@ -15,15 +15,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.Answer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.management.Notification;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -302,11 +298,11 @@ public class SportsManServiceImplementationTest {
     public void findMessages() {
         SportsMan sportsMan = new SportsMan(), sportsMan1 = new SportsMan();
         Message message = new Message(), message1 = new Message();
-        message.setOriginator(sportsMan);
-        message1.setOriginator(sportsMan);
+        message.setAuthor(sportsMan);
+        message1.setAuthor(sportsMan);
         List<Message> byAuthor = Arrays.asList(message,message1);
         List<SportsMan> addressees = Arrays.asList(sportsMan1);
-        message.setAddressee(addressees);
+        message.setAddressees(addressees);
         List<Message> forUser = Arrays.asList(message);
         given(messageRepository.findByCreator(sportsMan)).willReturn(byAuthor);
         List<Message> result = sportsManServiceImplementation.findMessages(sportsMan,true);
@@ -331,7 +327,7 @@ public class SportsManServiceImplementationTest {
         SportsMan sportsMan = new SportsMan();
         List<SportsMan> notTreated = Arrays.asList(sportsMan);
         Activity activity = new Activity();
-        activity.getRegistered().add(sportsMan);
+        activity.getParticipants().add(sportsMan);
         List<Statistic>statistics = new ArrayList<>();
         given(statisticRepository.findForActivityAndSportsMan(activity,sportsMan)).willReturn(statistics);
         List<SportsMan> result = sportsManServiceImplementation.getAllNotMarked(activity);
@@ -345,7 +341,7 @@ public class SportsManServiceImplementationTest {
         activity.setDuration((short)60);
         ActivityType activityType = new ActivityType();
         activityType.setMet(2.0);
-        activity.setActivity(activityType);
+        activity.setTypeActivity(activityType);
         SportsMan sportsMan = new SportsMan();
         sportsMan.setWeight(50.0);
         Level level = new Level(), level2 = new Level();
@@ -359,7 +355,7 @@ public class SportsManServiceImplementationTest {
         sportsMan.setPoints(0);
         Double cotation = 1d;
         Integer energeticExpenditure =
-                Math.toIntExact(Math.round(sportsMan.getWeight() * activity.getDuration()/60 * activity.getActivity().getMet()));
+                Math.toIntExact(Math.round(sportsMan.getWeight() * activity.getDuration()/60 * activity.getTypeActivity().getMet()));
         Integer earnedPoints = Math.toIntExact((long) (energeticExpenditure * sportsMan.getLevel().getRatioPoints() * cotation));
         given(activitySettingService.findLevelByPlace((byte) 2)).willReturn(level2);
         sportsManServiceImplementation.setResultForEventToParticipant(activity,sportsMan,cotation);

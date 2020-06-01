@@ -28,35 +28,35 @@ public class Activity {
     private LocalTime hour;
 
     @OneToOne
-    @JoinColumn(name="fk_activity",referencedColumnName = "id", nullable = false)
-    private ActivityType activity;
+    @JoinColumn(referencedColumnName = "id", nullable = false)
+    private ActivityType typeActivity;
 
     @OneToOne
-    @JoinColumn(name="fk_address", referencedColumnName = "id"/*, nullable = false*/)
+    @JoinColumn(referencedColumnName = "id", nullable = false)
     private Address address;
 
     @OneToOne
-    @JoinColumn(name="fk_minimum_level", referencedColumnName = "id", nullable = false)
+    @JoinColumn(referencedColumnName = "id", nullable = false)
     private Level minimumLevel;
 
     @OneToOne
-    @JoinColumn(name="fk_maximum_level", referencedColumnName = "id", nullable = false)
+    @JoinColumn(referencedColumnName = "id", nullable = false)
     private Level maximumLevel;
 
     @Column(nullable = false)
     private Short duration;
 
     @ManyToOne
-    @JoinColumn(name="fk_creator", referencedColumnName = "id", nullable = false)
+    @JoinColumn(referencedColumnName = "id", nullable = false)
     private SportsMan creator;
 
     @ManyToMany
-    @JoinColumn(name="fk_user_candidate", referencedColumnName = "id", nullable = false)
-    private List<SportsMan> candidate = new ArrayList<>();
+    @JoinColumn(referencedColumnName = "id", nullable = false)
+    private List<SportsMan> candidates = new ArrayList<>();
 
     @ManyToMany
-    @JoinColumn(name="fk_user_registered", referencedColumnName = "id", nullable = false)
-    private List<SportsMan> registered = new ArrayList<>();
+    @JoinColumn(referencedColumnName = "id", nullable = false)
+    private List<SportsMan> participants = new ArrayList<>();
 
     @Column(nullable = false, columnDefinition = "boolean default true")
     private Boolean open;
@@ -80,12 +80,12 @@ public class Activity {
         this.name = name;
     }
 
-    public ActivityType getActivity() {
-        return activity;
+    public ActivityType getTypeActivity() {
+        return typeActivity;
     }
 
-    public void setActivity(ActivityType activity) {
-        this.activity = activity;
+    public void setTypeActivity(ActivityType activity) {
+        this.typeActivity = activity;
     }
 
     public Short getDuration() {
@@ -97,7 +97,7 @@ public class Activity {
     }
 
     public String getActivityName() {
-        return activity.getName();
+        return typeActivity.getName();
     }
 
     public SportsMan getCreator() {
@@ -136,12 +136,12 @@ public class Activity {
         this.hour = hour;
     }
 
-    public List<SportsMan> getRegistered() {
-        return registered;
+    public List<SportsMan> getParticipants() {
+        return participants;
     }
 
-    public void setRegistered(List<SportsMan> registered) {
-        this.registered = registered;
+    public void setParticipants(List<SportsMan> registered) {
+        this.participants = registered;
     }
 
     public Address getAddress() {
@@ -168,12 +168,12 @@ public class Activity {
         this.maximumLevel = maximumLevel;
     }
 
-    public List<SportsMan> getCandidate() {
-        return candidate;
+    public List<SportsMan> getCandidates() {
+        return candidates;
     }
 
-    public void setCandidate(List<SportsMan> candidate) {
-        this.candidate = candidate;
+    public void setCandidates(List<SportsMan> candidate) {
+        this.candidates = candidate;
     }
 
     public Boolean getOpen() {
@@ -205,7 +205,7 @@ public class Activity {
         this.minimumLevel = activityForm.getMinimumLevel();
         this.maximumLevel = activityForm.getMaximumLevel();
         this.duration = activityForm.getDuration();
-        this.activity = activityForm.getActivity();
+        this.typeActivity = activityForm.getActivity();
         this.creator = sportsMan;
         this.address = address;
         this.open = true;
@@ -213,16 +213,16 @@ public class Activity {
     }
 
     public void addParticipant(SportsMan sportsMan) {
-        this.registered.add(sportsMan);
+        this.participants.add(sportsMan);
     }
 
     public void removeParticipant(SportsMan sportsMan) {
-        this.registered.remove(sportsMan);
+        this.participants.remove(sportsMan);
     }
 
     public void update(ActivityForm activityForm, Address address) {
         this.name = activityForm.getName();
-        this.activity = activityForm.getActivity();
+        this.typeActivity = activityForm.getActivity();
         this.description = activityForm.getDescription();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         this.plannedTo = LocalDate.parse(activityForm.getPlannedTo(),formatter);
@@ -247,14 +247,14 @@ public class Activity {
     }
 
     public boolean checkApplication(SportsMan sportsMan){
-        if (this.getCandidate().contains(sportsMan))
+        if (this.getCandidates().contains(sportsMan))
             return true;
         else
             return false;
     }
 
     public boolean checkPresence(SportsMan sportsMan){
-        if (this.getRegistered().contains(sportsMan))
+        if (this.getParticipants().contains(sportsMan))
             return true;
         else
             return false;

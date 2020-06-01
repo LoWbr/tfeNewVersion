@@ -17,7 +17,7 @@ INSERT INTO level (name, place, maximum_threshold, ratio_points) VALUES
 ('Athlete',4,15000,0.4),
 ('Hero',5,20000,0.3);
 
-INSERT INTO sports_man (first_name,last_name,description,date_of_birth,weight,points,email,password, fk_level,blocked) VALUES
+INSERT INTO sports_man (first_name,last_name,description,date_of_birth,weight,points,email,password, level_id,blocked) VALUES
 ('Laurent','Weber','Chevelu Sportif','1990-05-29',79,2900,'lo@gmail.com','$2y$10$e/M4T66Ioz3rZ0fltX7qpeLzonDbP/sD60zehJ77t0SoJUCF.WGMa',1,false),
 ('Michael','Atlas','Photograhe en tout genre','1988-04-01',90,32,'mike@gmail.com','$2y$10$0w8iBx3F0.9N9x5eGgy73eqhkDRcKXGnoZQyqvFZ9KC0XEeyHRi0K',1,false),
 ('Geoffrey','Moyens','Militaire et Patate Mariée','1983-02-02',95,40,'geof@gmail.com','$2y$10$4g0uGcj7IjljDWoCY5e8X.T2GbVP2e/RPs65.MbUvYECccKlJiQqW',1,true),
@@ -34,20 +34,20 @@ INSERT INTO address(number, street, postal_code, city, country) VALUES
 (229,'Rue du val vallonée',52100,'Saint-Dizier','France');
 
 --Old Events
-INSERT INTO activity (name,description, fk_activity, fk_creator,duration,open,over,fk_minimum_level, fk_maximum_level, planned_to, fk_address) VALUES
+INSERT INTO activity (name,description, type_activity_id, creator_id,duration,open,over,minimum_level_id, maximum_level_id, planned_to, address_id) VALUES
 ('Initiation Crawl','Swimming, Beginning',3,1,90,true,true,1,1,'2020-08-10 14:00:00',3),
 ('Namur-Ottiginies','45km, intense',1,2,60,true,true,2,4,'2020-07-15 09:30:00',1),
 ('Cross au Bois de Malonne','Au travers des arbres',2,1,180,true,true,1,2,'2020-07-04 08:00:00',1),
 ('Descente de la Meuse','Traveling au travers de la flotte',3,3,45,true,true,1,3,'2020-06-25 17:30:00',6);
 
 --Current Events
-INSERT INTO activity (name,description, fk_activity, fk_creator,duration,open,over,fk_minimum_level, fk_maximum_level, planned_to, fk_address) VALUES
+INSERT INTO activity (name,description, type_activity_id, creator_id,duration,open,over,minimum_level_id, maximum_level_id, planned_to, address_id) VALUES
 ('Brasse Bien Grasse','This is a test',3,1,90,true,false,1,3,'2020-08-10 14:00:00',5 ),
 ('Footing Mosan','Along the river',2,2,60,true,false,1,2,'2020-07-15 09:30:00',6),
 ('Vélo en Folie','Fun and Fun, in wilderness',1,3,180,true,false,1,1,'2020-07-04 08:00:00',2),
 ('Run & Beer','Plus long, plus long, plus long, plus long',2,1,45,true,false,1,2,'2020-06-25 17:30:00',4);
 
-INSERT INTO activity_registered(registered_activities_id, registered_id) VALUES
+INSERT INTO activity_participants(registered_activities_id, participants_id) VALUES
 (1,1),
 (1,4),
 (1,5),
@@ -66,7 +66,7 @@ INSERT INTO activity_registered(registered_activities_id, registered_id) VALUES
 (5,1);
 
 
-INSERT INTO activity_candidate(activity_id, candidate_id) VALUES
+INSERT INTO activity_candidates(activity_id, candidates_id) VALUES
 (8,2);
 
 --Statistic

@@ -5,11 +5,9 @@ import gradation.implementation.presentationtier.form.SportsManForm;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @Entity
 public class SportsMan  {
@@ -38,7 +36,7 @@ public class SportsMan  {
     private String password;
 
     @OneToOne
-    @JoinColumn(name="fk_level", referencedColumnName = "id", nullable = false)
+    @JoinColumn(referencedColumnName = "id", nullable = false)
     private Level level;
 
     private Double weight;
@@ -51,13 +49,13 @@ public class SportsMan  {
     @OneToMany(mappedBy = "creator")
     private List<Activity> createdActivities;
 
-    @ManyToMany(mappedBy = "registered")
+    @ManyToMany(mappedBy = "participants")
     private List<Activity> registeredActivities;
 
-    @OneToMany(mappedBy = "originator")
+    @OneToMany(mappedBy = "author")
     private List<Message> SenddMessages;
 
-    @ManyToMany(mappedBy = "addressee")
+    @ManyToMany(mappedBy = "addressees")
     private List<Message> ReceivedMessages;
 
     @ManyToMany

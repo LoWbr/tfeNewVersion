@@ -23,7 +23,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
@@ -340,7 +339,7 @@ public class ActivityControllerTest {
     public void closeEvent() throws Exception {
         SportsMan sportsMan = new SportsMan();
         Activity activity = new Activity();
-        activity.getRegistered().add(sportsMan);
+        activity.getParticipants().add(sportsMan);
         Statistic statistic = new Statistic();
         given(activityService.getSpecificActivity(1L)).willReturn(activity);
         mockMvc.perform(get("/factory/close?id=1"))
