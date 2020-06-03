@@ -172,8 +172,10 @@ public class SportsManController {
 			bindingResult.rejectValue("password","","The two passwords do not match.");
 			return "sportsman/updateUser";
 		}
+		long idcurrent = this.sportsManService.findCurrentUser(principal.getName()).getId();
+		long idform = sportsManForm.getId();
 		if(this.sportsManService.findCurrentUser(sportsManForm.getMail()) != null &&
-				this.sportsManService.findCurrentUser(principal.getName()).getId() != sportsManForm.getId()) {
+				idcurrent != idform) {
 			bindingResult.rejectValue("mail", "", "This account already exists");
 			return "sportsman/updateUser";
 		}
@@ -195,7 +197,9 @@ public class SportsManController {
 		boolean empty = true;
 		List<SportsMan> applications = managementService.getPromotionCandidates();
 		for (SportsMan demander: applications) {
-			if(demander.getId() == sportsManService.findCurrentUser(principal.getName()).getId()){
+			long idcurrent = this.sportsManService.findCurrentUser(principal.getName()).getId();
+			long idform = demander.getId();
+			if(idcurrent == idform){
 				empty = false;
 			}
 		}
@@ -208,13 +212,13 @@ public class SportsManController {
 		return "sportsman/userDetails";
 	}
 
-	//Show User Details
+
 	@RequestMapping(value = "/sportsman{id}", method = RequestMethod.GET)
 	public String getSportsManDetail(@RequestParam Long id, Model model){
 		model.addAttribute("sportsMan",sportsManService.findSpecificUser(id));
 		return "sportsman/externDetails";
 	}
-	//Send Message to user (à mettre sur la page du contact)
+
 
 	@RequestMapping(value = "/user/createMessage{id}", method = RequestMethod.GET)
 	public String getMessageForm(@RequestParam(required = false) Long id, Model model, Principal principal){

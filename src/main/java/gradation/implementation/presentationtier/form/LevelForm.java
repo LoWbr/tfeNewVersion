@@ -64,7 +64,10 @@ public class LevelForm {
         this.ratioPoints = ratioPoints;
     }
 
-    public LevelForm(){}
+    public LevelForm(){
+        this.maximumThreshold = 25000;
+        this.ratioPoints = 1.0;
+    }
 
     public LevelForm(Level level){
         this.id = level.getId();

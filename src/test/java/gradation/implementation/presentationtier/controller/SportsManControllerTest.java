@@ -140,7 +140,9 @@ public class SportsManControllerTest {
     @Test
     public void updateSportsMan() throws Exception {
         SportsMan current = new SportsMan();
+        current.setId(1L);
         SportsManForm sportsManForm = new SportsManForm();
+        sportsManForm.setId(2L);
         sportsManForm.setFirstname("Test");
         sportsManForm.setMail("test@gmail.com");
         sportsManForm.setDescription("complete");
@@ -178,6 +180,7 @@ public class SportsManControllerTest {
     @Test
     public void sportsManOwnDetails() throws Exception {
         SportsMan sportsMan = new SportsMan();
+        sportsMan.setId(1L);
         List<SportsMan> applications = new ArrayList<>();
         when(this.sportsManService.findCurrentUser(SecurityContextHolder.getContext().getAuthentication().getName()))
                 .thenReturn(sportsMan);

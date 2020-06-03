@@ -163,6 +163,7 @@ public class ActivityForm {
     }
 
     public ActivityForm() {
+        this.duration = 30;
         LocalDate current = LocalDate.now();
         this.plannedTo = current.toString();
         LocalTime currentTime = LocalTime.now();

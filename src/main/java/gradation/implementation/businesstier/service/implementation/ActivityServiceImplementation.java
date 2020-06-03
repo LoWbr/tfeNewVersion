@@ -18,9 +18,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@ConditionalOnProperty(name="app.service", havingValue = "main")
-@Service
-public class ActivityServiceImplementation implements ActivityService {
+   @ConditionalOnProperty(name="app.service", havingValue = "main")
+   @Service
+   public class ActivityServiceImplementation implements ActivityService {
 
     private ActivityRepository activityRepository;
 /*

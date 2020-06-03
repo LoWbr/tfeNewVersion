@@ -19,7 +19,9 @@ public class ActivityTypeForm {
     @NotNull
     private Double met;
 
-    public ActivityTypeForm(){}
+    public ActivityTypeForm(){
+        this.met = 2.5;
+    }
 
     public ActivityTypeForm(ActivityType activityType) {
         this.id = activityType.getId();

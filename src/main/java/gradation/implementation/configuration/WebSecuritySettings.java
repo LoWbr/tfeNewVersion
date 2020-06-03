@@ -71,7 +71,8 @@ public class WebSecuritySettings extends WebSecurityConfigurerAdapter {
                 .antMatchers("/manage/**").hasRole("ADMINISTRATOR")
                 .antMatchers("/factory/**").hasRole("CONFIRMED")
                 .antMatchers("/user/**").hasAnyRole("SIMPLY")
-                .antMatchers("/", "activities", "activity{id}", "/sportsmans", "/sportsman{id}","saveUser", "/contactUs", "/about", "/search").permitAll()
+                .antMatchers("/", "activities", "activity{id}", "/sportsmans", "/sportsman{id}",
+                        "saveUser", "/contactUs", "/about", "/search").permitAll()
                 .antMatchers("/signIn","/signUp").anonymous()
                 .and()
                 .authorizeRequests()
