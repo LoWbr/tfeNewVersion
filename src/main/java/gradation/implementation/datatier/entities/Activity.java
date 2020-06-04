@@ -260,4 +260,11 @@ public class Activity {
             return false;
     }
 
+    public boolean checkCreator(SportsMan sportsMan){
+        if(this.creator.getId() == sportsMan.getId())
+            return true;
+        else
+            return false;
+    }
+
 }

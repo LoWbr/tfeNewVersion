@@ -18,7 +18,19 @@
     </thead>
     <tbody>
     <tr th:each="message : ${messages}">
-        <td><span th:text="${message.getAddressee().get(0).getFirstName()}"> Title </span></td>
+        <!--<td><span th:text="${message.getAddressees().get(0).getFirstName()}"> Title </span></td>-->
+        <td><a href="#"
+               class="testPopover"
+                data-toggle="popover"
+                data-placement="right" title=""
+                data-trigger="hover"
+                data-html="true"
+                data-popover-content="#content">nb</a></td>
+        <div id="content">
+            <ul th:each="receptor: ${message.getAddressees()}">
+                <li th:text="${receptor.getFirstName()}"></li>
+            </ul>
+        </div>
         <td><span th:text="${message.getAbout()}"> Title </span></td>
         <td><span th:text="${message.getTimeOfDispatch()}"> Title </span></td>
     </tr>
@@ -36,7 +48,7 @@
     </thead>
     <tbody>
     <tr th:each="message : ${messages}">
-        <td><span th:text="${message.getOriginator().getFirstName()}"> Title </span></td>
+        <td><span th:text="${message.getAuthor().getFirstName()}"> Title </span></td>
         <td><span th:text="${message.getAbout()}"> Title </span></td>
         <td><span th:text="${message.getTimeOfDispatch()}"> Title </span></td>
     </tr>

@@ -22,7 +22,7 @@
     <tr th:each="event : ${allActivities}">
         <td><span th:text="${event.getName()}"> Title </span></td>
         <td><span th:text="${event.getActivityName()}"> Author </span></td>
-        <td><span th:text="${event.getRegistered().size()}"> Author </span></td>
+        <td><span th:text="${event.getParticipants().size()}"> Author </span></td>
         <td><span th:text="${event.getCreatorName()}"> Author </span></td>
         <td>
             <span th:if="${event.getOpen()}" th:text="OPEN"></span>
