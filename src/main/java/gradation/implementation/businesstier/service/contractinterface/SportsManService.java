@@ -53,4 +53,6 @@ public interface SportsManService {
     public void setResultForEventToParticipant(Activity activity, SportsMan sportsMan, double notation);
 
     List<SportsMan> getByFilter(SearchUserForm searchUserForm);
+
+    Message findSpecificMessage(Long id);
 }

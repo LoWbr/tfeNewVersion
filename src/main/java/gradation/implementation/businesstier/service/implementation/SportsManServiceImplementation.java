@@ -248,5 +248,10 @@ public class SportsManServiceImplementation implements SportsManService {
         return this.sportsManRepository.findbyForm(searchUserForm.getFirstName(), searchUserForm.getLastName());
     }
 
+    @Override
+    public Message findSpecificMessage(Long id) {
+        return this.messageRepository.findSpecific(id);
+    }
+
 
 }

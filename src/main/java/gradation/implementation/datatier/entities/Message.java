@@ -3,7 +3,10 @@ package gradation.implementation.datatier.entities;
 import gradation.implementation.presentationtier.form.*;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Entity
@@ -27,7 +30,7 @@ public class Message {
     @Lob
     private String content;
 
-    private LocalDateTime timeOfDispatch;
+    private Timestamp timeOfDispatch;
 
     public Message(){}
 
@@ -36,7 +39,9 @@ public class Message {
         this.addressees = messageForm.getAddressee();
         this.about = messageForm.getAbout();
         this.content = messageForm.getContent();
-        this.timeOfDispatch = LocalDateTime.now();
+        ZoneId zoneId = ZoneId.of("UTC+2");
+        ZonedDateTime current = ZonedDateTime.now(zoneId);
+        this.timeOfDispatch = Timestamp.valueOf(current.toLocalDateTime());
 
     }
 
@@ -80,11 +85,11 @@ public class Message {
         this.content = content;
     }
 
-    public LocalDateTime getTimeOfDispatch() {
+    public Timestamp getTimeOfDispatch() {
         return timeOfDispatch;
     }
 
-    public void setTimeOfDispatch(LocalDateTime timeOfDispatch) {
+    public void setTimeOfDispatch(Timestamp timeOfDispatch) {
         this.timeOfDispatch = timeOfDispatch;
     }
 

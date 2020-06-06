@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:if="${send}">
+    <h3 th:text="${message.getAbout()}"></h3>
+    <p th:text="'Time of dispatch : ' + ${message.getTimeOfDispatch()}"></p>
+    <p>Sent to :</p>
+    <div th:each="target : ${message.getAddressees()}">
+        <p th:text="${target.getFirstName() + ' '+ target.getLastName()}"></p>
+    </div>
+    <p th:text="${message.getContent()}"></p>
+</div>
+<div th:unless="${send}">
+    <h3 th:text="${message.getAbout()}"></h3>
+    <p th:text="'Time of dispatch : ' + ${message.getTimeOfDispatch()}"></p>
+    <p th:text="${'Sent by ' + message.getAuthor().getFirstName() + ' ' + message.getAuthor().getLastName()}"></p>
+    <p th:text="${message.getContent()}"></p>
+</div>
+</body>
+</html>

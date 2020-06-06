@@ -18,4 +18,7 @@ public interface MessageRepository extends CrudRepository<Message, Long> {
     List<Message> findByReceptor(
             @Param("user") SportsMan sportsman);
 
+    @Query("Select message from Message message where message.id = :id")
+    Message findSpecific(
+            @Param("id") Long id);
 }

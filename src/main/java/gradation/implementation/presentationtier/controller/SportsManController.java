@@ -262,7 +262,16 @@ public class SportsManController {
 		model.addAttribute("status", status);
 		return "sportsman/getMessages";
 	}
-	//Get Notification Page
+
+	@RequestMapping(value = "/user/message{id,send}", method = RequestMethod.GET)
+	public String getSpecificMessage(@RequestParam Long id, @RequestParam Boolean send ,Model model,
+									 Principal principal){
+		model.addAttribute("send", send);
+		model.addAttribute("message",
+				sportsManService.findSpecificMessage(id));
+		return "sportsman/message";
+	}
+
 	@RequestMapping(value = "/user/notifications", method = RequestMethod.GET)
 	public String notifications(Model model, Principal principal){
 		model.addAttribute("notifications",
