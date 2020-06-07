@@ -1,15 +1,30 @@
 
-/*body{
-    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 1)), url(pictures/background.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-color: black;
-}*/
-
-p,h5{
-    color: red;
+.img-fluid {
+    max-width: 100%;
+    height: auto;
 }
 
-.navbar{
-    background-color: #0b2e13;
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #fafafa;
+    text-transform: uppercase;
+    font-size: .75rem;
+}
+
+.navbar-light .navbar-nav .nav-link:hover,
+.navbar-light .navbar-nav .nav-link.active {
+    color: #90DEFF;
+}
+
+.navbar-light .navbar-nav .nav-link.btn {
+    background-color: #90DEFF;
+    padding-top: .5em;
+    padding-bottom: .5em;
+    padding-left: 20px;
+    padding-right: 20px;
 }
