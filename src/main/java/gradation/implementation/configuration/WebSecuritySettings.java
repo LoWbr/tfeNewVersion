@@ -51,6 +51,7 @@ public class WebSecuritySettings extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authprovider());
+        auth.eraseCredentials(false);
     }
 
     public AuthenticationProvider authprovider() {

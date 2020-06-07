@@ -13,12 +13,12 @@
 <h4>Kind of Activity</h4>
 <p th:text="${activity.getActivityName()}"></p>
 <h3>Participants</h3>
-<p th:text="${activity.getRegistered().size()}"></p>
+<p th:text="${activity.getParticipants().size()}"></p>
 <a th:href="@{/factory/manageparticipants(id=${activity.getId()})}">Manage the Participants</a>
 <h4>Creator</h4>
 <p th:text="${activity.getCreatorName()}"></p>
 <h3>Candidates</h3>
-<p th:text="${activity.getCandidate().size()}"></p>
+<p th:text="${activity.getCandidates().size()}"></p>
 <a th:href="@{/factory/managecandidates(id=${activity.getId()})}">Manage the Candidates</a>
 </form>
 <span th:if="${activity.getOpen()}"><a th:href="@{/factory/cancel(id=${activity.getId()})}">Cancel</a></span>

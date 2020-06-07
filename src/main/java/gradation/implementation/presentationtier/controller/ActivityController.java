@@ -94,9 +94,9 @@ public class ActivityController {
             bindingResult.rejectValue("hour","","You have to set a valid hour");
             return "activity/createEvent";
         }
-        else if(activityForm.getMinimumLevel().getPlace() > activityForm.getMaximumLevel().getPlace()){
-            bindingResult.rejectValue("maximumLevel", "", "Should be equal or greater than" +
-                    " Minimum Level");
+        else if(activityForm.getMinimumLevel().getPlace() > activityForm.getMaximumLevel().getPlace() ||
+                (activityForm.getMaximumLevel().getPlace() - activityForm.getMinimumLevel().getPlace()) > 1 ){
+            bindingResult.rejectValue("maximumLevel", "", "Should be equal or just one level up");
             return "activity/createEvent";
         }
         else if(activityService.getActivityByName(activityForm.getName()) != null){

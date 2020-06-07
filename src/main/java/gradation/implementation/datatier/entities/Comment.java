@@ -21,7 +21,8 @@ public class Comment {
     @Column(updatable = false, nullable = false)
     private Long id;
 
-    private Timestamp date;
+    @Basic
+    private LocalDateTime date;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id", nullable = false)
@@ -42,11 +43,11 @@ public class Comment {
         this.id = id;
     }
 
-    public Timestamp getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Timestamp date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -81,10 +82,8 @@ public class Comment {
         this.activity = commentForm.getActivity();
         this.author = commentForm.getAuthor();
         this.content = commentForm.getContent();
-        ZonedDateTime current = ZonedDateTime.now().plusHours(2);
-        Timestamp timestamp = Timestamp.valueOf(current.toLocalDateTime());
-        String value = timestamp.toString();
-        this.date = Timestamp.valueOf(value);
+        ZoneId zoneId = ZoneId.of("UTC+2");
+        this.date = LocalDateTime.now(zoneId);
     }
 
 }

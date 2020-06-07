@@ -30,7 +30,8 @@ public class Message {
     @Lob
     private String content;
 
-    private Timestamp timeOfDispatch;
+    @Basic
+    private LocalDateTime timeOfDispatch;
 
     public Message(){}
 
@@ -40,9 +41,7 @@ public class Message {
         this.about = messageForm.getAbout();
         this.content = messageForm.getContent();
         ZoneId zoneId = ZoneId.of("UTC+2");
-        ZonedDateTime current = ZonedDateTime.now(zoneId);
-        this.timeOfDispatch = Timestamp.valueOf(current.toLocalDateTime());
-
+        this.timeOfDispatch = LocalDateTime.now(zoneId);
     }
 
     public Long getId() {
@@ -85,11 +84,11 @@ public class Message {
         this.content = content;
     }
 
-    public Timestamp getTimeOfDispatch() {
+    public LocalDateTime getTimeOfDispatch() {
         return timeOfDispatch;
     }
 
-    public void setTimeOfDispatch(Timestamp timeOfDispatch) {
+    public void setTimeOfDispatch(LocalDateTime timeOfDispatch) {
         this.timeOfDispatch = timeOfDispatch;
     }
 

@@ -194,6 +194,8 @@ public class SportsManController {
 
 	@RequestMapping(value = "/user/details", method = RequestMethod.GET)
 	public String sportsManOwnDetails(Principal principal, Model model) {
+		System.out.println(SecurityContextHolder.getContext().getAuthentication().getCredentials().toString());
+		System.out.println(SecurityContextHolder.getContext().getAuthentication().getDetails());
 		boolean empty = true;
 		List<SportsMan> applications = managementService.getPromotionCandidates();
 		for (SportsMan demander: applications) {
