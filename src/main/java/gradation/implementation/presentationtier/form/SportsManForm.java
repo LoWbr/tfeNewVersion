@@ -21,7 +21,7 @@ public class SportsManForm {
 	@NotBlank(message = "Enter a lastname")
 	private String lastname;
 
-	@Size(max=100, message="Maximum 100 characters")
+	@Size(max=150, message="Maximum 150 characters")
 	private String description;
 
 	@NotBlank(message = "Enter a mail")
@@ -40,7 +40,7 @@ public class SportsManForm {
 
 	@Positive(message = "You have to put a valid value (positive)")
 	//    @NotNull(message = "Enter your weight")
-	private Double weight;
+	private Float weight;
 
 	public String getFirstname() {
 		return firstname;
@@ -106,11 +106,11 @@ public class SportsManForm {
 		this.dateofBirth = dateofBirth;
 	}
 
-	public Double getWeight() {
+	public Float getWeight() {
 		return weight;
 	}
 
-	public void setWeight(Double weight) {
+	public void setWeight(Float weight) {
 		this.weight = weight;
 	}
 

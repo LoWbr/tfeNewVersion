@@ -219,10 +219,10 @@ public class SportsManServiceImplementation implements SportsManService {
         if (notation != 0) {
             double durationInHours = (double) activity.getDuration() / 60;
             //Calcul de la dépense énergétique
-            Integer energeticExpenditure = Math.toIntExact(Math.round(sportsMan.getWeight() * durationInHours * activity.getTypeActivity().getMet()));
+            Short energeticExpenditure = (short)Math.toIntExact(Math.round(sportsMan.getWeight() * durationInHours * activity.getTypeActivity().getMet()));
             //Calcul des points acquis : base du ratio du niveau utilisateur, et de la cotation
-            Integer earnedPoints = Math.toIntExact((long) (energeticExpenditure * sportsMan.getLevel().getRatioPoints() * notation));
-            sportsMan.addPoints(earnedPoints);
+            Short earnedPoints = (short)Math.toIntExact((long) (energeticExpenditure * sportsMan.getLevel().getRatioPoints() * notation));
+            sportsMan.addPoints((int)earnedPoints);
             while(sportsMan.checkLevelStatus()){
                 Byte new_place = sportsMan.setLevelUp();
                 sportsMan.setLevel(activitySettingService.findLevelByPlace(new_place));
@@ -234,8 +234,8 @@ public class SportsManServiceImplementation implements SportsManService {
             //NEWS à mettre en place pour clôture cotation
         }
         else{
-            Integer energeticExpenditure = 0;
-            Integer earnedPoints = 0;
+            Short energeticExpenditure = 0;
+            Short earnedPoints = 0;
             Statistic statistic = sportsMan.generateStatistic(activity, earnedPoints, energeticExpenditure);
             this.saveStatistic(statistic);
             //NEWS à mettre en place pour clôture cotation

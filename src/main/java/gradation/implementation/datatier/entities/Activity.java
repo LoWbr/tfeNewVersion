@@ -18,13 +18,16 @@ public class Activity {
     @Column(updatable = false, nullable = false)
     private Long id;
 
+    @Column(length = 50, nullable = false)
     private String name;
 
     @Column(columnDefinition="TEXT")
     private String description;
 
+    @Column(nullable = false)
     private LocalDate plannedTo;
 
+    @Column(nullable = false)
     private LocalTime hour;
 
     @OneToOne

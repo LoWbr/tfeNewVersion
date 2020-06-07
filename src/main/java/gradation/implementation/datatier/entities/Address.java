@@ -11,15 +11,15 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id",updatable = true, nullable = false)
     private Long id;
-
+    @Column(nullable = false)
     private Short number;
-
+    @Column(length = 60, nullable = false)
     private String street;
-
+    @Column(nullable = false)
     private Integer postalCode;
-
+    @Column(length = 60, nullable = false)
     private String city;
-
+    @Column(length = 80, nullable = false)
     private String country;
 
     public Long getId() {

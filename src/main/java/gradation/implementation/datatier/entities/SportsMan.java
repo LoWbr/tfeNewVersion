@@ -17,30 +17,32 @@ public class SportsMan  {
     @Column(updatable = true, nullable = false)
     private Long id;
 
-    @Column(length = 30)
+    @Column(length = 30, nullable = false)
     private String firstName;
 
-    @Column(length = 30)
+    @Column(length = 30, nullable = false)
     private String lastName;
 
     @Column(columnDefinition="TEXT")
     private String description;
 
-    @Column(columnDefinition = "DATE")
+    @Column(columnDefinition = "DATE", nullable = false)
     private LocalDate dateOfBirth;
 
-    @Column(length = 40)
+    @Column(length = 40, nullable = false)
     private String email;
 
-    @Column(length = 80)
+    @Column(length = 60 , nullable = false)
     private String password;
 
     @OneToOne
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private Level level;
 
-    private Double weight;
+    @Column(nullable = false, precision = 4, scale = 1)
+    private Float weight;
 
+    @Column(nullable = false)
     private Integer points;
 
     @Column(nullable = false)
@@ -152,11 +154,11 @@ public class SportsMan  {
         this.registeredActivities = registeredActivities;
     }
 
-    public Double getWeight() {
+    public Float getWeight() {
         return weight;
     }
 
-    public void setWeight(Double weight) {
+    public void setWeight(Float weight) {
         this.weight = weight;
     }
 
@@ -271,7 +273,7 @@ public class SportsMan  {
         return Period.between(dateOfBirth,current).getYears();
     }
 
-    public Statistic generateStatistic(Activity activity, Integer earnedPoints, Integer energeticExpenditure) {
+    public Statistic generateStatistic(Activity activity, Short earnedPoints, Short energeticExpenditure) {
         Statistic statistic = new Statistic(this, activity, earnedPoints, energeticExpenditure);
         return statistic;
     }

@@ -22,7 +22,7 @@ public class LevelForm {
     @Positive(message = "You have to put a valid value (positive)")
     @Digits(integer=1, fraction=1, message = "only one decimal")
     @NotNull
-    private Double ratioPoints;
+    private Float ratioPoints;
 
     public Long getId() {
         return id;
@@ -56,17 +56,17 @@ public class LevelForm {
         this.maximumThreshold = maximumThreshold;
     }
 
-    public Double getRatioPoints() {
+    public Float getRatioPoints() {
         return ratioPoints;
     }
 
-    public void setRatioPoints(Double ratioPoints) {
+    public void setRatioPoints(Float ratioPoints) {
         this.ratioPoints = ratioPoints;
     }
 
     public LevelForm(){
         this.maximumThreshold = 25000;
-        this.ratioPoints = 1.0;
+        this.ratioPoints = 1.0f;
     }
 
     public LevelForm(Level level){

@@ -92,7 +92,7 @@ public class SportsManControllerTest {
         sportsManForm.setFirstname("Test");
         sportsManForm.setMail("test@gmail.com");
         sportsManForm.setDescription("complete");
-        sportsManForm.setWeight(70.0);
+        sportsManForm.setWeight(70.0f);
         sportsManForm.setDateofBirth("2010-05-22");
         sportsManForm.setPassword("testtesttest");
         sportsManForm.setConfirmPassword("wrongwrong");
@@ -146,7 +146,7 @@ public class SportsManControllerTest {
         sportsManForm.setFirstname("Test");
         sportsManForm.setMail("test@gmail.com");
         sportsManForm.setDescription("complete");
-        sportsManForm.setWeight(70.0);
+        sportsManForm.setWeight(70.0f);
         sportsManForm.setDateofBirth("2010-05-22");
         sportsManForm.setPassword("testtesttest");
         sportsManForm.setConfirmPassword("wrongwrong");

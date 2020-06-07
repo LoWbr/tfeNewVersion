@@ -12,11 +12,11 @@ public class LevelTest {
         Level level = new Level();
         level.setName("Hero");
         level.setMaximumThreshold(15000);
-        level.setRatioPoints(0.5);
+        level.setRatioPoints(0.5f);
         LevelForm levelForm = new LevelForm();
         levelForm.setName("Test");
         levelForm.setMaximumThreshold(1000);
-        levelForm.setRatioPoints(0.4);
+        levelForm.setRatioPoints(0.4f);
         level.update(levelForm);
         assertEquals(levelForm.getMaximumThreshold(),level.getMaximumThreshold());
         assertEquals(levelForm.getName(),level.getName());

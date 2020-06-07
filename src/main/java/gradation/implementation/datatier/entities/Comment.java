@@ -32,7 +32,7 @@ public class Comment {
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private Activity activity;
 
-    @Lob
+    @Column(length = 150, nullable = false)
     private String content;
 
     public Long getId() {

@@ -10,10 +10,10 @@ public class ActivityTypeTest {
     @Test
     public void update() {
         ActivityType activityType = new ActivityType();
-        activityType.setMet(1.85);
+        activityType.setMet(1.85f);
         activityType.setName("Biking");
         ActivityTypeForm activityTypeForm = new ActivityTypeForm();
-        activityTypeForm.setMet(2.05);
+        activityTypeForm.setMet(2.05f);
         activityTypeForm.setName("Cycling");
         activityType.update(activityTypeForm);
         assertEquals(activityTypeForm.getMet(), activityType.getMet());

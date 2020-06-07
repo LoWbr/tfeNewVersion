@@ -43,14 +43,14 @@ public class SportsManTest {
         sportsMan.setLastName("Weber");
         sportsMan.setEmail("laurent@gmail.com");
         sportsMan.setDescription("------");
-        sportsMan.setWeight(84.5);
+        sportsMan.setWeight(84.5f);
         sportsMan.setDateOfBirth(LocalDate.of(1990,05,15));
         SportsManForm sportsManForm = new SportsManForm();
         sportsManForm.setFirstname("Test");
         sportsManForm.setLastname("testLastName");
         sportsManForm.setMail("test@gmail.com");
         sportsManForm.setDescription("complete");
-        sportsManForm.setWeight(70.0);
+        sportsManForm.setWeight(70.0f);
         sportsManForm.setDateofBirth("1990-05-22");
         sportsMan.updateSportsMan(sportsManForm);
         assertEquals("Test", sportsMan.getFirstName());

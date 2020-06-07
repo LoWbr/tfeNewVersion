@@ -17,10 +17,10 @@ public class ActivityTypeForm {
     @Positive(message = "You have to put a valid value (positive)")
     @Digits(integer=2, fraction=1, message = "only one decimal")
     @NotNull
-    private Double met;
+    private Float met;
 
     public ActivityTypeForm(){
-        this.met = 2.5;
+        this.met = 2.5f;
     }
 
     public ActivityTypeForm(ActivityType activityType) {
@@ -45,11 +45,11 @@ public class ActivityTypeForm {
         this.name = name;
     }
 
-    public Double getMet() {
+    public Float getMet() {
         return met;
     }
 
-    public void setMet(Double met) {
+    public void setMet(Float met) {
         this.met = met;
     }
 }

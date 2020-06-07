@@ -11,7 +11,7 @@ public class Role {
     @Column(updatable = true, nullable = false)
     private Long id;
 
-    @Column(nullable = true)
+    @Column(length = 40, nullable = false)
     private String name;
 
     @ManyToMany(mappedBy = "roles")

@@ -11,11 +11,11 @@ public class News{
     private Long id;
 
     @OneToOne
-    @JoinColumn(referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "id", nullable = false)
     private SportsMan target;
 
     @OneToOne
-    @JoinColumn(referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "id", nullable = false)
     private SportsMan source;
 
     @OneToOne
@@ -23,9 +23,10 @@ public class News{
     private Activity activity;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private NewsType type;
 
-    @Column(length = 120)
+    @Column(length = 120, nullable = false)
     private String content;
 
     private boolean seen;

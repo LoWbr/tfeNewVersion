@@ -15,8 +15,8 @@ public class ActivityType {
     @Column(length = 40, nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private Double met;
+    @Column(nullable = false , precision = 3, scale = 1)
+    private Float met;
 
     public Long getId() {
         return id;
@@ -34,11 +34,11 @@ public class ActivityType {
         this.name = name;
     }
 
-    public Double getMet() {
+    public Float getMet() {
         return met;
     }
 
-    public void setMet(Double met) {
+    public void setMet(Float met) {
         this.met = met;
     }
 

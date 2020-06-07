@@ -14,13 +14,13 @@ public class Statistic {
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private SportsMan sportsMan;
 
-    private Integer earnedPoints;
+    private Short earnedPoints;
 
     @OneToOne
     private Activity activity;
 
-    @Column(precision = 4, scale = 2)
-    private Integer energyExpenditure;
+    @Column
+    private Short energyExpenditure;
 
     public SportsMan getSportsMan() {
         return sportsMan;
@@ -30,11 +30,11 @@ public class Statistic {
         this.sportsMan = sportsMan;
     }
 
-    public Integer getEarnedPoints() {
+    public Short getEarnedPoints() {
         return earnedPoints;
     }
 
-    public void setEarnedPoints(Integer earnedPoints) {
+    public void setEarnedPoints(Short earnedPoints) {
         this.earnedPoints = earnedPoints;
     }
 
@@ -46,18 +46,18 @@ public class Statistic {
         this.activity = activity;
     }
 
-    public Integer getEnergyExpenditure() {
+    public Short getEnergyExpenditure() {
         return energyExpenditure;
     }
 
-    public void setEnergyExpenditure(Integer energyExpenditure) {
+    public void setEnergyExpenditure(Short energyExpenditure) {
         this.energyExpenditure = energyExpenditure;
     }
 
     public Statistic() {
     }
 
-    public Statistic(SportsMan sportsMan, Activity activity, Integer earnedPoints, Integer energyExpenditure) {
+    public Statistic(SportsMan sportsMan, Activity activity, Short earnedPoints, Short energyExpenditure) {
         this.sportsMan = sportsMan;
         this.activity = activity;
         this.earnedPoints = earnedPoints;

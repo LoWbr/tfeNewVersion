@@ -5,6 +5,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Entity
 public class Topic {
@@ -14,14 +16,14 @@ public class Topic {
     @Column(updatable = true, nullable = false)
     private Long id;
 
-    @CreationTimestamp
-    private Timestamp date;
+    @Basic
+    private LocalDateTime date;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private SportsMan author;
 
-    @Lob
+    @Column(length = 200, nullable = false)
     private String content;
 
     public Long getId() {
@@ -32,11 +34,11 @@ public class Topic {
         this.id = id;
     }
 
-    public Timestamp getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Timestamp date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -62,8 +64,8 @@ public class Topic {
     public Topic(SportsMan sportsMan, TopicForm topicForm) {
         this.content = topicForm.getContent();
         this.author = sportsMan;
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        this.date = timestamp;
+        ZoneId zoneId = ZoneId.of("UTC+2");
+        this.date = LocalDateTime.now(zoneId);
     }
 
 

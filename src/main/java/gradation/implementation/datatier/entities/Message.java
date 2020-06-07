@@ -22,15 +22,18 @@ public class Message {
     private List<SportsMan> addressees;
 
     @ManyToOne
-    @JoinColumn(referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "id", nullable = false)
     private SportsMan author;
 
+    @Column(length = 50, nullable = false)
     private String about;
 
     @Lob
+    @Column(nullable = false)
     private String content;
 
     @Basic
+    @Column(nullable = false)
     private LocalDateTime timeOfDispatch;
 
     public Message(){}

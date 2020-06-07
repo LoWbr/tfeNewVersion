@@ -228,7 +228,7 @@ public class ManagementControllerTest {
     public void updateType() throws Exception {
         ActivityType type1 = new ActivityType();
         type1.setId(1L);
-        type1.setMet(2.5);
+        type1.setMet(2.5f);
         type1.setName("tttttttttttttt");
         ActivityTypeForm form = new ActivityTypeForm(type1);
         when(activitySettingService.findSpecificActivityType(1L)).thenReturn(type1);
@@ -236,7 +236,7 @@ public class ManagementControllerTest {
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("management/settingUpdatePage"));
         form.setName("Testtesttest");
-        form.setMet(2.6);
+        form.setMet(2.6f);
         mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/manage/types/update",form))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/manage/types"));
@@ -251,7 +251,7 @@ public class ManagementControllerTest {
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("management/settingUpdatePage"));
         form.setName("Testtesttest");
-        form.setMet(2.6);
+        form.setMet(2.6f);
         mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/manage/types/add",form))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/manage/types"));
@@ -290,7 +290,7 @@ public class ManagementControllerTest {
         mockMvc.perform(post("/manage/levels/update"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("management/settingUpdatePage"));
-        form.setRatioPoints(0.2);
+        form.setRatioPoints(0.2f);
         form.setMaximumThreshold(15000);
         form.setName("ttestttesst");
         form.setId(1L);
