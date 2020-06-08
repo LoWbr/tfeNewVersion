@@ -44,7 +44,8 @@ public class ActivityController {
     }
 
     @RequestMapping(value ="/activities", method = RequestMethod.GET)
-    public String getAllEvents(Model model) {
+    public String getAllEvents(Model model, Principal principal) {
+        model.addAttribute("current", sportsManService.findCurrentUser(principal.getName()));
         model.addAttribute("allActivities", activityService.getAllActivities());
         return "activity/events";
     }

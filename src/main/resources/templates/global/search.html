@@ -1,19 +1,34 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="en" xmlns:th="http://thymeleaf.org"   xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-    <meta charset="UTF-8">
-    <title>Search</title>
-    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+    <link th:href="@{/css/contentSetting.css}" href="../../css/contentSetting.css}" rel="stylesheet" type="text/css" media="all"/>
+    <script th:src="@{/jquery/jquery.min.js}"></script>
+    <script th:src="@{/popper/popper.min.js}"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script></head>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+        integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous">
+</script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+        integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous">
+</script>
 </head>
 <body>
-<th:block th:include="/navbar"></th:block>
-<a th:href="@{/search}">Clear the Search</a>
+<th:block th:include="/navbar2"></th:block>
+<div class="container">
+    <h3 style="margin-top: 5%; margin-bottom: 2%;">Find to your taste!</h3>
 <form th:action="@{/searchbyfilter}"
-      th:object="${searchActivityForm}" method="POST" class="pure-form pure-form-stacked">
-    <div class="pure-g">
-        <div class="pure-u-1-4">
+      th:object="${searchActivityForm}" method="POST">
+    <div class="form-group">
+        <div class="form-row">
+            <div class="form-group col-md-4">
             <label>Activity</label>
-            <select class="pure-u-23-24" th:field="*{activity}">
+            <select class="form-control" th:field="*{activity}">
                 <option value="" selected> Activity Filter </option>
                 <option th:each="type : ${allKinds}"
                         th:value="${type.getId()}"
@@ -21,21 +36,23 @@
                 </option>
             </select>
         </div>
-        <div class="pure-u-1-4">
+        <div class="form-group col-md-4">
             <label>After..</label>
-        <input class="pure-u-24-24" type="date" th:field="*{date}"/>
+        <input class="form-control" type="date" th:field="*{date}"/>
         </div>
-        <div class="pure-u-1-4">
+        <div class="form-group col-md-4">
             <label>Minimum Duration</label>
-            <input class="pure-u-24-24" type="number" th:field="*{duration}">
+            <input class="form-control" type="number" th:field="*{duration}">
         </div>
-        <div class="pure-u-1-4">
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
             <label>City</label>
-            <input class="pure-u-23-24" type="text" th:field="*{city}"/>
+            <input class="form-control" type="text" th:field="*{city}"/>
         </div>
-        <div class="pure-u-1-4">
+        <div class="form-group col-md-4">
             <label>Minimum Level</label>
-            <select class="pure-u-23-24" th:field="*{minimumLevel}">
+            <select class="form-control" th:field="*{minimumLevel}">
                 <option value="" selected> Minimum Level Filter </option>
                 <option th:each="level : ${allLevels}"
                         th:value="${level.getId()}"
@@ -43,9 +60,9 @@
                 </option>
             </select>
         </div>
-        <div class="pure-u-1-4">
+        <div class="form-group col-md-4">
             <label>Maximum Level</label>
-            <select class="pure-u-23-24" th:field="*{maximumLevel}">
+            <select class="form-control" th:field="*{maximumLevel}">
                 <option value="" selected> Minimum Level Filter </option>
                 <option th:each="level : ${allLevels}"
                         th:value="${level.getId()}"
@@ -53,17 +70,19 @@
                 </option>
             </select>
         </div>
-        <div class="pure-u-1-1">
-            <button class="pure-button pure-button" type="submit">Save</button>
         </div>
+        <button class="btn btn-primary" type="submit">Search</button>
     </div>
 </form>
-<table>
+    <a th:href="@{/search}">Clear the Search</a>
+
+    <table class="table table-hover">
     <thead>
     <tr>
         <th> Name</th>
         <th> Kind</th>
-        <th> Level</th>
+        <th> Min Level</th>
+        <th> Max Level</th>
         <th> Duration</th>
         <th> City</th>
         <th> Date</th>
@@ -90,6 +109,7 @@
     </tr>
     </tbody>
 </table>
-
+</div>
+<th:block th:include="/footer"></th:block>
 </body>
 </html>

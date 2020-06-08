@@ -1,38 +1,48 @@
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Home</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link th:href="@{/bootstrap/css/bootstrap.min.css}"
           rel="stylesheet" media="screen"/>
     <link th:href="@{/css/contentSetting.css}" href="../../css/contentSetting.css}" rel="stylesheet" type="text/css" media="all"/>
     <script th:src="@{/jquery/jquery.min.js}"></script>
     <script th:src="@{/popper/popper.min.js}"></script>
-    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script></head></head>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script></head>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+        integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous">
+</script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+        integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous">
+</script>
+</head>
 <body>
-<!--<th:block th:include="/navbar"></th:block>
-<h3>All of the Events</h3>
-<div class="pure-u-1-3" th:each="event : ${allActivities}">
-    <div class="card">
-        <h3 th:text="${event.getName()}"></h3>
-    </div>
-</div>-->
 <th:block th:include="/navbar2"></th:block>
-<h2 style="text-align: center; margin-top:5%">What are you looking For?</h2>
-<div style="margin-top:5%" class="container">
+<h2 style="text-align: center; margin-top:5%; margin-bottom: 2%;">What are you looking For?</h2>
+<div class="container">
     <h4 style="text-align: right;">Need filters? <a th:href="@{/search}">Click Here</a></h4>
-    <div style="margin-top:5%" class="row">
+    <div style="margin-top:2%" class="row">
         <div class="col-sm-4" th:each="event : ${allActivities}">
-            <div class="card">
-                <img class="card-img-top" th:src="@{'https://source.unsplash.com/random/225*175/?' + ${event.getActivityName()}}" alt="Card image cap"/>
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${event.getName()}">Special title treatment</h5>
-                    <p class="card-text" th:text="${event.getDescription()}">With supporting text below as a natural lead-in to additional content.</p>
-                    <a th:href="@{/activity(id=${event.getId()})}" class="btn btn-primary">Go</a>
+            <article class="card card--unmatched mb-3 ">
+                <header class="card__header">
+                <img class="card-img-top" th:src="@{'https://source.unsplash.com/random/225*175/?' + ${event.getActivityName()}}"
+                     alt="Card image cap"/>
+                    <div th:if="${event.checkLevel(current)}"><span class="card__status card__status--matched">Available</span></div>
+                    <div th:unless="${event.checkLevel(current)}"><span class="card__status card__status--unmatched">No Match</span></div>
+                </header>
+                <div class="card__content">
+                    <span class="card__subtitle mb-2 text-muted" th:text="${event.getTypeActivity().getName()}"></span>
+                    <h2 class="card__title" th:text="${event.getName()}"></h2>
+                    <p class="card__text" th:text="${#strings.abbreviate(event.getDescription(),35)}"></p>
+                    <a th:href="@{/activity(id=${event.getId()})}" class="card__btn btn btn-primary stretched-link">Show</a>
                 </div>
-            </div>
+            </article>
             <br />
         </div>
     </div>
 </div>
+<th:block th:include="/footer"></th:block>
 </body>
 </html>

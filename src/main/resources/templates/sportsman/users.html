@@ -1,52 +1,83 @@
-<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-    <meta charset="UTF-8">
-    <title>Home</title>
-    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+    <link th:href="@{/css/contentSetting.css}" href="../../css/contentSetting.css}" rel="stylesheet" type="text/css" media="all"/>
+    <script th:src="@{/jquery/jquery.min.js}"></script>
+    <script th:src="@{/popper/popper.min.js}"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script></head>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+        integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous">
+</script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+        integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous">
+</script>
 </head>
 <body>
-<th:block th:include="/navbar"></th:block>
-<h3>Find a Friend!!</h3>
+<th:block th:include="/navbar2"></th:block>
 <div th:if="${all}">
-<a th:href="@{/sportsmans}">Clear the Search</a>
+    <div class="container">
+        <h3 style="margin-top: 5%; margin-bottom: 2%;">Find a Friend!!</h3>
 <form th:action="@{/sportsmenbyfilter}"
-      th:object="${searchUserForm}" method="POST" class="pure-form pure-form-stacked">
-    <div class="pure-g">
-        <div class="pure-u-1-4">
-            <label>FirstName</label>
-            <input class="pure-u-23-24" type="text" th:field="*{firstName}"/>
+      th:object="${searchUserForm}" method="POST">
+    <legend>Give a firstname and/or a lastname</legend>
+    <div class="form-group">
+        <div class="form-row">
+        <div class="form-group col-md-5">
+            <label>Firstname</label>
+            <input type="text" class="form-control" th:field="*{firstName}"/>
         </div>
-        <div class="pure-u-1-4">
-            <label>LastName</label>
-            <input class="pure-u-23-24" type="text" th:field="*{lastName}"/>
+        <div class="form-group col-md-5">
+            <label>Lastname</label>
+            <input type="text" class="form-control" th:field="*{lastName}"/>
         </div>
-        <div class="pure-u-1-1">
-            <button class="pure-button pure-button" type="submit">Save</button>
         </div>
+        <button class="btn btn-primary" type="submit">Search</button>
     </div>
 </form>
+    </div>
 </div>
-<table>
-    <thead>
-    <tr>
-        <th> User</th>
-        <th> Status</th>
-        <th> Level</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="sportsman : ${allUsers}">
-        <td><span th:text="${sportsman.getFirstName() + ' ' + sportsman.getLastName()}"> Title </span></td>
+<div class="container" id="interval">
+    <a th:href="@{/sportsmans}">Clear the Search</a>
+</div>
+<div class="container">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">First name</th>
+            <th scope="col">Last name</th>
+            <th scope="col">Level</th>
+            <th scope="col">Status</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="sportsman : ${allUsers}">
+        <td><span th:text="${sportsman.getFirstName()}"></span></td>
+            <td><span th:text="${sportsman.getLastName()}"></span></td>
+            <td><span th:text="${sportsman.getLevel().getName()}"></span></td>
         <td>
             <span th:if="${sportsman.getBlocked()}" th:text="BLOCKED"></span>
             <span th:unless="${sportsman.getBlocked()}" th:text="Active"></span>
         </td>
-        <td><span th:text="${sportsman.getLevel().getName()}"> Title </span></td>
         <td><a th:href="@{/sportsman(id=${sportsman.getId()})}">Details</a></td>
         <td sec:authorize="isAuthenticated()">
-            <a th:href="@{/user/addContact(id=${sportsman.getId()})}">Add as Contact</a>
+            <div th:if="${current.getId() != sportsman.getId()}">
+             <span th:if="${current.hasContact(sportsman)}">Already your Friend</span>
+            <span th:unless="${current.hasContact(sportsman)}"><a th:href="@{/user/addContact(id=${sportsman.getId()})}">Put in your Contacts list</a></span>
+            </div>
         </td>
     </tr>
     </tbody>
 </table>
+</div>
+<th:block th:include="/footer"></th:block>
 </body>
+</html>

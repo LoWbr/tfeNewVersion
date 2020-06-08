@@ -52,16 +52,19 @@ public class SportsManController {
 	}
 
 	@RequestMapping(value = "/sportsmans", method = RequestMethod.GET)
-	public String getSportsMen(Model model) {
+	public String getSportsMen(Model model, Principal principal) {
 		model.addAttribute("all", true);
-		model.addAttribute("allUsers", sportsManService.getAllUser());
+		model.addAttribute("current", sportsManService.findCurrentUser(principal.getName()));
+		model.addAttribute("allUsers", sportsManService.getAllExceptConnectedUser(sportsManService.findCurrentUser(principal.getName()).getId()));
 		model.addAttribute("searchUserForm", new SearchUserForm());
 		return "sportsman/users";
 	}
 
 	@RequestMapping(value = "/sportsmenbyfilter", method = RequestMethod.POST)
-	public String getSportsMenByFilter(Model model, @ModelAttribute("searchUserForm") SearchUserForm searchUserForm) {
+	public String getSportsMenByFilter(Model model, @ModelAttribute("searchUserForm") SearchUserForm searchUserForm,
+									   Principal principal) {
 		model.addAttribute("all", true);
+		model.addAttribute("current", sportsManService.findCurrentUser(principal.getName()));
 		if (searchUserForm.getFirstName().equals("")) {
 			searchUserForm.setFirstName(null);
 		}
@@ -298,6 +301,7 @@ public class SportsManController {
 	public String getUnknowUsers(Model model, Principal principal){
 		model.addAttribute("all",false);
 		model.addAttribute("searchUserForm", new SearchUserForm());
+		model.addAttribute("current", sportsManService.findCurrentUser(principal.getName()));
 		model.addAttribute("allUsers",
 				sportsManService.getPotentialContacts(sportsManService.findCurrentUser(principal.getName())));
 		return "sportsman/users";

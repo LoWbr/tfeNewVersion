@@ -277,4 +277,12 @@ public class SportsMan  {
         Statistic statistic = new Statistic(this, activity, earnedPoints, energeticExpenditure);
         return statistic;
     }
+
+    public boolean hasContact(SportsMan sportsMan){
+        if(this.getContacts().contains(sportsMan))
+            return true;
+        else
+            return false;
+    }
+
 }
