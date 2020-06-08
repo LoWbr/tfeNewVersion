@@ -4,6 +4,8 @@ import gradation.implementation.businesstier.service.contractinterface.*;
 import gradation.implementation.datatier.entities.Activity;
 import gradation.implementation.datatier.entities.NewsType;
 import gradation.implementation.presentationtier.exception.CreatorNotMatchingException;
+import gradation.implementation.presentationtier.exception.DoubleRequestException;
+import gradation.implementation.presentationtier.exception.EmptyRequestException;
 import gradation.implementation.presentationtier.form.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -202,6 +204,10 @@ public class ActivityController {
 
     @RequestMapping(value = "/user/postulate{id}", method = RequestMethod.GET)
     public String applyAsCandidate(@RequestParam(value = "id") Long id, Principal principal) {
+        if(activityService.getSpecificActivity(id).getCandidates().contains(sportsManService.findCurrentUser(principal.getName())))
+        {
+            throw new DoubleRequestException(principal.getName());
+        }
         activityService.applyAsCandidate(activityService.getSpecificActivity(id),
                 sportsManService.findCurrentUser(principal.getName()));
         return "redirect:/activity?id="+id;
@@ -257,7 +263,11 @@ public class ActivityController {
 
     @RequestMapping(value = "/factory/removeuser{idActivity,idUser}", method = RequestMethod.GET)
     public String removeUser(@RequestParam Long idUser,
-                             @RequestParam Long idActivity) {
+                             @RequestParam Long idActivity, Principal principal) {
+        if(!activityService.getSpecificActivity(idActivity).checkCreator(sportsManService.findCurrentUser(principal.getName())))
+        {
+            throw new CreatorNotMatchingException(principal.getName());
+        }
         activityService.addOrRemoveParticipants(activityService.getSpecificActivity(idActivity),
                 sportsManService.findSpecificUser(idUser),false);
         return "redirect:/factory/manageparticipants?id="+idActivity;
@@ -265,13 +275,21 @@ public class ActivityController {
 
     @RequestMapping(value = "/user/quit{id}", method = RequestMethod.GET)
     public String userLeave(@RequestParam(value = "id") Long idActivity, Principal principal) {
-        activityService.participantDropout(activityService.getSpecificActivity(idActivity),
+        if(!activityService.getSpecificActivity(idActivity).getParticipants().contains(sportsManService.findCurrentUser(principal.getName())))
+        {
+            throw new EmptyRequestException(principal.getName());
+        }
+            activityService.participantDropout(activityService.getSpecificActivity(idActivity),
                 sportsManService.findCurrentUser(principal.getName()));
         return "redirect:/user/getRegisteredEvents?id="+ sportsManService.findCurrentUser(principal.getName()).getId();
     }
 
     @RequestMapping(value = "/factory/invitecontactpage{id}", method = RequestMethod.GET)
     public String inviteContactPage(@RequestParam(value = "id") Long id, Model model, Principal principal) {
+        if(!activityService.getSpecificActivity(id).checkCreator(sportsManService.findCurrentUser(principal.getName())))
+        {
+            throw new CreatorNotMatchingException(principal.getName());
+        }
         model.addAttribute("contacts", sportsManService.getAllContacts(principal.getName()));
         model.addAttribute("activity", activityService.getSpecificActivity(id));
         return "activity/inviteContactToActivity";

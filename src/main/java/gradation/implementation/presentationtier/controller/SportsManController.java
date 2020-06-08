@@ -2,12 +2,16 @@ package gradation.implementation.presentationtier.controller;
 
 import gradation.implementation.businesstier.service.contractinterface.*;
 import gradation.implementation.datatier.entities.SportsMan;
+import gradation.implementation.presentationtier.exception.CreatorNotMatchingException;
+import gradation.implementation.presentationtier.exception.DoubleRequestException;
+import gradation.implementation.presentationtier.exception.EmptyRequestException;
 import gradation.implementation.presentationtier.form.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -139,6 +143,25 @@ public class SportsManController {
 		SecurityContextHolder.getContext().setAuthentication(newAuth);
 	}
 
+	public void addAuthority(String mail,String pwd) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
+		for (GrantedAuthority grantedAuthority: updatedAuthorities) {
+			System.out.println(grantedAuthority.getAuthority());
+		}
+		Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(),
+				updatedAuthorities);
+		SecurityContextHolder.getContext().setAuthentication(newAuth);
+	}
+
+	@RequestMapping(value = "/user/check", method = RequestMethod.GET)
+	public String refreshStatus(){
+		String mail = SecurityContextHolder.getContext().getAuthentication().getName();
+		String pwd = SecurityContextHolder.getContext().getAuthentication().getCredentials().toString();
+
+		return "redirect:/logout";
+	}
+
 	@RequestMapping(value = "/user/update", method = RequestMethod.GET)
 	public String updateSportsManForm(Model model, Principal principal) {
 		model.addAttribute("sportsManForm",
@@ -197,8 +220,6 @@ public class SportsManController {
 
 	@RequestMapping(value = "/user/details", method = RequestMethod.GET)
 	public String sportsManOwnDetails(Principal principal, Model model) {
-		System.out.println(SecurityContextHolder.getContext().getAuthentication().getCredentials().toString());
-		System.out.println(SecurityContextHolder.getContext().getAuthentication().getDetails());
 		boolean empty = true;
 		List<SportsMan> applications = managementService.getPromotionCandidates();
 		for (SportsMan demander: applications) {
@@ -230,6 +251,10 @@ public class SportsManController {
 		MessageForm messageForm = new MessageForm();
 		boolean showInput;
 		if (id != null) {
+			if(!sportsManService.findCurrentUser(principal.getName()).hasContact(sportsManService.findSpecificUser(id)))
+			{
+				throw new EmptyRequestException(principal.getName());
+			}
 			showInput = false;
 			model.addAttribute("showInput",showInput);
 			messageForm.setOriginator(sportsManService.findCurrentUser(principal.getName()));
@@ -316,6 +341,10 @@ public class SportsManController {
 	@RequestMapping(value = "/user/addContact{id}", method = RequestMethod.GET)
 	public String addContact(@RequestParam Long id,
 			Principal principal) {
+		if(sportsManService.findCurrentUser(principal.getName()).hasContact(sportsManService.findSpecificUser(id)))
+		{
+			throw new DoubleRequestException(principal.getName());
+		}
 		sportsManService.addOrRemoveContacts(sportsManService.findCurrentUser(principal.getName()),
 				sportsManService.findSpecificUser(id), true);
 		return "redirect:/user/findNewUsers";
@@ -324,6 +353,10 @@ public class SportsManController {
 	@RequestMapping(value = "/user/removeContact{id}", method = RequestMethod.GET)
 	public String removeContact(@RequestParam Long id,
 			Principal principal) {
+		if(!sportsManService.findCurrentUser(principal.getName()).hasContact(sportsManService.findSpecificUser(id)))
+		{
+			throw new EmptyRequestException(principal.getName());
+		}
 		sportsManService.addOrRemoveContacts(sportsManService.findCurrentUser(principal.getName()),
 				sportsManService.findSpecificUser(id), false);
 		return "redirect:/user/contacts";
@@ -337,7 +370,11 @@ public class SportsManController {
 
 	@RequestMapping(value = "/factory/noteuser{idActivity,idUser}", method = RequestMethod.POST)
 	public String noteUser(@RequestParam(value = "idActivity") Long idActivity,
-                           @RequestParam(value = "idUser") Long idUser, NotationForm notationForm){
+                           @RequestParam(value = "idUser") Long idUser, NotationForm notationForm, Principal principal){
+		if(!activityService.getSpecificActivity(idActivity).checkCreator(sportsManService.findCurrentUser(principal.getName())))
+		{
+			throw new CreatorNotMatchingException(principal.getName());
+		}
 		this.sportsManService.setResultForEventToParticipant(activityService.getSpecificActivity(idActivity),
 				sportsManService.findSpecificUser(idUser), notationForm.getNotation());
 		return "redirect:/factory/ownactivity?id=" + idActivity;

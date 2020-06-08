@@ -16,8 +16,8 @@ public class MyErrorController implements ErrorController {
 
         String errorMsg = "";
         int httpErrorCode = getErrorCode(httpRequest);
-
-        switch (httpErrorCode) {
+        String index = String.valueOf(String.valueOf(httpErrorCode).charAt(0));
+        /*switch (httpErrorCode) {
             case 400: {
                 errorMsg = "Http Error Code: 400. Bad Request";
                 break;
@@ -38,6 +38,13 @@ public class MyErrorController implements ErrorController {
                 errorMsg = Integer.toString(httpErrorCode);
                 break;
             }
+        }*/
+        System.out.println(index);
+        if(index.equals("4")){
+            errorMsg = "You tried a bad or unauthorized request.";
+        }
+        else{
+            errorMsg = "There is an internal error.";
         }
         model.addAttribute("errorMsg", errorMsg);
         return "global/error";
