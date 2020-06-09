@@ -23,7 +23,7 @@
 <th:block th:include="/navbar2"></th:block>
 <div th:if="${all}">
     <div class="container">
-        <h3 style="margin-top: 5%; margin-bottom: 2%;">Find a Friend!!</h3>
+        <h3 style="margin-top: 5%; margin-bottom: 2%;">Find sportsman!</h3>
 <form th:action="@{/sportsmenbyfilter}"
       th:object="${searchUserForm}" method="POST">
     <legend>Give a firstname and/or a lastname</legend>
@@ -42,9 +42,12 @@
     </div>
 </form>
     </div>
+    <div class="container" id="interval">
+        <a th:href="@{/sportsmans}">Clear the Search</a>
+    </div>
 </div>
-<div class="container" id="interval">
-    <a th:href="@{/sportsmans}">Clear the Search</a>
+<div  class="container" th:if="${!all}">
+    <h3 style="margin-top:5%; margin-bottom: 2%;">Find new friends</h3>
 </div>
 <div class="container">
     <table class="table table-hover">
@@ -55,11 +58,15 @@
             <th scope="col">Level</th>
             <th scope="col">Status</th>
             <th scope="col"></th>
+            <div sec:authorize="isAuthenticated()">
             <th scope="col"></th>
+            </div>
         </tr>
         </thead>
         <tbody>
         <tr th:each="sportsman : ${allUsers}">
+            <div sec:authorize="isAuthenticated()">
+            <div th:if="${sportsman.getId() != current.getId()}">
         <td><span th:text="${sportsman.getFirstName()}"></span></td>
             <td><span th:text="${sportsman.getLastName()}"></span></td>
             <td><span th:text="${sportsman.getLevel().getName()}"></span></td>
@@ -68,12 +75,22 @@
             <span th:unless="${sportsman.getBlocked()}" th:text="Active"></span>
         </td>
         <td><a th:href="@{/sportsman(id=${sportsman.getId()})}">Details</a></td>
-        <td sec:authorize="isAuthenticated()">
-            <div th:if="${current.getId() != sportsman.getId()}">
+        <td>
              <span th:if="${current.hasContact(sportsman)}">Already your Friend</span>
             <span th:unless="${current.hasContact(sportsman)}"><a th:href="@{/user/addContact(id=${sportsman.getId()})}">Put in your Contacts list</a></span>
-            </div>
         </td>
+            </div>
+            </div>
+            <div sec:authorize="!isAuthenticated()">
+                    <td><span th:text="${sportsman.getFirstName()}"></span></td>
+                    <td><span th:text="${sportsman.getLastName()}"></span></td>
+                    <td><span th:text="${sportsman.getLevel().getName()}"></span></td>
+                    <td>
+                        <span th:if="${sportsman.getBlocked()}" th:text="BLOCKED"></span>
+                        <span th:unless="${sportsman.getBlocked()}" th:text="Active"></span>
+                    </td>
+                    <td><a th:href="@{/sportsman(id=${sportsman.getId()})}">Details</a></td>
+            </div>
     </tr>
     </tbody>
 </table>

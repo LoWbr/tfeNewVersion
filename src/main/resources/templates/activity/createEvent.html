@@ -1,133 +1,151 @@
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-    <meta charset="UTF-8">
-    <title>Create Activity</title>
-    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+    <link th:href="@{/css/contentSetting.css}" href="../../css/contentSetting.css}" rel="stylesheet" type="text/css" media="all"/>
+    <script th:src="@{/jquery/jquery.min.js}"></script>
+    <script th:src="@{/popper/popper.min.js}"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script></head>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+        integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous">
+</script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+        integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous">
+</script>
 </head>
 <body>
-<th:block th:include="/navbar"></th:block>
-<div class="pure-g">
-    <div class="pure-u-1-6"></div>
-    <div class="pure-u-2-3">
-<form th:action="@{/factory/saveactivity}"
-      th:object="${activityForm}" method="POST" class="pure-form pure-form-stacked">
-    <fieldset>
-        <legend>Create your Activity</legend>
-        <div>
-            <span class="text-danger" th:errors="*{global}"></span>
-        </div>
-        <div class="pure-g">
-            <div class="pure-u-1-2">
-                <label>Name</label>
-                <input class="pure-u-23-24" type="text" th:field="*{name}"/>
-                <div>
-                    <span class="text-danger" th:errors="*{name}"> </span>
-                </div>
+<th:block th:include="/navbar2"></th:block>
+<div class="container">
+    <h3 style="margin-top: 5%; margin-bottom: 2%;">Create an activity</h3>
+    <form th:action="@{/factory/saveactivity}"
+          th:object="${activityForm}" method="POST">
+        <fieldset>
+            <legend>What you want, when and where you want.</legend>
+            <div>
+                <span class="text-danger" th:errors="*{global}"></span>
             </div>
-                <div class="pure-u-1-2">
-                    <label>When?</label>
-                    <input class="pure-u-24-24" type="date" th:placeholder="${activityForm.getPlannedTo()}" th:field="*{plannedTo}"/>
-                    <div>
-                        <span class="text-danger" th:errors="*{plannedTo}"> </span>
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Name</label>
+                        <input type="text" class="form-control" th:field="*{name}">
+                        <div>
+                            <span class="text-danger" th:errors="*{name}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>When?</label>
+                        <input class="form-control" type="date" th:field="*{plannedTo}">
+                        <div>
+                            <span class="text-danger" th:errors="*{plannedTo}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>What time?</label>
+                        <input class="form-control" type="time" th:field="*{hour}">
+                        <div>
+                            <span class="text-danger" th:errors="*{hour}"></span>
+                        </div>
                     </div>
                 </div>
-                <div class="pure-u-1-1">
+                <div class="form-group">
                     <label>What do you plan?</label>
-                    <textarea th:field="*{description}" class="pure-u-24-24"
-                              rows="6"/></textarea>
+                    <textarea class="form-control" th:field="*{description}" rows="5"></textarea>
                     <div>
-                        <span class="text-danger" th:errors="*{description}"> </span>
+                        <span class="text-danger" th:errors="*{description}"></span>
                     </div>
                 </div>
-                <div class="pure-u-1-4">
-                    <label>Activity</label>
-                    <select class="pure-u-23-24" th:field="*{activity}">
-                        <option th:each="type : ${allKinds}"
-                                th:value="${type.getId()}"
-                                th:utext="${type.getName()}">
-                        </option>
-                    </select>
-                </div>
-                <div class="pure-u-1-4">
-                    <label>Minimum Level</label>
-                    <select class="pure-u-23-24" th:field="*{minimumLevel}">
-                        <option th:each="level : ${allLevels}"
-                                th:value="${level.getId()}"
-                                th:utext="${level.getName()}">
-                        </option>
-                    </select>
-                    <div>
-                        <span class="text-danger" th:errors="*{minimumLevel}"> </span>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label>Activity</label>
+                        <select class="custom-select mr-sm-2" th:field="*{activity}">
+                            <option th:each="type : ${allKinds}"
+                                    th:value="${type.getId()}"
+                                    th:utext="${type.getName()}">
+                            </option>
+                        </select>
+                        <div>
+                            <span class="text-danger" th:errors="*{activity}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Minimum Level</label>
+                        <select class="custom-select mr-sm-2" th:field="*{minimumLevel}">
+                            <option th:each="level : ${allLevels}"
+                                    th:value="${level.getId()}"
+                                    th:utext="${level.getName()}">
+                            </option>
+                        </select>
+                        <div>
+                            <span class="text-danger" th:errors="*{minimumLevel}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Maximum Level</label>
+                        <select class="custom-select mr-sm-2" th:field="*{maximumLevel}">
+                            <option th:each="level : ${allLevels}"
+                                    th:value="${level.getId()}"
+                                    th:utext="${level.getName()}">
+                            </option>
+                        </select>
+                        <div>
+                            <span class="text-danger" th:errors="*{maximumLevel}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Duration</label>
+                        <input type="number" class="form-control" th:field="*{duration}">
+                        <div>
+                            <span class="text-danger" th:errors="*{duration}"></span>
+                        </div>
                     </div>
                 </div>
-                <div class="pure-u-1-4">
-                    <label>Maximum Level</label>
-                    <select class="pure-u-23-24" th:field="*{maximumLevel}">
-                        <option th:each="level : ${allLevels}"
-                                th:value="${level.getId()}"
-                                th:utext="${level.getName()}">
-                        </option>
-                    </select>
-                    <div>
-                        <span class="text-danger" th:errors="*{maximumLevel}"> </span>
+                <div class="row">
+                    <div class="form-group col-md-1">
+                        <label>Number</label>
+                        <input type="number" class="form-control" th:field="*{number}">
+                        <div>
+                            <span class="text-danger" th:errors="*{number}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Street</label>
+                        <input type="text" class="form-control" th:field="*{street}">
+                        <div>
+                            <span class="text-danger" th:errors="*{street}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Postal Code</label>
+                        <input type="number" class="form-control" th:field="*{postalCode}">
+                        <div>
+                            <span class="text-danger" th:errors="*{postalCode}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>City</label>
+                        <input type="text" class="form-control" th:field="*{city}">
+                        <div>
+                            <span class="text-danger" th:errors="*{city}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Country</label>
+                        <input type="text" class="form-control" th:field="*{country}">
+                        <div>
+                            <span class="text-danger" th:errors="*{country}"> </span>
+                        </div>
                     </div>
                 </div>
-                <div class="pure-u-1-4">
-                    <label>Duration</label>
-                    <input class="pure-u-24-24" type="number" th:field="*{duration}">
-                    <div>
-                        <span class="text-danger" th:errors="*{duration}"> </span>
-                    </div>
-                </div>
-            <div class="pure-u-1-1">
-                <label>Hour?</label>
-                <input class="pure-u-24-24" type="time" placeholder="12:00am" th:field="*{hour}"/>
-                <div>
-                    <span class="text-danger" th:errors="*{hour}"> </span>
-                </div>
+                <button type="submit" class="btn btn-primary">Create Activity</button>
             </div>
-            <div class="pure-u-1-4">
-                <label>Number</label>
-                <input class="pure-u-24-24" type="number" th:field="*{number}"/>
-                <div>
-                    <span class="text-danger" th:errors="*{number}"> </span>
-                </div>
-            </div>
-            <div class="pure-u-1-4">
-                <label>Street</label>
-                <input class="pure-u-24-24" type="text" th:field="*{street}"/>
-                <div>
-                    <span class="text-danger" th:errors="*{street}"> </span>
-                </div>
-            </div>
-            <div class="pure-u-1-4">
-                <label>Postal Code</label>
-                <input class="pure-u-24-24" type="number" th:field="*{postalCode}"/>
-                <div>
-                    <span class="text-danger" th:errors="*{postalCode}"> </span>
-                </div>
-            </div>
-            <div class="pure-u-1-4">
-                <label>City</label>
-                <input class="pure-u-24-24" type="text" th:field="*{city}"/>
-                <div>
-                    <span class="text-danger" th:errors="*{city}"> </span>
-                </div>
-            </div>
-            <div class="pure-u-1-4">
-                <label>Country</label>
-                <input class="pure-u-24-24" type="text" th:field="*{country}"/>
-                <div>
-                    <span class="text-danger" th:errors="*{country}"> </span>
-                </div>
-            </div>
-                <div class="pure-u-1-1">
-                <button class="pure-button pure-button" type="submit">Save</button>
-                </div>
-        </div>
-    </fieldset>
-</form>
-    </div>
-        <div class="pure-u-1-6"></div>
-    </div>
+        </fieldset>
+    </form>
+</div>
 </body>
+</html>

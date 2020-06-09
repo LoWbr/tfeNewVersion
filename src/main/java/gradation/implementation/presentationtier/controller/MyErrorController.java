@@ -39,7 +39,7 @@ public class MyErrorController implements ErrorController {
                 break;
             }
         }*/
-        System.out.println(index);
+        System.out.println(httpErrorCode);
         if(index.equals("4")){
             errorMsg = "You tried a bad or unauthorized request.";
         }

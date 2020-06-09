@@ -47,7 +47,9 @@ public class ActivityController {
 
     @RequestMapping(value ="/activities", method = RequestMethod.GET)
     public String getAllEvents(Model model, Principal principal) {
-        model.addAttribute("current", sportsManService.findCurrentUser(principal.getName()));
+        if(principal != null){
+            model.addAttribute("current", sportsManService.findCurrentUser(principal.getName()));
+        }
         model.addAttribute("allActivities", activityService.getAllActivities());
         return "activity/events";
     }
@@ -129,7 +131,7 @@ public class ActivityController {
     public String getActivitiesByCreator(Model model, Principal principal) {
         model.addAttribute("ownCreations",
                 activityService.getAllOfTheSameCreator(sportsManService.findCurrentUser(principal.getName())));
-        return "activity/ownEvents";
+        return "activity/ownevents";
     }
 
     @RequestMapping(value = "/factory/ownactivity{id}", method = RequestMethod.GET)

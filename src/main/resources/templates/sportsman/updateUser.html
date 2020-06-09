@@ -1,75 +1,94 @@
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-    <meta charset="UTF-8">
-    <title>Update</title>
-    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+    <link th:href="@{/css/contentSetting.css}" href="../../css/contentSetting.css}" rel="stylesheet" type="text/css" media="all"/>
+    <script th:src="@{/jquery/jquery.min.js}"></script>
+    <script th:src="@{/popper/popper.min.js}"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script></head>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+        integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous">
+</script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+        integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous">
+</script>
 </head>
 <body>
-<th:block th:include="/navbar"></th:block>
-<div class="pure-g">
-    <div class="pure-u-1-6"></div>
-    <div class="pure-u-2-3">
-        <form th:action="@{/user/updateuser}"
-              th:object="${sportsManForm}" method="POST" class="pure-form pure-form-stacked">
-            <fieldset>
-                <legend>Register</legend>
-                <div>
-                    <span class="text-danger" th:errors="*{global}"></span>
-                </div>
-                <div class="pure-g">
-                    <div class="pure-u-1-2">
-                        <label th:for="${sportsManForm}">Name</label>
-                        <input class="pure-u-23-24" th:placeholder="${sportsManForm.getLastname()}" type="text" th:field="*{lastname}"/> <!--style="display:block; margin:auto;"-->
+<th:block th:include="/navbar2"></th:block>
+
+<div class="container">
+    <h3 style="margin-top: 5%; margin-bottom: 2%;">Update your personal data</h3>
+    <form th:action="@{/user/updateuser}"
+          th:object="${sportsManForm}" method="POST">
+        <fieldset>
+            <legend>Each field is necessary</legend>
+            <div>
+                <span class="text-danger" th:errors="*{global}"></span>
+            </div>
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Lastname</label>
+                        <input type="text" class="form-control" placeholder="${sportsManForm.getLastname()}" th:field="*{lastname}">
                         <div>
                             <span class="text-danger" th:errors="*{lastname}"> </span>
                         </div>
                     </div>
-                    <div class="pure-u-1-2">
-                        <label th:for="${sportsManForm}">First Name</label>
-                        <input class="pure-u-24-24" th:placeholder="${sportsManForm.getFirstname()}" type="text" th:field="*{firstname}"/>
+                    <div class="form-group col-md-6">
+                        <label>Firstname</label>
+                        <input type="text" class="form-control" placeholder="${sportsManForm.getFirstName()}" th:field="*{firstname}">
                         <div>
-                            <span class="text-danger" th:errors="*{firstname}" style="color: tomato"> </span>
+                            <span class="text-danger" th:errors="*{firstname}"> </span>
                         </div>
                     </div>
-                    <div class="pure-u-1-2">
-                        <label th:for="${sportsManForm}">Mail</label>
-                        <input class="pure-u-23-24" th:placeholder="${sportsManForm.getMail()}" type="text" th:field="*{mail}"/>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Mail</label>
+                        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="${sportsManForm.getMail()}" th:field="*{mail}">
                         <div>
                             <span class="text-danger" th:errors="*{mail}"> </span>
                         </div>
                     </div>
-                    <div class="pure-u-1-4">
-                        <label th:for="${sportsManForm}">Weight</label>
-                        <input class="pure-u-20-24" th:placeholder="${sportsManForm.getWeight()}" type="number" th:field="*{weight}">
+                    <div class="form-group col-md-3">
+                        <label>Weight</label>
+                        <input class="form-control" type="number" th:placeholder="${sportsManForm.getWeight()}" step="any" th:field="*{weight}">
                         <div>
                             <span class="text-danger" th:errors="*{weight}"> </span>
                         </div>
                     </div>
-                    <div class="pure-u-1-4">
-                        <label th:for="${sportsManForm}">BirthDate</label>
-                        <input class="pure-u-24-24" th:placeholder="${sportsManForm.getDateofBirth()}" type="date"th:field="*{dateofBirth}">
+                    <div class="form-group col-md-3">
+                        <label>BirthDate</label>
+                        <input class="form-control" type="date" th:placeholder="${sportsManForm.getDateofBirth()}" th:field="*{dateofBirth}">
                         <div>
                             <span class="text-danger" th:errors="*{dateofBirth}"> </span>
                         </div>
                     </div>
-                    <div class="pure-u-1-1">
-                        <label th:for="${sportsManForm}">Few words about you</label>
-                        <textarea th:field="*{description}" th:placeholder="${sportsManForm.getDescription()}" class="pure-u-24-24"
-                                  rows="6"/></textarea>
-                        <div>
-                            <span class="text-danger" th:errors="*{description}"> </span>
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">About you :</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" th:placeholder="${sportsManForm.getDescription()}" rows="5" th:field="*{description}"></textarea>
+                    <div>
+                        <span class="text-danger" th:errors="*{description}"> </span>
                     </div>
-                    <div class="pure-u-1-2">
-                        <label th:for="${sportsManForm}">Password</label>
-                        <input class="pure-u-23-24" type="password" th:field="*{password}"/>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Password</label>
+                        <input type="password" class="form-control" placeholder="Password" th:field="*{password}">
                         <div>
                             <span class="text-danger" th:errors="*{password}"> </span>
                         </div>
                     </div>
-                    <div class="pure-u-1-2">
-                        <label th:for="${sportsManForm}">Confirm Password</label>
-                        <input class="pure-u-24-24" type="password" th:field="*{confirmPassword}"/>
+                    <div class="form-group col-md-6">
+                        <label>Confirm Password</label>
+                        <input type="password" class="form-control" placeholder="Password" th:field="*{confirmPassword}">
                         <div>
                             <span class="text-danger" th:errors="*{confirmPassword}"> </span>
                         </div>
@@ -77,13 +96,12 @@
                     <div class="form-group">
                         <input type="hidden" th:field="*{id}"/>
                     </div>
-                    <div class="pure-u-1-1">
-                        <button class="pure-button pure-button" type="submit">Save</button>
-                    </div>
                 </div>
-            </fieldset>
-        </form>
-    </div>
-    <div class="pure-u-1-6"></div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </fieldset>
+    </form>
+</div>
 </div>
 </body>
+</html>

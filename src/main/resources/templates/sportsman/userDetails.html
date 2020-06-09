@@ -1,87 +1,109 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="en" xmlns:th="http://thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-    <meta charset="UTF-8">
-    <title th:text="${sportsMan.getFirstName()}">Title</title>
-    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+    <link th:href="@{/css/contentSetting.css}" href="../../css/contentSetting.css}" rel="stylesheet" type="text/css" media="all"/>
+    <script th:src="@{/jquery/jquery.min.js}"></script>
+    <script th:src="@{/popper/popper.min.js}"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script></head>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+        integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous">
+</script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+        integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous">
+</script>
 </head>
 <body>
-<th:block th:include="/navbar"></th:block>
-<div class="pure-g">
-    <div class="pure-u-1-8"></div>
-    <div class="pure-u-3-4"><h2 th:text="${sportsMan.getFirstName() + ' ' + sportsMan.getLastName()}"></h2></div>
-    <div class="pure-u-1-8"></div>
-</div>
-<div th:if="${sportsMan.getRoles().size() == 1}">
-    <div th:if="${empty}"><p>You want to create and manage your OWNS events? </p><a th:href="@{/user/applyAsConfirmedUser}" >Click Here!</a></div>
-    <div th:unless="${empty}"><p th:unless="${empty}">You have always applied : the answer will arrive soon.</p>
-        <a th:href="@{/user/check}">Click here to check.</a></div>
-</div>
-<div class="pure-g">
-    <div class="pure-u-1-8"></div>
-    <div class="pure-u-3-4">
-        <div class="pure-g">
-        <div class="pure-u-1-2"><h3>Age</h3></div>
-        <div class="pure-u-1-2"><h3>Level</h3></div>
-        </div>
-            <div class="pure-g">
-        <div class="pure-u-1-2"><p th:text="${sportsMan.getAge()}"></p></div>
-        <div class="pure-u-1-2"><p th:text="${sportsMan.getLevel().getName()}"></p></div>
-            </div>
-                <div class="pure-g">
-        <div class="pure-u-1-1"><h3>About me : </h3></div>
-        <div class="pure-u-1-1"><p th:text="${sportsMan.getDescription()}"></p></div>
-                </div>
-    </div>
-    <div class="pure-u-1-8"></div>
-</div>
-<div class="pure-g">
-    <div class="pure-u-1-8"></div>
-    <div class="pure-u-3-4">
-        <div class="pure-g">
-        <div class="pure-u-1-2"><h3>Events Créés</h3></div>
-        <div class="pure-u-1-2"><h3>Events enregistrés et/ou participés</h3></div>
-        </div>
-        <div class="pure-g">
-        <div class="pure-u-1-2"><a th:href="@{/factory/activitiesbycreator}" th:text="${sportsMan.getCreatedActivities().size()}"></a></div>
-        <div class="pure-u-1-2"><a th:href="@{/user/getRegisteredEvents(id=${sportsMan.getId()})}" th:text="${sportsMan.getRegisteredActivities().size()}"> Title </a></div>
-        </div>
-    </div>
-    <div class="pure-u-1-8"></div>
-</div>
-<div class="pure-g">
-    <div class="pure-u-1-8"></div>
-    <div class="pure-u-3-4">
-        <div class="pure-g">
-            <div class="pure-u-1-1"><h3>Statistics</h3></div>
-        </div>
-        <table class="pure-table">
-            <thead>
-            <tr>
-                <th> Event</th>
-                <th> EarnedPoints</th>
-                <th> EnergyExpenditure</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="statistic : ${statistics}">
-                <td><span th:text="${statistic.getActivity().getName()}"> Title </span></td>
-                <td><span th:text="${statistic.getEarnedPoints()}"> Title </span></td>
-                <td><span th:text="${statistic.getEnergyExpenditure()}"> Title </span></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="pure-u-1-8"></div>
-</div>
-<div class="pure-g">
-    <div class="pure-u-1-8"></div>
-    <div class="pure-u-3-4">
-        <div class="pure-u-1-1"><h3>Contacts :</h3></div>
-        <div class="pure-u-1-2"><a th:href="@{/user/contacts}" th:text="${sportsMan.getContacts().size()}"> Title </a></div>
-    </div>
-    <div class="pure-u-1-8"></div>
-</div>
+<th:block th:include="/navbar2"></th:block>
 
+
+<div class="container">
+    <div class="row">
+        <h3 style="margin-top: 5%; margin-bottom: 2%;" th:text="${sportsMan.getFirstName() + ' ' + sportsMan.getLastName()}"></h3>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <h4>About me</h4>
+    </div>
+    <hr>
+    <div class="row">
+        <h5 style="margin-left: 1%;" th:text="${sportsMan.getAge()} + ' ans'"></h5>
+    </div>
+    <div class="row">
+        <h5 style="margin-left: 1%;" th:if="${sportsMan.getRoles().size() == 3 }" th:text="'Role: ADMINISTRATOR'"></h5>
+        <h5 style="margin-left: 1%;" th:if="${sportsMan.getRoles().size() == 2 }" th:text="'Role: CONFIRMED'"></h5>
+        <h5 style="margin-left: 1%;" th:if="${sportsMan.getRoles().size() == 1 }" th:text="'Role: SIMPLY'"></h5>
+    </div>
+    <div class="row">
+        <h5 style="margin-left: 1%;" th:text="'Level: ' + ${sportsMan.getLevel().getName()}"></h5>
+    </div>
+    <div class="row">
+        <h5 style="margin-left: 1%;" th:text="'In few words : ' + ${sportsMan.getDescription()}" ></h5>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <h4 style="margin-top: 2%; margin-bottom: 1%;">On the application..</h4>
+    </div>
+    <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Participated Activities
+            <span><a th:href="@{/user/getRegisteredEvents(id=${sportsMan.getId()})}" th:text="${sportsMan.getRegisteredActivities().size()}"> Title </a></span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Created Activities
+            <span><a th:href="@{/factory/activitiesbycreator}" th:text="${sportsMan.getCreatedActivities().size()}"></a></span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Comments
+
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Contacts
+            <span><a th:href="@{/user/contacts}" th:text="${sportsMan.getContacts().size()}"> Title </a></span>
+        </li>
+    </ul>
+</div>
+<div class="container">
+    <div class="row">
+        <h4 style="margin-top: 2%; margin-bottom: 1%;">Statistics</h4>
+    </div>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Activity</th>
+            <th scope="col">Earned Points</th>
+            <th scope="col">Energy Expenditure</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="statistic : ${statistics}">
+            <td><span></span></td>
+            <td><span th:text="${statistic.getActivity().getName()}"> Title </span></td>
+            <td><span th:text="${statistic.getEarnedPoints()}"> Title </span></td>
+            <td><span th:text="${statistic.getEnergyExpenditure()}"> Title </span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="container">
+<div th:if="${sportsMan.getRoles().size() == 1}">
+    <div th:if="${empty}">
+        <h4>You want to create and manage your OWNS events? <a th:href="@{/user/applyAsConfirmedUser}" >Apply as Confirmed User!</a></h4>
+    </div>
+    <div th:unless="${empty}">
+        <h4 th:unless="${empty}">You have already applied : <a th:href="@{/user/check}">Click here to check.</a></h4>
+    </div>
+</div>
+</div>
+<th:block th:include="/footer"></th:block>
 </body>
 </html>

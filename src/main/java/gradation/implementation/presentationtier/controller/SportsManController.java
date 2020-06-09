@@ -58,8 +58,10 @@ public class SportsManController {
 	@RequestMapping(value = "/sportsmans", method = RequestMethod.GET)
 	public String getSportsMen(Model model, Principal principal) {
 		model.addAttribute("all", true);
-		model.addAttribute("current", sportsManService.findCurrentUser(principal.getName()));
-		model.addAttribute("allUsers", sportsManService.getAllExceptConnectedUser(sportsManService.findCurrentUser(principal.getName()).getId()));
+		if(principal != null) {
+			model.addAttribute("current", sportsManService.findCurrentUser(principal.getName()));
+		}
+		model.addAttribute("allUsers", sportsManService.getAllUser());
 		model.addAttribute("searchUserForm", new SearchUserForm());
 		return "sportsman/users";
 	}
@@ -68,7 +70,9 @@ public class SportsManController {
 	public String getSportsMenByFilter(Model model, @ModelAttribute("searchUserForm") SearchUserForm searchUserForm,
 									   Principal principal) {
 		model.addAttribute("all", true);
-		model.addAttribute("current", sportsManService.findCurrentUser(principal.getName()));
+		if(principal != null) {
+			model.addAttribute("current", sportsManService.findCurrentUser(principal.getName()));
+		}
 		if (searchUserForm.getFirstName().equals("")) {
 			searchUserForm.setFirstName(null);
 		}
@@ -146,6 +150,7 @@ public class SportsManController {
 	public void addAuthority(String mail,String pwd) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
+		updatedAuthorities.add(new SimpleGrantedAuthority("ROLE_CONFIRMED"));
 		for (GrantedAuthority grantedAuthority: updatedAuthorities) {
 			System.out.println(grantedAuthority.getAuthority());
 		}
@@ -158,8 +163,8 @@ public class SportsManController {
 	public String refreshStatus(){
 		String mail = SecurityContextHolder.getContext().getAuthentication().getName();
 		String pwd = SecurityContextHolder.getContext().getAuthentication().getCredentials().toString();
-
-		return "redirect:/logout";
+		this.addAuthority(mail,pwd);
+		return "redirect:/user/details";
 	}
 
 	@RequestMapping(value = "/user/update", method = RequestMethod.GET)
@@ -347,7 +352,7 @@ public class SportsManController {
 		}
 		sportsManService.addOrRemoveContacts(sportsManService.findCurrentUser(principal.getName()),
 				sportsManService.findSpecificUser(id), true);
-		return "redirect:/user/findNewUsers";
+		return "redirect:/user/contacts";
 	}
 
 	@RequestMapping(value = "/user/removeContact{id}", method = RequestMethod.GET)

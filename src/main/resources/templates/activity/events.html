@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -29,8 +29,10 @@
                 <header class="card__header">
                 <img class="card-img-top" th:src="@{'https://source.unsplash.com/random/225*175/?' + ${event.getActivityName()}}"
                      alt="Card image cap"/>
+                    <div sec:authorize="isAuthenticated()">
                     <div th:if="${event.checkLevel(current)}"><span class="card__status card__status--matched">Available</span></div>
                     <div th:unless="${event.checkLevel(current)}"><span class="card__status card__status--unmatched">No Match</span></div>
+                    </div>
                 </header>
                 <div class="card__content">
                     <span class="card__subtitle mb-2 text-muted" th:text="${event.getTypeActivity().getName()}"></span>
