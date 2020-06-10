@@ -20,14 +20,18 @@
 </script>
 </head>
 <body>
-<th:block th:include="/navbar"></th:block>
-<div class="pure-g">
-    <div class="pure-u-2-5"></div>
-    <div class="pure-u-1-5">
-<form action="home" th:action="@{/signIn}" method="post" class="pure-form pure-form-stacked">
+<th:block th:include="/navbar2"></th:block>
+<div class="container" style="margin-top: 10%;">
+<form action="home" th:action="@{/signIn}" method="post">
     <fieldset>
-        <legend>Sign in to the Website</legend>
-    <div class="pure-control-group">
+        <div class="row justify-content-center">
+            <div class="col-4">
+        <legend>Select an account :</legend>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-4">
+    <div class="form-row" style="margin-bottom: 2%">
         <span th:if="${warning != null}" th:text="${warning}"></span>
 
         <label>Mail</label>
@@ -35,24 +39,36 @@
                placeholder="Email"/> <span
             class="glyphicon glyphicon-envelope form-control-feedback"></span>
     </div>
-    <div class="pure-control-group">
+        </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-4">
+    <div class="form-row" style="margin-bottom: 2%">
         <label>Password</label>
         <input type="password" class="form-control" name="password"
                placeholder="Password"/> <span
             class="glyphicon glyphicon-lock form-control-feedback"></span>
     </div>
-    <div class="pure-controls">
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-4">
+    <div class="form-row">
         <label>
-            <input type="checkbox" name="remember-me"> Remember Me
+            <input type="checkbox" name="remember-me" id="rememberMe">
+            <label class="form-check-label" for="rememberMe">Remember me</label>
         </label>
     </div>
-    <div class="pure-controls">
-        <button type="submit" class="pure-button pure-button">LogIn</button>
-    </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-4">
+        <button type="submit" class="btn btn-primary">Connect</button>
+            </div>
+        </div>
     </fieldset>
 </form>
-    </div>
-    <div class="pure-u-2-5"></div>
 </div>
+<th:block th:include="/footer"></th:block>
 </body>
 </html>

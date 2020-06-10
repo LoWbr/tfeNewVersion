@@ -186,6 +186,18 @@ public class ManagementController {
 		if(bindingResult.hasErrors()){
 			return "management/settingUpdatePage";
 		}
+		//lower
+		Level test = activitySettingService.findSpecificLevel(levelForm.getId()-1);
+		if (test != null && levelForm.getMaximumThreshold() <= test.getMaximumThreshold() ){
+			bindingResult.rejectValue("maximumThreshold","","Value is too low");
+			return "management/settingUpdatePage";
+		}
+		test = activitySettingService.findSpecificLevel(levelForm.getId()+1);
+		if (test != null && levelForm.getMaximumThreshold() >= test.getMaximumThreshold() ){
+			bindingResult.rejectValue("maximumThreshold","","Value is too high");
+			return "management/settingUpdatePage";
+		}
+		//higher
 		activitySettingService.updateLevel(levelForm,
 				activitySettingService.findSpecificLevel(levelForm.getId()));
 		return "redirect:/manage/levels";

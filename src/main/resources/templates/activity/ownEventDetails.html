@@ -1,32 +1,133 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-    <meta charset="UTF-8">
-    <title th:text="${activity.getName()}">Title</title>
-    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
-
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+    <link th:href="@{/css/contentSetting.css}" href="../../css/contentSetting.css}" rel="stylesheet" type="text/css" media="all"/>
+    <script th:src="@{/jquery/jquery.min.js}"></script>
+    <script th:src="@{/popper/popper.min.js}"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script></head>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+        integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous">
+</script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+        integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous">
+</script>
 </head>
 <body>
-<th:block th:include="/navbar"></th:block>
-<h4>Name</h4>
-<p th:text="${activity.getName()}"></p>
-<h4>Kind of Activity</h4>
-<p th:text="${activity.getActivityName()}"></p>
-<h3>Participants</h3>
-<p th:text="${activity.getParticipants().size()}"></p>
-<a th:href="@{/factory/manageparticipants(id=${activity.getId()})}">Manage the Participants</a>
-<h4>Creator</h4>
-<p th:text="${activity.getCreatorName()}"></p>
-<h3>Candidates</h3>
-<p th:text="${activity.getCandidates().size()}"></p>
-<a th:href="@{/factory/managecandidates(id=${activity.getId()})}">Manage the Candidates</a>
-</form>
-<span th:if="${activity.getOpen()}"><a th:href="@{/factory/cancel(id=${activity.getId()})}">Cancel</a></span>
-<span th:unless="${activity.getOpen()}"><a th:href="@{/factory/active(id=${activity.getId()})}">Active</a></span>
-<a th:href="@{/factory/activity/update(id=${activity.getId()})}">MaJ</a>
-<h3>Comments</h3>
-<h3>Historic</h3>
-<table>
+<th:block th:include="/navbar2"></th:block>
+<div class="container">
+<h2 style="margin-top: 10%; margin-bottom: 2%;" th:text="${activity.getName()}"></h2>
+    <div class="row" style="margin-bottom: 2%;">
+        <div class="col-md-3">
+            <h6 th:if="${activity.getOpen()}"><a th:href="@{/factory/cancel(id=${activity.getId()})}">Cancel</a></h6>
+            <h6 th:unless="${activity.getOpen()}">CANCELLED</h6>
+        </div>
+        <div class="col-md-3">
+            <h6 th:if="${activity.getOpen()}"><a th:href="@{/factory/activity/update(id=${activity.getId()})}">Update</a></h6>
+        </div>
+    </div>
+    <hr>
+    <h4 style="margin-bottom: 1%;">What?</h4>
+    <div class="row" style="margin-bottom: 2%;">
+        <div class="col-md-6">
+            <h6 th:text="'Creator: ' + ${activity.getCreatorName()}"></h6>
+        </div>
+        <div class="col-md-6">
+            <h6 th:text="'Kind of activity: ' + ${activity.getActivityName()}"></h6>
+        </div>
+        <div class="col-md-6">
+            <h6 th:text="'Description: ' + ${activity.getDescription()}"></h6>
+        </div>
+    </div>
+    <hr>
+    <h4 style="margin-bottom: 1%;">When?</h4>
+    <div class="row" style="margin-bottom: 2%;">
+        <div class="col-md-6">
+            <h6 th:text="'Date: ' + ${activity.getPlannedTo()}"></h6>
+        </div>
+        <div class="col-md-6">
+            <h6 th:text="'Hour: ' + ${activity.getHour()}"></h6>
+        </div>
+    </div>
+    <hr>
+    <h4 style="margin-bottom: 1%;">Where?</h4>
+    <div class="row" style="margin-bottom: 2%;">
+        <div class="col-md-6">
+            <h6 th:text="'Number: ' + ${activity.getAddress().getNumber()}"></h6>
+        </div>
+        <div class="col-md-6">
+            <h6 th:text="'Street: ' + ${activity.getAddress().getStreet()}"></h6>
+        </div>
+        <div class="col-md-6">
+            <h6 th:text="'City: ' + ${activity.getAddress().getCity()}"></h6>
+        </div>
+        <div class="col-md-6">
+            <h6 th:text="'Country: ' + ${activity.getAddress().getCountry()}"></h6>
+        </div>
+    </div>
+    <hr>
+    <h4 style="margin-bottom: 1%;">Who?</h4>
+    <div class="row" style="margin-bottom: 2%;">
+    <div class="col-md-3">
+        <h6 th:text="'Participants: ' + ${activity.getParticipants().size()}"></h6>
+    </div>
+    <div class="col-md-3">
+        <h6 th:text="'Candidates: ' + ${activity.getCandidates().size()}"></h6>
+    </div>
+        <div class="col-md-3">
+            <a th:href="@{/factory/invitecontactpage(id=${activity.getId()})}">Invite Contact</a>
+        </div>
+</div>
+    <hr>
+    <h4 style="margin-bottom: 1%;">Manage the Participants</h4>
+    <table class="table table-hover" style="margin-bottom: 3%;">
+        <thead>
+        <tr>
+            <th scope="col">Firstname</th>
+            <th scope="col">Lastname</th>
+            <th scope="col">Level</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody th:each="sportsman : ${activity.getParticipants()}">
+        <td th:text="${sportsman.getFirstName()}"></td>
+        <td th:text="${sportsman.getLastName()}"></td>
+        <td th:text="${sportsman.getLevel().getName()}"></td>
+        <td><a th:href="@{/sportsman(id=${sportsman.getId()})}">Details</a></td>
+        <td><a th:href="@{/factory/removeuser(idActivity=${activity.getId()},idUser=${sportsman.getId()})}">Remove</a></td>
+        </tbody>
+    </table>
+    <hr>
+    <h4 style="margin-bottom: 1%;">Manage the Candidates</h4>
+    <table class="table table-hover" style="margin-bottom: 3%;">
+    <thead>
+    <tr>
+        <th scope="col">Firstname</th>
+        <th scope="col">Lastname</th>
+        <th scope="col">Level</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody th:each="sportsman : ${activity.getCandidates()}">
+    <td th:text="${sportsman.getFirstName()}"></td>
+    <td th:text="${sportsman.getLastName()}"></td>
+    <td th:text="${sportsman.getLevel().getName()}"></td>
+    <td><a th:href="@{/sportsman(id=${sportsman.getId()})}">Details</a></td>
+    <td><a th:href="@{/factory/adduser(idActivity=${activity.getId()},idUser=${sportsman.getId()})}">Add</a>/
+        <a th:href="@{/factory/refuseuser(idActivity=${activity.getId()},idUser=${sportsman.getId()})}">Refuse</a></td>
+    </tbody>
+    </table>
+    <hr>
+<h4 style="margin-bottom: 1%;">Comments</h4>
+<table class="table table-hover">
     <thead>
     <tr>
         <th> Author</th>
@@ -42,7 +143,7 @@
     </tr>
     </tbody>
 </table>
-<a th:href="@{/user/createcomment(id=${activity.getId()})}">Add Comment</a>
-<a th:href="@{/factory/invitecontactpage(id=${activity.getId()})}">Invite Contact</a>
+<a style="margin-bottom: 2%; margin-top: 2%;" th:href="@{/user/createcomment(id=${activity.getId()})}">Add Comment</a>
+</div>
 </body>
 </html>

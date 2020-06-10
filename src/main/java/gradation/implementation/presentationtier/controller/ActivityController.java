@@ -248,7 +248,7 @@ public class ActivityController {
         }
         activityService.refuseBuyer(activityService.getSpecificActivity(idActivity),
                 sportsManService.findSpecificUser(idUser));
-        return "redirect:/factory/managecandidates?id="+idActivity;
+        return "redirect:/factory/ownactivity?id="+idActivity;
     }
 
     @RequestMapping(value = "/factory/adduser{idActivity,idUser}", method = RequestMethod.GET)
@@ -260,7 +260,7 @@ public class ActivityController {
         }
         activityService.addOrRemoveParticipants(activityService.getSpecificActivity(idActivity),
                 sportsManService.findSpecificUser(idUser),true);
-        return "redirect:/factory/managecandidates?id="+idActivity;
+        return "redirect:/factory/ownactivity?id="+idActivity;
     }
 
     @RequestMapping(value = "/factory/removeuser{idActivity,idUser}", method = RequestMethod.GET)
@@ -272,7 +272,7 @@ public class ActivityController {
         }
         activityService.addOrRemoveParticipants(activityService.getSpecificActivity(idActivity),
                 sportsManService.findSpecificUser(idUser),false);
-        return "redirect:/factory/manageparticipants?id="+idActivity;
+        return "redirect:/factory/ownactivity?id="+idActivity;
     }
 
     @RequestMapping(value = "/user/quit{id}", method = RequestMethod.GET)
