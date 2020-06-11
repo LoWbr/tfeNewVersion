@@ -51,7 +51,13 @@ import java.util.List;
         return this.activityRepository.findAll();
     }
 
-    @Override
+       @Override
+       public Iterable<Activity> OnTime(LocalDate now) {
+           return this.activityRepository.findOnTimeActivities(now);
+       }
+
+
+       @Override
     public Activity getSpecificActivity(Long id) {
         return this.activityRepository.findSpecific(id);
     }
@@ -71,6 +77,7 @@ import java.util.List;
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             plannedTo = LocalDate.parse(searchActivityForm.getDate(), formatter).plusDays(1);
         }
+        LocalDate now = LocalDate.now();
         return this.activityRepository.filter(searchActivityForm.getActivity(), searchActivityForm.getMinimumLevel(),
                 searchActivityForm.getMaximumLevel(),searchActivityForm.getCity(),searchActivityForm.getDuration(), plannedTo);
     }
@@ -83,6 +90,7 @@ import java.util.List;
     @Override
     public void createActivity(ActivityForm activityForm, SportsMan sportsMan, Address address) throws ParseException {
         Activity activity = new Activity(activityForm, sportsMan, address);
+        activity.addParticipant(sportsMan);
         this.activityRepository.save(activity);
     }
 

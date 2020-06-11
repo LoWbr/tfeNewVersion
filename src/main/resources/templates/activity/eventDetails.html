@@ -24,14 +24,39 @@
 <div class="container">
     <h2 style="margin-top: 10%; margin-bottom: 2%;" th:text="${activity.getName()}"></h2>
     <div class="row" style="margin-bottom: 2%;">
-        <div class="col-md-3">
-            <h6 th:if="${activity.getOpen()}"><a th:href="@{/factory/cancel(id=${activity.getId()})}">Cancel</a></h6>
+        <div class="col-md-6">
+            <h6 th:if="${activity.getOpen()}">ACTIVE</h6>
             <h6 th:unless="${activity.getOpen()}">CANCELLED</h6>
         </div>
-        <div class="col-md-3">
-            <h6 th:if="${activity.getOpen()}"><a th:href="@{/factory/activity/update(id=${activity.getId()})}">Update</a></h6>
+        <!--Connecté-->
+        <div class="col-md-6" sec:authorize="isAuthenticated()">
+            <!--Ouvert-->
+            <div  th:if="${activity.getOpen()}">
+                <div th:if="${activity.checkLevel(sportsMan)}">
+                    <!--Test déjà postulé à mettre en place!!-->
+                    <div th:if="${activity.checkPresence(sportsMan)}">
+                        <h6>Already Registered</h6>
+                    </div>
+                    <div th:unless="${activity.checkPresence(sportsMan)}">
+                        <div th:if="${activity.checkApplication(sportsMan)}">
+                            <h6>An application was sent; please wait for an answer.</h6>
+                        </div>
+                        <div th:unless="${activity.checkApplication(sportsMan)}">
+                            <a th:href="@{/user/postulate(id=${activity.getId()})}">Apply</a>
+                        </div>
+                    </div>
+                </div>
+                <div th:unless="${activity.checkLevel(sportsMan)}">
+                    <h6 th:if="${activity.getMinimumLevel().getPlace() > sportsMan.getLevel().getPlace()}">Unavailable : Too Low Level</h6>
+                    <h6 th:unless="${activity.getMinimumLevel().getPlace() > sportsMan.getLevel().getPlace()}">Unavailable : Too High Level</h6>
+                </div>
+            </div>
+            <!--Pas Ouvert-->
+            <div th:unless="${activity.getOpen()}">
+                <h6>Not Available</h6>
+            </div>
         </div>
-    </div>
+        </div>
     <hr>
     <h4 style="margin-bottom: 1%;">What?</h4>
     <div class="row" style="margin-bottom: 2%;">
@@ -74,10 +99,10 @@
     <hr>
     <h4 style="margin-bottom: 1%;">Who?</h4>
     <div class="row" style="margin-bottom: 2%;">
-        <div class="col-md-3">
+        <div class="col-md-6">
             <h6 th:text="'Participants: ' + ${activity.getParticipants().size()}"></h6>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-6">
             <h6 th:text="'Candidates: ' + ${activity.getCandidates().size()}"></h6>
         </div>
     </div>

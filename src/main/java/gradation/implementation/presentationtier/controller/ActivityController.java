@@ -50,7 +50,7 @@ public class ActivityController {
         if(principal != null){
             model.addAttribute("current", sportsManService.findCurrentUser(principal.getName()));
         }
-        model.addAttribute("allActivities", activityService.getAllActivities());
+        model.addAttribute("allActivities", activityService.OnTime(LocalDate.now()));
         return "activity/events";
     }
 

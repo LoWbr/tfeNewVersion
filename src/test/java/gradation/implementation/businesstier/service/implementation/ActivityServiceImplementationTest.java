@@ -92,7 +92,7 @@ public class ActivityServiceImplementationTest {
 
     @Test
     public void findForSearch() {
-        Activity activity = new Activity(), activity1 = new Activity();
+        /*Activity activity = new Activity(), activity1 = new Activity();
         activity.setPlannedTo(LocalDate.of(2020,9,30));
         List<Activity> nodate = Arrays.asList(activity, activity1);
         List<Activity> withdate = Arrays.asList(activity);
@@ -109,7 +109,7 @@ public class ActivityServiceImplementationTest {
                 null)).willReturn(nodate);
         List<Activity> all = this.activityServiceImplementation.findForSearch(searchActivityForm);
         assertEquals(all.size(), nodate.size());
-        /*searchActivityForm.setDate("2020-08-10");
+        searchActivityForm.setDate("2020-08-10");
         given(activityRepository.filter(searchActivityForm.getActivity(), searchActivityForm.getMinimumLevel(),
                 searchActivityForm.getMaximumLevel(), searchActivityForm.getCity(), searchActivityForm.getDuration(),
                 LocalDate.of(2020,10,10))).willReturn(withdate);

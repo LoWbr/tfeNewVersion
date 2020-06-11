@@ -38,7 +38,8 @@ public interface ActivityRepository extends CrudRepository<Activity, Long>{
             @Param("duration") Short duration,
             @Param("plannedTo") LocalDate plannedTo);
 
-    @Query("Select event from Activity event where event.name = :name")
-    Activity findByName(
-            @Param("name") String name);
+    @Query("Select event from Activity event where event.plannedTo >= :date order by event.plannedTo ASC ")
+    List<Activity> findOnTimeActivities(
+            @Param("date") LocalDate date);
+
 }

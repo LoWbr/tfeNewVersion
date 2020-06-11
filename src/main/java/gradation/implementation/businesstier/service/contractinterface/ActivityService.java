@@ -6,11 +6,14 @@ import gradation.implementation.presentationtier.form.CommentForm;
 import gradation.implementation.presentationtier.form.SearchActivityForm;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ActivityService {
 
     Iterable<Activity> getAllActivities();
+
+    Iterable<Activity> OnTime(LocalDate now);
 
     Activity getSpecificActivity(Long id);
 

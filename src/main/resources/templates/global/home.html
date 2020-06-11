@@ -28,7 +28,35 @@
     </div>
 </div>
 <div class="container">
-    <h3>Find activities, to your taste, and your skill!</h3>
+    <h3 style="text-align: center; margin-top: 5%;">Find activities, to your taste, and your skill!</h3>
 </div>
+<div class="container" style="margin-top: 5%">
+    <h4 style="text-align: center;">Soonest Activities :</h4>
+    <div style="margin-top:2%" class="row">
+        <div class="col-sm-4" th:each="event : ${soon}">
+            <article class="card card--unmatched mb-3 ">
+                <header class="card__header">
+                    <img class="card-img-top" th:src="@{'https://source.unsplash.com/random/225*175/?' + ${event.getActivityName()}}"
+                         alt="Card image cap"/>
+                    <div sec:authorize="isAuthenticated()">
+                        <div th:if="${event.checkLevel(current)}"><span class="card__status card__status--matched">Available</span></div>
+                        <div th:unless="${event.checkLevel(current)}"><span class="card__status card__status--unmatched">No Match</span></div>
+                    </div>
+                </header>
+                <div class="card__content">
+                    <span class="card__subtitle mb-2 text-muted" th:text="${event.getTypeActivity().getName()}"></span>
+                    <h2 class="card__title" th:text="${event.getName()}"></h2>
+                    <p class="card__text" th:text="${#strings.abbreviate(event.getDescription(),35)}"></p>
+                    <a th:href="@{/activity(id=${event.getId()})}" class="card__btn btn btn-primary stretched-link">Show</a>
+                </div>
+            </article>
+            <br />
+        </div>
+    </div>
+    <h4 style="text-align: right; margin-bottom: 5%;">Need filters? <a th:href="@{/search}">Click Here</a></h4>
+</div>
+<!--
+<th:block th:include="/footer"></th:block>
+-->
 </body>
 </html>

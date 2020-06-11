@@ -245,7 +245,10 @@ public class SportsManController {
 
 
 	@RequestMapping(value = "/sportsman{id}", method = RequestMethod.GET)
-	public String getSportsManDetail(@RequestParam Long id, Model model){
+	public String getSportsManDetail(@RequestParam Long id, Model model,Principal principal){
+		if(principal != null) {
+			model.addAttribute("current", sportsManService.findCurrentUser(principal.getName()));
+		}
 		model.addAttribute("sportsMan",sportsManService.findSpecificUser(id));
 		return "sportsman/externDetails";
 	}

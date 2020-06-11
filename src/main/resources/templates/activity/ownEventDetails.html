@@ -24,12 +24,13 @@
 <div class="container">
 <h2 style="margin-top: 10%; margin-bottom: 2%;" th:text="${activity.getName()}"></h2>
     <div class="row" style="margin-bottom: 2%;">
-        <div class="col-md-3">
+        <div class="col-md-6">
             <h6 th:if="${activity.getOpen()}"><a th:href="@{/factory/cancel(id=${activity.getId()})}">Cancel</a></h6>
             <h6 th:unless="${activity.getOpen()}">CANCELLED</h6>
         </div>
         <div class="col-md-3">
             <h6 th:if="${activity.getOpen()}"><a th:href="@{/factory/activity/update(id=${activity.getId()})}">Update</a></h6>
+            <h6 th:unless="${activity.getOpen()}">Not updatable</h6>
         </div>
     </div>
     <hr>

@@ -1,6 +1,7 @@
 package gradation.implementation.presentationtier.controller;
 
 import gradation.implementation.businesstier.service.contractinterface.*;
+import gradation.implementation.datatier.entities.Activity;
 import gradation.implementation.presentationtier.form.SearchActivityForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 @Controller
 public class GlobalController {
@@ -30,7 +34,19 @@ public class GlobalController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String getHome() {
+    public String getHome(Model model, Principal principal) {
+        int count = 6;
+        List<Activity> recent = new ArrayList<Activity>();
+        for (Activity activity: activityService.OnTime(LocalDate.now())) {
+            if (count > 0) {
+                recent.add(activity);
+            }
+            count--;
+        }
+        if(principal != null) {
+            model.addAttribute("current", sportsManService.findCurrentUser(principal.getName()));
+        }
+        model.addAttribute("soon", recent);
         return "global/home";
     }
 
@@ -70,7 +86,7 @@ public class GlobalController {
         }
         model.addAttribute("allLevels", activitySettingService.getAllLevels());
         model.addAttribute("allKinds", activitySettingService.getAllActivityTypes());
-        model.addAttribute("allEvents",activityService.getAllActivities());
+        model.addAttribute("allEvents",activityService.OnTime(LocalDate.now()));
         model.addAttribute("searchActivityForm",searchActivityForm );
         return "global/search";
     }
