@@ -70,9 +70,10 @@ public class ManagementController {
 	}
 
 	@RequestMapping(value = "/manage/activities/cancel{id}", method = RequestMethod.GET)
-	public String cancel(@RequestParam(value = "id") Long id) {
+	public String cancel(@RequestParam(value = "id") Long id, Principal principal) {
 		activityService.cancelOrActivateActivity(activityService.getSpecificActivity(id), false);
-		newsService.returnCancelledApplictionNewOrCloseEventNew(activityService.getSpecificActivity(id),
+		newsService.returnCancelledApplictionNewOrCloseEventNew(sportsManService.findCurrentUser(principal.getName()),
+				activityService.getSpecificActivity(id),
 				NewsType.CANCELLED_EVENT);
 		return "redirect:/manage/activities";
 	}

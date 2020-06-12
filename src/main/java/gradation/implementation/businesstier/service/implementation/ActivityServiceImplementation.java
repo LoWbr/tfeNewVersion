@@ -140,7 +140,7 @@ import java.util.List;
     @Override
     public void closeActivity(Activity activity) {
         activity.closeEvent();
-        newsService.returnCancelledApplictionNewOrCloseEventNew(activity,NewsType.DONE_EVENT);
+        newsService.returnCancelledApplictionNewOrCloseEventNew(null, activity,NewsType.DONE_EVENT);
         this.saveActivity(activity);
     }
 

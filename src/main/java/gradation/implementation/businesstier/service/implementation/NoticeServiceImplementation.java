@@ -88,14 +88,14 @@ public class NoticeServiceImplementation implements NewsService {
     }
 
     @Override
-    public void returnCancelledApplictionNewOrCloseEventNew(Activity activity, NewsType newsType) {
+    public void returnCancelledApplictionNewOrCloseEventNew(SportsMan sportsMan, Activity activity, NewsType newsType) {
         String content = "";
         if(newsType.name().equals("CANCELLED_EVENT")){
             content = "The activity was cancelled by the administrator";
-            News announceToCreator = new News(activity.getCreator(), null, activity, newsType,content, false);
+            News announceToCreator = new News(activity.getCreator(), sportsMan, activity, newsType,content, false);
             this.newsRepository.save(announceToCreator);
             for (SportsMan registered : activity.getParticipants()) {
-                News announceToRegistered = new News(registered, null, activity, newsType, content,false);
+                News announceToRegistered = new News(registered, sportsMan, activity, newsType, content,false);
                 this.newsRepository.save(announceToRegistered);
             }
         }

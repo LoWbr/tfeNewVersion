@@ -19,7 +19,7 @@ public interface NewsService {
 
     void returnApplicationResultNewOrLevelUpNew(SportsMan sportsMan, SportsMan validator, NewsType newsType);
 
-    void returnCancelledApplictionNewOrCloseEventNew(Activity activity, NewsType newsType);
+    void returnCancelledApplictionNewOrCloseEventNew(SportsMan sportsMan, Activity activity, NewsType newsType);
 
     void returnRegistrationResultNew(SportsMan sportsMan, Activity activity, NewsType newsType);
 

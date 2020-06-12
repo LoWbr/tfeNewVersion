@@ -327,7 +327,8 @@ public class ActivityController {
             throw new CreatorNotMatchingException(principal.getName());
         }
         activityService.cancelOrActivateActivity(activityService.getSpecificActivity(id), false);
-        newsService.returnCancelledApplictionNewOrCloseEventNew(activityService.getSpecificActivity(id),
+        newsService.returnCancelledApplictionNewOrCloseEventNew(sportsManService.findCurrentUser(principal.getName()),
+                activityService.getSpecificActivity(id),
                 NewsType.CANCELLED_EVENT);
         return "redirect:/factory/activitiesbycreator";
     }
@@ -340,7 +341,7 @@ public class ActivityController {
         }
         if(activityService.checkAllCotationsForRegistered(activityService.getSpecificActivity(id))){
             activityService.closeActivity(activityService.getSpecificActivity(id));
-            return "redirect:/factory/activitiesbycreator";
+            return "redirect:/factory/ownactivity?id=" + id;
         }
         //Sinon, redirection sur la page de check avec les personnes à noter
         else{

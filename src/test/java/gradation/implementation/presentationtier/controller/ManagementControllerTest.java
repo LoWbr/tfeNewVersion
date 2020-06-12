@@ -103,7 +103,7 @@ public class ManagementControllerTest {
         Activity activity1 = new Activity();
         when(activityService.getSpecificActivity((long) 1)).thenReturn(activity1);
         doNothing().when(activityService).cancelOrActivateActivity(activity1,false);
-        doNothing().when(newsService).returnCancelledApplictionNewOrCloseEventNew(activity1, NewsType.CANCELLED_EVENT);
+        doNothing().when(newsService).returnCancelledApplictionNewOrCloseEventNew(null,activity1, NewsType.CANCELLED_EVENT);
         mockMvc.perform(get("/manage/activities/cancel?id=1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/manage/activities"));

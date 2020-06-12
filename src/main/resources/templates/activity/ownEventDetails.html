@@ -32,6 +32,10 @@
             <h6 th:if="${activity.getOpen()}"><a th:href="@{/factory/activity/update(id=${activity.getId()})}">Update</a></h6>
             <h6 th:unless="${activity.getOpen()}">Not updatable</h6>
         </div>
+        <div class="col-md-3">
+            <h6 th:if="${!activity.getOver()}"><a th:href="@{/factory/close(id=${activity.getId()})}">Close</a></h6>
+            <h6 th:unless="${!activity.getOver()}">Already Closed</h6>
+        </div>
     </div>
     <hr>
     <h4 style="margin-bottom: 1%;">What?</h4>

@@ -128,10 +128,10 @@ public class NoticeServiceImplementationTest {
         activity.getParticipants().add(sportsMan);
         activity.setCreator(creator);
         given(newsRepository.save(newsCancelled)).willReturn(newsCancelled);
-        noticeServiceImplementation.returnCancelledApplictionNewOrCloseEventNew(activity,NewsType.CANCELLED_EVENT);
+        noticeServiceImplementation.returnCancelledApplictionNewOrCloseEventNew(null,activity,NewsType.CANCELLED_EVENT);
         assertNotNull(newsRepository.save(newsCancelled));
         given(newsRepository.save(newsClosed)).willReturn(newsClosed);
-        noticeServiceImplementation.returnCancelledApplictionNewOrCloseEventNew(activity,NewsType.DONE_EVENT);
+        noticeServiceImplementation.returnCancelledApplictionNewOrCloseEventNew(null,activity,NewsType.DONE_EVENT);
         assertNotNull(newsRepository.save(newsClosed));
     }
 

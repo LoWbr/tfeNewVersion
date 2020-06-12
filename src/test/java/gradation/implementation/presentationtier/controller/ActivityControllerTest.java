@@ -373,7 +373,7 @@ public class ActivityControllerTest {
         mockMvc.perform(get("/factory/cancel?id=1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/factory/activitiesbycreator"));
-        verify(newsService,times(1)).returnCancelledApplictionNewOrCloseEventNew(activity, NewsType.CANCELLED_EVENT);
+        verify(newsService,times(1)).returnCancelledApplictionNewOrCloseEventNew(null,activity, NewsType.CANCELLED_EVENT);
     }
 
     @Test

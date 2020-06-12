@@ -378,14 +378,25 @@ public class SportsManController {
 
 	@RequestMapping(value = "/factory/noteuser{idActivity,idUser}", method = RequestMethod.POST)
 	public String noteUser(@RequestParam(value = "idActivity") Long idActivity,
-                           @RequestParam(value = "idUser") Long idUser, NotationForm notationForm, Principal principal){
+                           @RequestParam(value = "idUser") Long idUser, NotationForm notationForm, Principal principal,
+						   Model model){
 		if(!activityService.getSpecificActivity(idActivity).checkCreator(sportsManService.findCurrentUser(principal.getName())))
 		{
 			throw new CreatorNotMatchingException(principal.getName());
 		}
 		this.sportsManService.setResultForEventToParticipant(activityService.getSpecificActivity(idActivity),
 				sportsManService.findSpecificUser(idUser), notationForm.getNotation());
-		return "redirect:/factory/ownactivity?id=" + idActivity;
+
+		if(activityService.checkAllCotationsForRegistered(activityService.getSpecificActivity(idActivity))){
+			activityService.closeActivity(activityService.getSpecificActivity(idActivity));
+			return "redirect:/factory/ownactivity?id=" + idActivity;
+		}
+		else{
+			model.addAttribute("peopleToMark", sportsManService.getAllNotMarked(activityService.getSpecificActivity(idActivity)));
+			model.addAttribute("id",idActivity);
+			model.addAttribute("notationForm", new NotationForm());
+			return "activity/setCotationForEvent";
+		}
 	}
 
 }
