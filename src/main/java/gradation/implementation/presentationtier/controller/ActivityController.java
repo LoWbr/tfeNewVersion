@@ -124,6 +124,9 @@ public class ActivityController {
         model.addAttribute("activity", activity);//Raccourci encore faisable
         model.addAttribute("participants", activity.getParticipants());
         model.addAttribute("comments", activitySettingService.findCommentsForActivity(activity));
+        model.addAttribute("commentForm",
+                activitySettingService.initiateCommentForm(activityService.getSpecificActivity(id),
+                        sportsManService.findCurrentUser(principal.getName())));
         return "activity/eventDetails";
     }
 
@@ -305,7 +308,7 @@ public class ActivityController {
             throw new CreatorNotMatchingException(principal.getName());
         }
         activityService.inviteContact(activityService.getSpecificActivity(idActivity), sportsManService.findSpecificUser(idUser));
-        return "redirect:/invitecontactpage?id=" + idActivity;
+        return "redirect:/factory/ownactivity?id=" + idActivity;
     }
 
     @RequestMapping(value = "/factory/active{id}", method = RequestMethod.GET)

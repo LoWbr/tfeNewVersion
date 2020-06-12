@@ -107,6 +107,31 @@
         </div>
     </div>
     <hr>
+    <div sec:authorize="isAuthenticated()">
+        <form th:action="@{/user/addcomment}"
+              th:object="${commentForm}" method="POST">
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                <label>Comment (150 characters max)</label>
+            <textarea name="content" class="form-control" th:field="*{content}" rows="5"></textarea>
+                <div>
+                    <span class="text-danger" th:errors="*{content}"> </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="hidden" th:field="*{activity}"/>
+            </div>
+            <div class="form-group">
+                <input type="hidden" th:field="*{author}"/>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Comment</button>
+            </div>
+            </div>
+            </div>
+        </form>
+    </div>
     <h4 style="margin-bottom: 1%;">Comments</h4>
     <table class="table table-hover">
         <thead>
@@ -124,7 +149,6 @@
         </tr>
         </tbody>
     </table>
-    <a style="margin-bottom: 2%; margin-top: 2%;" th:href="@{/user/createcomment(id=${activity.getId()})}">Add Comment</a>
 </div>
 </body>
 </html>

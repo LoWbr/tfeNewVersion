@@ -52,14 +52,14 @@ public class NoticeServiceImplementation implements NewsService {
 
     @Override
     public void returnApplicationEventNew(Activity activity, SportsMan sportsMan, NewsType newsType) {
-        String content = sportsMan.getFirstName() + " apply your the activity.";
+        String content = sportsMan.getFirstName()  + " " + sportsMan.getLastName()  + " apply to your activity : \"" + activity.getName() + "\".";
         News supplyToCreator = new News(activity.getCreator(),sportsMan,activity, newsType,content, false);
         this.newsRepository.save(supplyToCreator);
     }
 
     @Override
     public void returnApplicationNew(SportsMan sportsMan, NewsType newsType) {
-        String content = sportsMan.getFirstName() + " applied for the the confirmed Role.";
+        String content = sportsMan.getFirstName()  + " " + sportsMan.getLastName()  + " applied for the the confirmed Role.";
         for (SportsMan administrator :sportsManRepository.selectAuthorityUsers(roleService.findAdministrator())) {
             News supplyToAdmin = new News(administrator,sportsMan,null, newsType, content,false);
             this.newsRepository.save(supplyToAdmin);
@@ -91,7 +91,7 @@ public class NoticeServiceImplementation implements NewsService {
     public void returnCancelledApplictionNewOrCloseEventNew(SportsMan sportsMan, Activity activity, NewsType newsType) {
         String content = "";
         if(newsType.name().equals("CANCELLED_EVENT")){
-            content = "The activity was cancelled by the administrator";
+            content = "The activity \"" + activity.getName() +  "\" was cancelled by the administrator";
             News announceToCreator = new News(activity.getCreator(), sportsMan, activity, newsType,content, false);
             this.newsRepository.save(announceToCreator);
             for (SportsMan registered : activity.getParticipants()) {
@@ -100,7 +100,7 @@ public class NoticeServiceImplementation implements NewsService {
             }
         }
         else{
-            content = "The event is now closed";
+            content = "The event \"" + activity.getName() +  "\" is now closed";
             for (SportsMan registered : activity.getParticipants()) {
                 News announceToRegistered = new News(registered, activity.getCreator(), activity, newsType,content, false);
                 this.newsRepository.save(announceToRegistered);
@@ -119,7 +119,7 @@ public class NoticeServiceImplementation implements NewsService {
             content = activity.getCreatorName() + " has accepted your demand.";
         }
         else{
-            content = activity.getCreatorName() + " creator cancel your participation to the activity";
+            content = activity.getCreatorName() + " creator cancel your participation to the activity \"" + activity.getName() + "\".";
         }
         News answerFromBuyer = new News(sportsMan, activity.getCreator(), activity, newsType, content, false);
         this.newsRepository.save(answerFromBuyer);
@@ -127,7 +127,7 @@ public class NoticeServiceImplementation implements NewsService {
 
     @Override
     public void returnCommentEventNew(SportsMan sportsMan, Activity activity, NewsType newsType) {
-        String content = sportsMan.getFirstName() + " has commented your activity";
+        String content = sportsMan.getFirstName()  + " " + sportsMan.getLastName()  + " has commented your activity: \"" + activity.getName() + "\".";
         News announceToCreator = new News(activity.getCreator(),sportsMan,activity,newsType,content, false);
         this.newsRepository.save(announceToCreator);
     }
@@ -148,7 +148,7 @@ public class NoticeServiceImplementation implements NewsService {
 
     @Override
     public void returnAbandonmentNew(SportsMan sportsMan, Activity activity, NewsType newsType) {
-        String content = sportsMan.getFirstName() + " left the activity";
+        String content = sportsMan.getFirstName() + " " + sportsMan.getLastName() + " left the activity \"" + activity.getName() + "\".";
         News answerToBuyer = new News(activity.getCreator(),sportsMan,activity,newsType, content, false);
         this.newsRepository.save(answerToBuyer);
     }

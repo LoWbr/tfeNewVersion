@@ -11,7 +11,7 @@
     <script th:src="@{/jquery/jquery.min.js}"></script>
     <script th:src="@{/popper/popper.min.js}"></script>
     <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script></head>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
+<link th:href="@{/https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap}" rel="stylesheet">
 <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
         integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous">
 </script>
@@ -131,6 +131,31 @@
     </tbody>
     </table>
     <hr>
+    <h4>Invite a Friend!!</h4>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th> User</th>
+            <th> Invite</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="contact : ${activity.getCreator().getContacts()}">
+            <td><span th:text="${contact.getFirstName()}"> Title </span></td>
+            <div th:if="${!activity.checkPresence(contact)}">
+                <td th:if="${activity.checkLevel(contact)}">
+                    <span><a th:href="@{/factory/inviteusertoactivity(idActivity=${activity.getId()},idUser=${contact.getId()})}">Invite</a></span>
+                </td>
+                <td th:unless="${activity.checkLevel(contact)}">
+                    <span>Level to low</span>
+                </td>
+            </div>
+            <div th:unless="${!activity.checkPresence(contact)}">
+                <td><span>ALREADY REGISTERED</span></td>
+            </div>
+        </tr>
+        </tbody>
+    </table>
 <h4 style="margin-bottom: 1%;">Comments</h4>
 <table class="table table-hover">
     <thead>
