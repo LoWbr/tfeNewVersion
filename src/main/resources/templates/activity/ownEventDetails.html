@@ -24,17 +24,23 @@
 <div class="container">
 <h3 th:text="${activity.getName()}"></h3>
     <div class="row" style="margin-bottom: 2%;">
-        <div class="col-md-6">
+        <div class="col-md-3">
+            <div th:if="${activity.getOver()}"></div>
+            <div th:unless="${activity.getOver()}">
             <h6 th:if="${activity.getOpen()}"><a th:href="@{/factory/cancel(id=${activity.getId()})}">Cancel</a></h6>
             <h6 th:unless="${activity.getOpen()}">CANCELLED</h6>
+            </div>
         </div>
         <div class="col-md-3">
-            <h6 th:if="${activity.getOpen()}"><a th:href="@{/factory/activity/update(id=${activity.getId()})}">Update</a></h6>
-            <h6 th:unless="${activity.getOpen()}">Not updatable</h6>
-        </div>
-        <div class="col-md-3">
+            <div th:if="${!activity.getOpen()}"></div>
+            <div th:unless="${!activity.getOpen()}">
             <h6 th:if="${!activity.getOver()}"><a th:href="@{/factory/close(id=${activity.getId()})}">Close</a></h6>
-            <h6 th:unless="${!activity.getOver()}">Already Closed</h6>
+            <h6 th:unless="${!activity.getOver()}">CLOSED</h6>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <h6 th:if="${activity.getOpen() and !activity.getOver()}"><a th:href="@{/factory/activity/update(id=${activity.getId()})}">Update</a></h6>
+            <h6 th:unless="${activity.getOpen() and !activity.getOver()}">Not updatable</h6>
         </div>
     </div>
     <hr>
@@ -86,7 +92,9 @@
         <h6 th:text="'Candidates: ' + ${activity.getCandidates().size()}"></h6>
     </div>
         <div class="col-md-3">
-            <a th:href="@{/factory/invitecontactpage(id=${activity.getId()})}">Invite Contact</a>
+            <div th:if="${!activity.getOver() and activity.getOpen()}">
+                <a th:href="@{/factory/invitecontactpage(id=${activity.getId()})}">Invite Contact</a>
+            </div>
         </div>
 </div>
     <hr>
@@ -106,7 +114,12 @@
         <td th:text="${sportsman.getLastName()}"></td>
         <td th:text="${sportsman.getLevel().getName()}"></td>
         <td><a th:href="@{/sportsman(id=${sportsman.getId()})}">Details</a></td>
+        <div th:if="${activity.getOver() or !activity.getOpen()}">
+            <td>Unavailable</td>
+        </div>
+        <div th:unless="${activity.getOver() or !activity.getOpen()}">
         <td><a th:href="@{/factory/removeuser(idActivity=${activity.getId()},idUser=${sportsman.getId()})}">Remove</a></td>
+        </div>
         </tbody>
     </table>
     <hr>
@@ -126,8 +139,13 @@
     <td th:text="${sportsman.getLastName()}"></td>
     <td th:text="${sportsman.getLevel().getName()}"></td>
     <td><a th:href="@{/sportsman(id=${sportsman.getId()})}">Details</a></td>
+    <div th:if="${activity.getOver() or !activity.getOpen()}">
+        <td>Unavailable</td>
+    </div>
+    <div th:unless="${activity.getOver() or !activity.getOpen()}">
     <td><a th:href="@{/factory/adduser(idActivity=${activity.getId()},idUser=${sportsman.getId()})}">Add</a>/
         <a th:href="@{/factory/refuseuser(idActivity=${activity.getId()},idUser=${sportsman.getId()})}">Refuse</a></td>
+    </div>
     </tbody>
     </table>
     <hr>
@@ -142,6 +160,10 @@
         <tbody>
         <tr th:each="contact : ${activity.getCreator().getContacts()}">
             <td><span th:text="${contact.getFirstName()}"> Title </span></td>
+            <div th:if="${activity.getOver() or !activity.getOpen()}">
+                <td>Unavailable</td>
+            </div>
+            <div th:unless="${activity.getOver() or !activity.getOpen()}">
             <div th:if="${!activity.checkPresence(contact)}">
                 <td th:if="${activity.checkLevel(contact)}">
                     <span><a th:href="@{/factory/inviteusertoactivity(idActivity=${activity.getId()},idUser=${contact.getId()})}">Invite</a></span>
@@ -153,9 +175,35 @@
             <div th:unless="${!activity.checkPresence(contact)}">
                 <td><span>ALREADY REGISTERED</span></td>
             </div>
+            </div>
         </tr>
         </tbody>
     </table>
+    <div th:if="${activity.getOpen() and !activity.getOver()}">
+        <form th:action="@{/user/addcomment}"
+              th:object="${commentForm}" method="POST">
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label>Comment (150 characters max)</label>
+                        <textarea name="content" class="form-control" th:field="*{content}" rows="5"></textarea>
+                        <div>
+                            <span class="text-danger" th:errors="*{content}"> </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" th:field="*{activity}"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" th:field="*{author}"/>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Comment</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 <h4 style="margin-bottom: 1%;">Comments</h4>
 <table class="table table-hover">
     <thead>
@@ -173,7 +221,6 @@
     </tr>
     </tbody>
 </table>
-<a style="margin-bottom: 2%; margin-top: 2%;" th:href="@{/user/createcomment(id=${activity.getId()})}">Add Comment</a>
 </div>
 </body>
 </html>

@@ -140,12 +140,15 @@ public class ActivityController {
     }
 
     @RequestMapping(value = "/factory/ownactivity{id}", method = RequestMethod.GET)
-    public String ownEventDetails(@RequestParam Long id, Model model) {
+    public String ownEventDetails(@RequestParam Long id, Model model, Principal principal) {
         Activity activity = activityService.getSpecificActivity(id);
         model.addAttribute("activity", activity);//Raccourci encore faisable
         model.addAttribute("candidates", activity.getCandidates());
         model.addAttribute("participants", activity.getParticipants());
         model.addAttribute("comments", activitySettingService.findCommentsForActivity(activity));
+        model.addAttribute("commentForm",
+                activitySettingService.initiateCommentForm(activityService.getSpecificActivity(id),
+                        sportsManService.findCurrentUser(principal.getName())));
         return "activity/ownEventDetails";
     }
 

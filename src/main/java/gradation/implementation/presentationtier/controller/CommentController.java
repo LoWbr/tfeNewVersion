@@ -45,7 +45,12 @@ public class CommentController {
     public String addComment(@ModelAttribute("CommentForm") CommentForm commentForm) {
         this.activitySettingService.createComment(commentForm);
         this.newsService.returnCommentEventNew(commentForm.getAuthor(), commentForm.getActivity(), NewsType.COMMENTED_EVENT);
-        return "redirect:/activity?id=" + commentForm.getActivity().getId();
+        if(commentForm.getAuthor().getId() == commentForm.getActivity().getCreator().getId()){
+            return "redirect:/ownactivity?id=" + commentForm.getActivity().getId();
+        }
+        else {
+            return "redirect:/activity?id=" + commentForm.getActivity().getId();
+        }
     }
 
 }

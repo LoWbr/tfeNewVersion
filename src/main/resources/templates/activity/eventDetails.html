@@ -23,7 +23,14 @@
 <th:block th:include="/navbar2"></th:block>
 <div class="container">
     <h3 th:text="${activity.getName()}"></h3>
-    <div class="row" style="margin-bottom: 2%;">
+        <div class="row" style="margin-bottom: 2%;" th:if="${activity.getOver()}">
+            <div class="col-md-6">
+                <h6>CLOSE</h6>
+            </div>
+            <div class="col-md-6">
+            </div>
+        </div>
+        <div  class="row" style="margin-bottom: 2%;" th:unless="${activity.getOver()}">
         <div class="col-md-6">
             <h6 th:if="${activity.getOpen()}">ACTIVE</h6>
             <h6 th:unless="${activity.getOpen()}">CANCELLED</h6>
@@ -35,7 +42,7 @@
                 <div th:if="${activity.checkLevel(sportsMan)}">
                     <!--Test déjà postulé à mettre en place!!-->
                     <div th:if="${activity.checkPresence(sportsMan)}">
-                        <h6>Already Registered</h6>
+                        <h6>Already Registered. <a th:href="@{/user/quit(id=${activity.getId()})}">Leave</a></h6>
                     </div>
                     <div th:unless="${activity.checkPresence(sportsMan)}">
                         <div th:if="${activity.checkApplication(sportsMan)}">
@@ -107,6 +114,7 @@
         </div>
     </div>
     <hr>
+    <div th:if="${activity.getOpen() and !activity.getOver()}">
     <div sec:authorize="isAuthenticated()">
         <form th:action="@{/user/addcomment}"
               th:object="${commentForm}" method="POST">
@@ -131,6 +139,7 @@
             </div>
             </div>
         </form>
+    </div>
     </div>
     <h4 style="margin-bottom: 1%;">Comments</h4>
     <table class="table table-hover">

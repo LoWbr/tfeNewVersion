@@ -41,12 +41,16 @@
         <td><span th:text="${event.getParticipants().size()}"> Author </span></td>
         <td><span th:text="${event.getCreatorName()}"> Author </span></td>
         <td>
+            <div th:if="${!event.getOver()}">
             <span th:if="${event.getOpen()}">OPEN (<a th:href="@{/factory/cancel(id=${event.getId()})}">Cancel Activity</a>)</span>
             <span th:unless="${event.getOpen()}" th:text="CANCELLED"></span>
+            </div>
         </td>
-        <td th:if="${event.getOpen()}">
+        <td >
+            <div th:if="${event.getOpen()}">
             <span th:if="${event.getOver()}" th:text="CLOSE"></span>
             <span th:unless="${event.getOver()}"><a th:href="@{/factory/close(id=${event.getId()})}">Close</a></span>
+            </div>
         </td>
         <td><a th:href="@{/factory/ownactivity(id=${event.getId()})}">Details</a></td>
     </tr>
