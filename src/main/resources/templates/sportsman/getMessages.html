@@ -12,7 +12,7 @@
     <script th:src="@{/jquery/jquery.min.js}"></script>
     <script th:src="@{/popper/popper.min.js}"></script>
     <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script></head>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
+<link th:href="@{/https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap}" rel="stylesheet">
 <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
         integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous">
 </script>
@@ -24,7 +24,7 @@
 <th:block th:include="/navbar2"></th:block>
 <div th:if="${status} == 'sent'">
     <div class="container">
-        <h3 style="margin-top: 5%; margin-bottom: 2%;">Sent</h3>
+        <h3>Sent</h3>
         <table class="table table-hover">
     <thead>
     <tr>
@@ -50,7 +50,7 @@
 </div>
 <div th:if="${status} == 'received'">
     <div class="container">
-    <h3 style="margin-top: 5%; margin-bottom: 2%;">Received</h3>
+    <h3>Received</h3>
     <table class="table table-hover">
     <thead>
     <tr>
@@ -74,6 +74,8 @@
 <div class="container">
     <h6 style="margin-top: 2%;"><a th:href="@{/user/createMessage}">Write</a></h6>
 </div>
+<!--
 <th:block th:include="/footer"></th:block>
+-->
 </body>
 </html>

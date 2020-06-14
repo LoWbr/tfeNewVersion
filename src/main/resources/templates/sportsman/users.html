@@ -11,7 +11,7 @@
     <script th:src="@{/jquery/jquery.min.js}"></script>
     <script th:src="@{/popper/popper.min.js}"></script>
     <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script></head>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
+<link th:href="@{/https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap}" rel="stylesheet">
 <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
         integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous">
 </script>
@@ -23,7 +23,7 @@
 <th:block th:include="/navbar2"></th:block>
 <div th:if="${all}">
     <div class="container">
-        <h3 style="margin-top: 5%; margin-bottom: 2%;">Find sportsman!</h3>
+        <h3>Find sportsman!</h3>
 <form th:action="@{/sportsmenbyfilter}"
       th:object="${searchUserForm}" method="POST">
     <legend>Give a firstname and/or a lastname</legend>
@@ -95,6 +95,8 @@
     </tbody>
 </table>
 </div>
+<!--
 <th:block th:include="/footer"></th:block>
+-->
 </body>
 </html>

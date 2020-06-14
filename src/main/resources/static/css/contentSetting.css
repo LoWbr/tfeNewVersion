@@ -116,3 +116,8 @@ body, html {
     transform: translate(-50%, -50%);
     color: white;
 }
+
+h3 {
+    margin-top: 7%;
+    margin-bottom: 2%;
+}

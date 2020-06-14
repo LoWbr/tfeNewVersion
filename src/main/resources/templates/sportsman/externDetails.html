@@ -24,7 +24,7 @@
 <th:block th:include="/navbar2"></th:block>
 <div class="container">
     <div class="row">
-        <h3 style="margin-top: 5%; margin-bottom: 2%;" th:text="${sportsMan.getFirstName() + ' ' + sportsMan.getLastName()}"></h3>
+        <h3 th:text="${sportsMan.getFirstName() + ' ' + sportsMan.getLastName()}"></h3>
     </div>
     <div class="row">
         <div sec:authorize="isAuthenticated()" class="nav-item">
@@ -98,6 +98,8 @@
         </tbody>
     </table>
 </div>
+<!--
 <th:block th:include="/footer"></th:block>
+-->
 </body>
 </html>

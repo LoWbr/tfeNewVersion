@@ -124,9 +124,11 @@ public class ActivityController {
         model.addAttribute("activity", activity);//Raccourci encore faisable
         model.addAttribute("participants", activity.getParticipants());
         model.addAttribute("comments", activitySettingService.findCommentsForActivity(activity));
-        model.addAttribute("commentForm",
-                activitySettingService.initiateCommentForm(activityService.getSpecificActivity(id),
-                        sportsManService.findCurrentUser(principal.getName())));
+        if(principal != null) {
+            model.addAttribute("commentForm",
+                    activitySettingService.initiateCommentForm(activityService.getSpecificActivity(id),
+                            sportsManService.findCurrentUser(principal.getName())));
+        }
         return "activity/eventDetails";
     }
 

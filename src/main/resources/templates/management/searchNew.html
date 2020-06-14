@@ -10,7 +10,7 @@
     <script th:src="@{/jquery/jquery.min.js}"></script>
     <script th:src="@{/popper/popper.min.js}"></script>
     <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script></head>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
+<link th:href="@{/https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap}" rel="stylesheet">
 <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
         integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous">
 </script>
@@ -25,7 +25,7 @@
     <span th:if="${active}"><a th:href="@{/manage/backupdb/cyclic(up=false)}">Stop Cyclic BackUp</a></span>
     <span th:unless="${active}"><a th:href="@{/manage/backupdb/cyclic(up=true)}">Active Cyclic BackUp</a></span>
 </td>-->
-    <h3 style="margin-top: 5%; margin-bottom: 2%;">Application flow : see, and find any action.</h3>
+    <h3>Application flow : see, and find any action.</h3>
 <form th:action="@{/manage/history/filter}"
       th:object="${searchNewForm}" method="POST">
     <legend>By type or user name :</legend>
@@ -85,6 +85,8 @@
     </tbody>
 </table>
 </div>
+<!--
 <th:block th:include="/footer"></th:block>
+-->
 </body>
 </html>

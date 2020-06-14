@@ -21,7 +21,7 @@
 <body>
 <th:block th:include="/navbar2"></th:block>
 <div class="container">
-    <h3 style="margin-top: 5%; margin-bottom: 2%;">Manage your events</h3>
+    <h3>Manage your events</h3>
     <table class="table table-hover">
     <thead>
     <tr>
@@ -54,6 +54,8 @@
 </table>
 </div>
 <div sec:authorize="isAuthenticated()"></div>
+<!--
 <th:block th:include="/footer"></th:block>
+-->
 </body>
 </html>

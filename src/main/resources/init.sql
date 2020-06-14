@@ -18,11 +18,11 @@ INSERT INTO level (name, place, maximum_threshold, ratio_points) VALUES
 ('Hero',5,20000,0.3);
 
 INSERT INTO sports_man (first_name,last_name,description,date_of_birth,weight,points,email,password, level_id,blocked) VALUES
-('Laurent','Weber','Chevelu Sportif','1990-05-29',79,2900,'lo@gmail.com','$2y$10$e/M4T66Ioz3rZ0fltX7qpeLzonDbP/sD60zehJ77t0SoJUCF.WGMa',3,false),
+('Laurent','Weber','Chevelu Sportif','1990-05-29',79,2900,'laurent@gmail.com','$2y$10$e/M4T66Ioz3rZ0fltX7qpeLzonDbP/sD60zehJ77t0SoJUCF.WGMa',3,false),
 ('Michael','Atlas','Photograhe en tout genre','1988-04-01',90.3,32,'mike@gmail.com','$2y$10$0w8iBx3F0.9N9x5eGgy73eqhkDRcKXGnoZQyqvFZ9KC0XEeyHRi0K',5,false),
 ('Geoffrey','Moyens','Militaire et Patate Mariée','1983-02-02',95,40,'geof@gmail.com','$2y$10$4g0uGcj7IjljDWoCY5e8X.T2GbVP2e/RPs65.MbUvYECccKlJiQqW',4,true),
 ('Romain','Monsterlet','Animateur et Flûtiste','1990-12-06',83,84,'ro@gmail.com','$2y$10$FbazGLhM/vvjhS8ykF5neu58q9cdQB02b1DVVdPfHY47S6zoAw3US',2,false),
-('Baptiste','Marck','Orval et Web','1990-10-29',70,43,'ba@gmail.com','$2y$10$NbmUdZTlCUZxXtWCmMxhjOCEbEXa1aASSMueCoQYcfNmjxtPhU8m6',3,false),
+('Baptiste','Marck','Orval et Web','1990-10-29',70,43,'baptiste@gmail.com','$2y$10$NbmUdZTlCUZxXtWCmMxhjOCEbEXa1aASSMueCoQYcfNmjxtPhU8m6',3,false),
 ('Troy','Devrieze','Crêtu Blondinet','1990-07-29',65,36,'troy@gmail.com','$2y$10$.Xp0.U7Xym8UzPNIKTO/Ted7AZckkHRMWJ4tybWEgZVRXD.5WGkm2',1,false),
 ('Paul','Guthrie','nunc est, mollis non, cursus non, egestas a, dui. Cras pellentesque. Sed dictum. Proin eget','96-01-22',79,5053,'sit.amet@gmail.com','CKD25IWE5FM',3,true),
 ('Walter','Norris','tempor augue ac ipsum. Phasellus vitae mauris sit amet lorem semper auctor. Mauris vel turpis.','84-05-25',92,12845,'nunc.In.at@gmail.com','SRO11BXG6FN',4,true),
@@ -78,17 +78,17 @@ INSERT INTO address(number, street, postal_code, city, country) VALUES
 
 --Old Events
 INSERT INTO activity (name,description, type_activity_id, creator_id,duration,open,over,minimum_level_id, maximum_level_id, planned_to,hour, address_id) VALUES
-('Initiation Crawl','Swimming, Beginning',3,1,90,true,true,1,1,'2020-05-10','14:00:00',3),
-('Namur-Ottiginies','45km, intense',1,2,60,true,true,2,4,'2020-07-15','09:30:00',1),
-('Cross au Bois de Malonne','Au travers des arbres',2,1,180,true,true,1,2,'2020-07-04','08:00:00',1),
-('Descente de la Meuse','Traveling au travers de la flotte',3,3,45,true,true,1,3,'2020-06-25','17:30:00',6);
+('Initiation Crawl','Swimming, Beginning',5,1,90,true,true,1,1,'2020-05-10','14:00:00',3),
+('Namur-Ottiginies','45km, intense',3,2,60,true,true,2,4,'2020-07-15','09:30:00',1),
+('Cross au Bois de Malonne','Au travers des arbres',4,1,180,true,true,1,2,'2020-07-04','08:00:00',1),
+('Descente de la Meuse','Traveling au travers de la flotte',5,3,45,true,true,1,3,'2020-06-25','17:30:00',6);
 
 --Current Events
 INSERT INTO activity (name,description, type_activity_id, creator_id,duration,open,over,minimum_level_id, maximum_level_id, planned_to, hour, address_id) VALUES
-('Brasse Intense','This is a test',3,1,90,true,false,1,3,'2020-08-10','14:00:00',5 ),
-('Footing Mosan','Along the river',2,2,60,true,false,1,2,'2020-07-15','09:30:00',6),
-('Vélo en Folie','Fun and Fun, in wilderness',1,3,180,true,false,1,1,'2020-07-04','08:00:00',2),
-('Run & Beer','Plus long, plus long, plus long, plus long',2,1,45,true,false,1,2,'2020-06-25','17:30:00',4),
+('Initiation au Papillon','This is a test',5,1,90,true,false,1,3,'2020-08-10','14:00:00',5 ),
+('Footing Mosan','Along the river',4,2,60,true,false,1,2,'2020-07-15','09:30:00',6),
+('Vélo en Folie','Fun and Fun, in wilderness',3,3,180,true,false,1,1,'2020-07-04','08:00:00',2),
+('Run & Beer','Plus long, plus long, plus long, plus long',4,1,45,true,false,1,2,'2020-06-25','17:30:00',4),
 ('Etretat Racing Golf','dui. Fusce diam nunc, ullamcorper eu, euismod ac, fermentum vel',1,6,150,true,false,1,2,'20-08-25','10:00:00',1),
 ('Clubs en Folie','feugiat nec, diam. Duis mi enim, condimentum eget, volutpat ornare',1,4,100,true,false,2,3,'21-02-28','18:00:00',20),
 ('Balls type 2','leo elementum sem, vitae aliquam eros turpis non enim. Mauris',1,1,160,true,false,3,3,'20-08-16','14:00:00',8),
