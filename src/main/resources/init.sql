@@ -168,7 +168,12 @@ INSERT INTO sports_man_contacts (sports_man_id,contacts_id) VALUES
 (1,4),
 (3,4),
 (2,6),
-(5,1)
+(5,1),
+(5,2),
+(5,3),
+(5,9),
+(5,13),
+(5,14)
 ;
 INSERT INTO role (name) VALUES
 ('ROLE_SIMPLY'),
@@ -216,3 +221,36 @@ INSERT INTO user_role (users_id,roles_id) VALUES
 (33,1),
 (34,1),
 (35,1);
+
+INSERT INTO message (about,content,time_of_dispatch, author_id) VALUES
+('Introduction','quam, elementum at, egestas a, scelerisque sed, sapien. Nunc pulvinar arcu et pede. Nunc sed','20-04-05 08:03:00',5),
+('Hello!','dapibus id, blandit at, nisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur','19-06-28 09:26:00',5),
+('Correction','Morbi non sapien molestie orci tincidunt adipiscing. Mauris molestie pharetra nibh. Aliquam ornare, libero at','19-07-29 16:27:00',3),
+('About the crawl','odio. Phasellus at augue id ante dictum cursus. Nunc mauris elit, dictum eu, eleifend nec','19-07-18 14:02:00',4),
+('Join us','ut, pellentesque eget, dictum placerat, augue. Sed molestie. Sed id risus quis diam luctus lobortis.','20-05-12 23:26:00',5),
+('Do you see that?','vitae, posuere at, velit. Cras lorem lorem, luctus ut, pellentesque eget, dictum placerat, augue. Sed','20-03-12 14:18:00',5),
+('Warning','amet risus. Donec egestas. Aliquam nec enim. Nunc ut erat. Sed nunc est, mollis non','19-12-08 22:16:00',1),
+('About the last activity','dolor sit amet, consectetuer adipiscing elit. Etiam laoreet, libero et tristique pellentesque, tellus sem mollis','19-10-03 06:34:00',1),
+('Do you know him?','egestas nunc sed libero. Proin sed turpis nec mauris blandit mattis. Cras eget nisi dictum','19-12-10 19:52:00',1),
+('For the conflict','pretium et, rutrum non, hendrerit id, ante. Nunc mauris sapien, cursus in, hendrerit consectetuer, cursus','19-11-19 11:44:00',1),
+('Good news!','pretium aliquet, metus urna convallis erat, eget tincidunt dui augue eu tellus. Phasellus elit pede','20-02-27 07:23:00',1);
+
+INSERT INTO message_addressees (received_messages_id,addressees_id) VALUES
+(1,1),
+(2,1),
+(3,1),
+(4,1),
+(5,1),
+(5,2),
+(5,3),
+(6,5),
+(7,2),
+(7,2),
+(8,25),
+(8,12),
+(9,23),
+(10,4),
+(11,6);
+
+/*INSERT INTO news (id,content, seen, type, activity_id, source_id, target_id) VALUES
+*/

@@ -10,11 +10,11 @@ import java.util.List;
 
 public interface MessageRepository extends CrudRepository<Message, Long> {
 
-    @Query("Select message from Message message where message.author = :user")
+    @Query("Select message from Message message where message.author = :user order by message.timeOfDispatch DESC")
     List<Message> findByCreator(
             @Param("user") SportsMan sportsman);
 
-    @Query("Select message from Message message where :user member of message.addressees")
+    @Query("Select message from Message message where :user member of message.addressees order by message.timeOfDispatch DESC")
     List<Message> findByReceptor(
             @Param("user") SportsMan sportsman);
 
