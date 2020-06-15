@@ -8,11 +8,13 @@ import gradation.implementation.presentationtier.form.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @Controller
@@ -42,7 +44,15 @@ public class CommentController {
     }
 
     @RequestMapping(value="/user/addcomment", method = RequestMethod.POST)
-    public String addComment(@ModelAttribute("CommentForm") CommentForm commentForm) {
+    public String addComment(@Valid CommentForm commentForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            if(commentForm.getAuthor().getId() == commentForm.getActivity().getCreator().getId()){
+                return "redirect:/factory/ownactivity?id=" + commentForm.getActivity().getId() + "&error=" + true;
+            }
+            else {
+                return "redirect:/activity?id=" + commentForm.getActivity().getId() + "&error=" + true;
+            }
+        }
         this.activitySettingService.createComment(commentForm);
         this.newsService.returnCommentEventNew(commentForm.getAuthor(), commentForm.getActivity(), NewsType.COMMENTED_EVENT);
         if(commentForm.getAuthor().getId() == commentForm.getActivity().getCreator().getId()){

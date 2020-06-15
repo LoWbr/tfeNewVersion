@@ -2,8 +2,11 @@ package gradation.implementation.presentationtier.form;
 
 import gradation.implementation.datatier.entities.*;
 
+import javax.validation.constraints.Size;
+
 public class CommentForm {
 
+    @Size(max=150, message="Maximum 150 characters")
     private String content;
     private SportsMan author;
     private Activity activity;

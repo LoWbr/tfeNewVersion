@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+    <link th:href="@{/css/contentSetting.css}" href="../../css/contentSetting.css}" rel="stylesheet" type="text/css" media="all"/>
+    <script th:src="@{/jquery/jquery.min.js}"></script>
+    <script th:src="@{/popper/popper.min.js}"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script></head>
+<link th:href="@{/https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap}" rel="stylesheet">
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+        integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous">
+</script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+        integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous">
+</script>
+    <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css}">
+    <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js}"></script>
+</head>
+<body>
+<th:block th:include="/navbar2"></th:block>
+<div class="container">
+    <h3>Say something to friend!!</h3>
+    <form th:action="@{/user/sendmessage}"
+          th:object="${messageForm}" method="POST">
+        <fieldset>
+            <div class="form-group" style="margin-top: 2%;">
+                <div class="form-group">
+            <div class="form-group">
+                <label>For...</label>
+                <select class="selectpicker" multiple th:field="*{addressee}">
+                    <option th:each="sportsman : ${contacts}"
+                            th:value="${sportsman.getId()}"
+                            th:utext="${sportsman.getFirstName()}">
+                    </option>
+                </select>
+                <div th:if="${errorMsg != null}">
+                    <span class="text-danger">At least one person should be selected.</span>
+                </div>
+            </div>
+                </div>
+            <div class="form-group">
+                <label>About</label>
+                <input class="form-control" type="text" th:field="*{about}"/>
+                <div th:if="${errorMsg != null}">
+                    <span class="text-danger">Between 0 and 50 characters</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Content</label>
+                <textarea class="form-control" th:field="*{content}" rows="6"/></textarea>
+                <div th:if="${errorMsg != null}">
+                    <span class="text-danger">Couldn't be null</span>
+                </div>
+            </div>
+                <div class="form-group">
+                    <input type="hidden" th:field="*{originator}"/>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+</body>
+</html>

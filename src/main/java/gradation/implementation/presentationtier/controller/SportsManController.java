@@ -14,7 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,9 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.validation.Valid;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.Period;
@@ -262,37 +258,54 @@ public class SportsManController {
 	}
 
 
-	@RequestMapping(value = "/user/createMessage{id}", method = RequestMethod.GET)
-	public String getMessageForm(@RequestParam(required = false) Long id, Model model, Principal principal) throws BlockedUserException {
+	@RequestMapping(value = "/user/create/targetedmessage{id, error}", method = RequestMethod.GET)
+	public String getTargetedMessageForm(Long id, @RequestParam(required = false) boolean error, Model model, Principal principal) throws BlockedUserException {
+		if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+			throw new BlockedUserException(principal.getName());
+		}
+		if(error){
+			model.addAttribute("errorMsg", error);
+		}
+		MessageForm messageForm = new MessageForm();
+		if(!sportsManService.findCurrentUser(principal.getName()).hasContact(sportsManService.findSpecificUser(id)))
+		{
+			throw new EmptyRequestException(principal.getName());
+		}
+		messageForm.setOriginator(sportsManService.findCurrentUser(principal.getName()));
+		messageForm.getAddressee().add(sportsManService.findSpecificUser(id));
+		model.addAttribute("messageForm", messageForm);
+		return "sportsman/createTargetedMessage";
+	}
+
+	@RequestMapping(value = "/user/sendtargetedmessage", method = RequestMethod.POST)
+	public String sendTargetedMessage(@Valid MessageForm messageForm, BindingResult bindingResult){
+		if(bindingResult.hasErrors()){
+			return "redirect:/user/create/targetedmessage?id=" + messageForm.getAddressee().get(0).getId() + "&error=" + true;
+		}
+		sportsManService.sendMessage(messageForm);
+		return "redirect:/user/details";
+	}
+
+	@RequestMapping(value = "/user/create/emptymessage{error}", method = RequestMethod.GET)
+	public String getEmptyMessageForm(@RequestParam(required = false) boolean error, Model model, Principal principal) throws BlockedUserException {
 		if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
 			throw new BlockedUserException(principal.getName());
 		}
 		MessageForm messageForm = new MessageForm();
-		boolean showInput;
-		if (id != null) {
-			if(!sportsManService.findCurrentUser(principal.getName()).hasContact(sportsManService.findSpecificUser(id)))
-			{
-				throw new EmptyRequestException(principal.getName());
-			}
-			showInput = false;
-			model.addAttribute("showInput",showInput);
-			messageForm.setOriginator(sportsManService.findCurrentUser(principal.getName()));
-			messageForm.getAddressee().add(sportsManService.findSpecificUser(id));
+		if(error){
+			model.addAttribute("errorMsg", error);
 		}
-		else{
-			showInput = true;
-			model.addAttribute("showInput",showInput);
-			model.addAttribute("contacts", sportsManService.getAllContacts(principal.getName()));
-			messageForm.setOriginator(sportsManService.findCurrentUser(principal.getName()));
-		}
+		messageForm.setOriginator(sportsManService.findCurrentUser(principal.getName()));
+		model.addAttribute("contacts", sportsManService.getAllContacts(principal.getName()));
 		model.addAttribute("messageForm", messageForm);
-		model.addAttribute("blocked", sportsManService.findCurrentUser(principal.getName()).getBlocked());
-		return "sportsman/createMessage";
+		return "sportsman/createEmptyMessage";
 	}
 
-	@RequestMapping(value = "/user/sendMessage", method = RequestMethod.POST)
+	@RequestMapping(value = "/user/sendmessage", method = RequestMethod.POST)
 	public String sendMessage(@Valid MessageForm messageForm, BindingResult bindingResult){
-
+		if(bindingResult.hasErrors() || messageForm.getAddressee().size() < 1){
+			return "redirect:/user/create/emptymessage?error=" + true;
+		}
 		sportsManService.sendMessage(messageForm);
 		return "redirect:/user/details";
 	}

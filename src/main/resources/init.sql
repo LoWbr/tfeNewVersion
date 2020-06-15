@@ -254,3 +254,9 @@ INSERT INTO message_addressees (received_messages_id,addressees_id) VALUES
 
 /*INSERT INTO news (id,content, seen, type, activity_id, source_id, target_id) VALUES
 */
+
+INSERT INTO topic (content,date, author_id) VALUES
+
+('Attention, modifications en vue : en cas de problèmes, relancer votre navigateur.','19-04-03 11:03:12',1),
+('! Avis!! La 100e activité a vu le jour sur la plateforme! Félicitations!','20-01-02 16:15:45',1),
+('Bientôt, sur la plateforme : ajout de nouveaux types de sports prévu sous peu!','20-02-06 21:56:02',1);

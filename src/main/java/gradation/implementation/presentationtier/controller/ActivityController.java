@@ -105,6 +105,11 @@ public class ActivityController {
             bindingResult.rejectValue("maximumLevel", "", "Should be equal or just one level up");
             return "activity/createEvent";
         }
+        else if(activityForm.getMinimumLevel().getPlace() != sportsManService.findCurrentUser(principal.getName()).getLevel().getPlace() &&
+                (activityForm.getMaximumLevel().getPlace() != sportsManService.findCurrentUser(principal.getName()).getLevel().getPlace()) ) {
+            bindingResult.rejectValue("minimumLevel", "", "One of the two levels has to match your level");
+            return "activity/createEvent";
+        }
         else if(activityService.getActivityByName(activityForm.getName()) != null){
             bindingResult.rejectValue("name", "", "this event already exists");
             return "activity/createEvent";
@@ -116,8 +121,8 @@ public class ActivityController {
         return "redirect:/factory/activitiesbycreator";
     }
 
-    @RequestMapping(value = "/activity{id}", method = RequestMethod.GET)
-    public String eventDetails(@RequestParam Long id, Model model, Principal principal) {
+    @RequestMapping(value = "/activity{id, error}", method = RequestMethod.GET)
+    public String eventDetails(@RequestParam Long id, Model model, Principal principal, @RequestParam(required = false) boolean error) {
         if(principal != null){
             model.addAttribute("sportsMan", sportsManService.findCurrentUser(principal.getName()));
         }
@@ -126,6 +131,9 @@ public class ActivityController {
         model.addAttribute("participants", activity.getParticipants());
         model.addAttribute("comments", activitySettingService.findCommentsForActivity(activity));
         if(principal != null) {
+            if(error){
+                model.addAttribute("errorMsg", error);
+            }
             model.addAttribute("commentForm",
                     activitySettingService.initiateCommentForm(activityService.getSpecificActivity(id),
                             sportsManService.findCurrentUser(principal.getName())));
@@ -143,10 +151,13 @@ public class ActivityController {
         return "activity/ownevents";
     }
 
-    @RequestMapping(value = "/factory/ownactivity{id}", method = RequestMethod.GET)
-    public String ownEventDetails(@RequestParam Long id, Model model, Principal principal) throws BlockedUserException {
+    @RequestMapping(value = "/factory/ownactivity{id, error}", method = RequestMethod.GET)
+    public String ownEventDetails(@RequestParam Long id, Model model, Principal principal, @RequestParam(required = false) boolean error) throws BlockedUserException {
         if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
             throw new BlockedUserException(principal.getName());
+        }
+        if(error){
+            model.addAttribute("errorMsg", error);
         }
         Activity activity = activityService.getSpecificActivity(id);
         model.addAttribute("activity", activity);//Raccourci encore faisable

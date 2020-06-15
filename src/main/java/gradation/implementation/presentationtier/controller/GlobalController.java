@@ -24,13 +24,16 @@ public class GlobalController {
     private ActivitySettingService activitySettingService;
     private ActivityService activityService;
     private SportsManService sportsManService;
+    private ManagementService managementService;
 
     @Autowired
     public GlobalController(ActivitySettingService activitySettingService,
-                            ActivityService activityService, SportsManService sportsManService){
+                            ActivityService activityService, SportsManService sportsManService,
+                            ManagementService managementService){
         this.activityService = activityService;
         this.activitySettingService = activitySettingService;
         this.sportsManService = sportsManService;
+        this.managementService = managementService;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -47,6 +50,7 @@ public class GlobalController {
             model.addAttribute("current", sportsManService.findCurrentUser(principal.getName()));
         }
         model.addAttribute("soon", recent);
+        model.addAttribute("topics", managementService.getTopics());
         return "global/home";
     }
 

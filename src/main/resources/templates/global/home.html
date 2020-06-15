@@ -55,8 +55,14 @@
     </div>
     <h4 style="text-align: right; margin-bottom: 5%;">Need filters? <a th:href="@{/search}">Click Here</a></h4>
 </div>
-<!--
-<th:block th:include="/footer"></th:block>
--->
+<div class="container">
+    <h3>Notices :</h3>
+    <div  th:each="topic: ${topics}">
+        <h6 th:text="'Written by ' + ${topic.getAuthor().getFirstName()} + ' ' + ${topic.getAuthor().getLastName()} + ',
+        le ' + ${#temporals.format(topic.getDate(),'dd/MM/yyyy')}"></h6>
+        <h6 th:text="${topic.getContent()}" style="margin-top: 2%"></h6>
+        <hr style="margin-bottom: 2%">
+    </div>
+</div>
 </body>
 </html>

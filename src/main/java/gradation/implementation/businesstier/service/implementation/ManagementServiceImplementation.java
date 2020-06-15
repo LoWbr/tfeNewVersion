@@ -71,6 +71,11 @@ public class ManagementServiceImplementation implements ManagementService {
     }
 
     @Override
+    public List<Topic> getTopics() {
+        return this.topicRepository.findRecents();
+    }
+
+    @Override
     public void applyForConfirmedRole(SportsMan sportsMan) {
         PromotionRequest promotionRequest = new PromotionRequest(sportsMan,roleService.findConfirmedRole());
         this.saveRequest(promotionRequest);

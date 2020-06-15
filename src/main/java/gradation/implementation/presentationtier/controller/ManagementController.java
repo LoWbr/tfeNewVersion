@@ -54,14 +54,19 @@ public class ManagementController {
 		this.schedulingTasks = schedulingTasks;
 	}
 
-	@RequestMapping(value="/manage/users", method = RequestMethod.GET)
-	public String manageUserSetting(Model model) {
+	@RequestMapping(value="/manage/users{error}", method = RequestMethod.GET)
+	public String manageUserSetting(Model model, Principal principal, @RequestParam(required = false) boolean error) {
 		TopicForm topicForm = new TopicForm();
+		topicForm.setAuthor(sportsManService.findCurrentUser(principal.getName()));
+		if(error){
+			model.addAttribute("errorMsg", error);
+		}
 		model.addAttribute("allUsers", sportsManService.getAllUser());
 		model.addAttribute("allCandidates", managementService.getPromotionCandidates());
 		model.addAttribute("topicForm", topicForm);
 		return "management/manageUsers";
 	}
+
 
 	@RequestMapping(value="/manage/activities", method = RequestMethod.GET)
 	public String manageEventSetting(Model model) {
@@ -123,8 +128,11 @@ public class ManagementController {
 	}
 
 	@RequestMapping(value = "/manage/addtopic", method = RequestMethod.POST)
-	public String createTopic(@ModelAttribute("topicForm") TopicForm topicForm,
+	public String createTopic(@Valid TopicForm topicForm, BindingResult bindingResult,
 			Principal principal) {
+		if (bindingResult.hasErrors()) {
+			return "redirect:/manage/users?error=" + true;
+		}
 		this.managementService.addTopic(
 				sportsManService.findCurrentUser(principal.getName()),
 				topicForm);

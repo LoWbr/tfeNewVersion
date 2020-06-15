@@ -9,7 +9,7 @@ public class ActivityTypeForm {
     private Long id;
 
     @NotBlank(message = "This field cannot be empty!!")
-    @Size(min= 10, max=30, message="Between 10 & 30 characters")
+    @Size(min= 8, max=40, message="Between 8 & 40 characters")
     private String name;
 
     @DecimalMax(value ="15.0", inclusive = false , message = "must be lower than 15.0")

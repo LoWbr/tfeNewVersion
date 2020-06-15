@@ -2,10 +2,7 @@ package gradation.implementation.presentationtier.form;
 
 import gradation.implementation.datatier.entities.SportsMan;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 
 /*
@@ -15,21 +12,26 @@ public class SportsManForm {
 
 	private Long id;
 
+	@Size(max=30, message="Maximum 30 characters")
+	@Size(min=8, message="Minimum 8 characters")
 	@NotBlank(message = "Enter a firstname")
 	private String firstname;
 
+	@Size(max=30, message="Maximum 30 characters")
+	@Size(min=5, message="Minimum 5 characters")
 	@NotBlank(message = "Enter a lastname")
 	private String lastname;
 
 	@Size(max=150, message="Maximum 150 characters")
 	private String description;
 
+	@Size(max=40, message="Maximum 40 characters")
 	@NotBlank(message = "Enter a mail")
 	@Email
 	private String mail;
 
 	@NotBlank(message = "You have to create a password!!")
-	@Size(min=8, max=60, message="More than 8 characters")
+	@Size(min=8, max=60, message="Between 8 and 60 characters")
 	private String password;
 
 	@NotBlank(message = "You have to validate the password")
@@ -38,8 +40,10 @@ public class SportsManForm {
 	@NotBlank(message = "You have to give a date of Birth")
 	private String dateofBirth;
 
+	@DecimalMax(value ="120.0", inclusive = true , message = "must be lower than 120.0")
+	@DecimalMin(value ="40.0", inclusive = false, message = "must be highter than 40.0")
 	@Positive(message = "You have to put a valid value (positive)")
-	//    @NotNull(message = "Enter your weight")
+	@Digits(integer=3, fraction=1, message = "only one decimal")
 	private Float weight;
 
 	public String getFirstname() {

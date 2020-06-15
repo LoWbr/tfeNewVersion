@@ -2,17 +2,23 @@ package gradation.implementation.presentationtier.form;
 
 import gradation.implementation.datatier.entities.SportsMan;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MessageForm {
 
+    @Size(max=50, message="Between 10 and 50 characters")
+    @Size(max=10, message="Between 10 and 50 characters")
+    @NotBlank(message = "Enter a subject")
     private String about;
 
     private SportsMan originator;
 
     private List<SportsMan> addressee = new ArrayList<>();
 
+    @NotBlank(message = "Enter a content")
     private String content;
 
     public MessageForm(SportsMan originator, SportsMan addressee) {
