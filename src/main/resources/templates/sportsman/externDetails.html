@@ -27,9 +27,15 @@
         <h3 th:text="${sportsMan.getFirstName() + ' ' + sportsMan.getLastName()}"></h3>
     </div>
     <div class="row">
-        <div sec:authorize="isAuthenticated()" class="nav-item">
+        <div sec:authorize="isAuthenticated()">
+            <div th:if="${!current.getBlocked()}">
             <div th:if="${!current.hasContact(sportsMan)}">
-                <a class="btn btn-primary" th:href="@{/signIn}">Add Contact</a>
+                <a th:href="@{/user/addContact(id=${sportsMan.getId()})}">Add as contact</a>
+            </div>
+                <div th:unless="${!current.hasContact(sportsMan)}">
+                    <a th:href="@{/user/createMessage(id=${sportsMan.getId()})}">Send Message</a>
+                    <a th:href="@{/user/removeContact(id=${sportsMan.getId()})}">Remove contact</a>
+                </div>
             </div>
         </div>
     </div>

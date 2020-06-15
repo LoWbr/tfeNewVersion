@@ -21,12 +21,13 @@
 </head>
 <body>
 <th:block th:include="/navbar2"></th:block>
-<div class="container">
+<div th:if="${sportsMan != null and sportsMan.getBlocked()}">
+    <h3 style="text-align: center; margin-top: 10%;">Sorry, your account is not available</h3>
+</div>
+<div th:unless="${sportsMan != null and sportsMan.getBlocked()}" class="container">
     <div class="row">
         <h3 th:text="${sportsMan.getFirstName() + ' ' + sportsMan.getLastName()}"></h3>
     </div>
-</div>
-<div class="container">
     <div class="row">
         <h4>About me</h4>
     </div>
@@ -45,8 +46,6 @@
     <div class="row">
         <h5 style="margin-left: 1%;" th:text="'In few words : ' + ${sportsMan.getDescription()}" ></h5>
     </div>
-</div>
-<div class="container">
     <div class="row">
         <h4 style="margin-top: 2%; margin-bottom: 1%;">On the application..</h4>
     </div>
@@ -68,8 +67,6 @@
             <span><a th:href="@{/user/contacts}" th:text="${sportsMan.getContacts().size()}"> Title </a></span>
         </li>
     </ul>
-</div>
-<div class="container">
     <div class="row">
         <h4 style="margin-top: 2%; margin-bottom: 1%;">Statistics</h4>
     </div>
@@ -91,8 +88,6 @@
         </tr>
         </tbody>
     </table>
-</div>
-<div class="container">
 <div th:if="${sportsMan.getRoles().size() == 1}">
     <div th:if="${empty}">
         <h4>You want to create and manage your OWNS events? <a th:href="@{/user/applyAsConfirmedUser}" >Apply as Confirmed User!</a></h4>

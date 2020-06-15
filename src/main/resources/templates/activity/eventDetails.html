@@ -39,6 +39,7 @@
         <div class="col-md-6" sec:authorize="isAuthenticated()">
             <!--Ouvert-->
             <div  th:if="${activity.getOpen()}">
+                <div th:if="${!sportsMan.getBlocked()}">
                 <div th:if="${activity.checkLevel(sportsMan)}">
                     <!--Test déjà postulé à mettre en place!!-->
                     <div th:if="${activity.checkPresence(sportsMan)}">
@@ -62,6 +63,7 @@
             <div th:unless="${activity.getOpen()}">
                 <h6>Not Available</h6>
             </div>
+        </div>
         </div>
         </div>
     <hr>
@@ -116,6 +118,7 @@
     <hr>
     <div th:if="${activity.getOpen() and !activity.getOver()}">
     <div sec:authorize="isAuthenticated()">
+        <div th:if="${!sportsMan.getBlocked()}">
         <form th:action="@{/user/addcomment}"
               th:object="${commentForm}" method="POST">
             <div class="form-group">
@@ -139,6 +142,7 @@
             </div>
             </div>
         </form>
+        </div>
     </div>
     </div>
     <h4 style="margin-bottom: 1%;">Comments</h4>

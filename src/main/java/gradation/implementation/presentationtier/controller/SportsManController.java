@@ -171,6 +171,7 @@ public class SportsManController {
 	public String updateSportsManForm(Model model, Principal principal) {
 		model.addAttribute("sportsManForm",
 				new SportsManForm(sportsManService.findCurrentUser(principal.getName())));
+		model.addAttribute("blocked", sportsManService.findCurrentUser(principal.getName()).getBlocked());
 		return "sportsman/updateUser";
 	}
 
@@ -275,6 +276,7 @@ public class SportsManController {
 			messageForm.setOriginator(sportsManService.findCurrentUser(principal.getName()));
 		}
 		model.addAttribute("messageForm", messageForm);
+		model.addAttribute("blocked", sportsManService.findCurrentUser(principal.getName()).getBlocked());
 		return "sportsman/createMessage";
 	}
 
@@ -290,6 +292,7 @@ public class SportsManController {
 				sportsManService.findCurrentUser(principal.getName()), true));
 		String status = "sent";
 		model.addAttribute("status", status);
+		model.addAttribute("blocked", sportsManService.findCurrentUser(principal.getName()).getBlocked());
 		return "sportsman/getMessages";
 	}
 	@RequestMapping(value = "/user/getReceivedMessages", method = RequestMethod.GET)
@@ -298,6 +301,7 @@ public class SportsManController {
 				sportsManService.findCurrentUser(principal.getName()), false));
 		String status = "received";
 		model.addAttribute("status", status);
+		model.addAttribute("blocked", sportsManService.findCurrentUser(principal.getName()).getBlocked());
 		return "sportsman/getMessages";
 	}
 
@@ -314,6 +318,7 @@ public class SportsManController {
 	public String notifications(Model model, Principal principal){
 		model.addAttribute("notifications",
 				sportsManService.getNotifications(sportsManService.findCurrentUser(principal.getName())));
+		model.addAttribute("blocked", sportsManService.findCurrentUser(principal.getName()).getBlocked());
 		return "sportsman/notifications";
 	}
 	@RequestMapping(value = "/user/clearnotification{id}", method = RequestMethod.GET)
@@ -327,6 +332,7 @@ public class SportsManController {
 	public String getContacts(Model model, Principal principal){
 		model.addAttribute("allUsers",
 				sportsManService.getAllContacts(principal.getName()));
+		model.addAttribute("blocked", sportsManService.findCurrentUser(principal.getName()).getBlocked());
 		return "sportsman/contacts";
 	}
 	//FindNotContacts

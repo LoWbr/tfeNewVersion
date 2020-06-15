@@ -76,8 +76,10 @@
         </td>
         <td><a th:href="@{/sportsman(id=${sportsman.getId()})}">Details</a></td>
         <td>
+            <div th:if="${!current.getBlocked()}">
              <span th:if="${current.hasContact(sportsman)}">Already your Friend</span>
             <span th:unless="${current.hasContact(sportsman)}"><a th:href="@{/user/addContact(id=${sportsman.getId()})}">Put in your Contacts list</a></span>
+            </div>
         </td>
             </div>
             </div>

@@ -20,7 +20,10 @@
 </head>
 <body>
 <th:block th:include="/navbar2"></th:block>
-<div class="container">
+<div th:if="${blocked}">
+    <h3 style="text-align: center; margin-top: 10%;">Sorry, your account is not available</h3>
+</div>
+<div th:unless="${blocked}" class="container">
     <h3>Check your notification account</h3>
     <table class="table table-hover">
     <thead>
