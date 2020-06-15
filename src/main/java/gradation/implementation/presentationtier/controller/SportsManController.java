@@ -2,6 +2,7 @@ package gradation.implementation.presentationtier.controller;
 
 import gradation.implementation.businesstier.service.contractinterface.*;
 import gradation.implementation.datatier.entities.SportsMan;
+import gradation.implementation.presentationtier.exception.BlockedUserException;
 import gradation.implementation.presentationtier.exception.CreatorNotMatchingException;
 import gradation.implementation.presentationtier.exception.DoubleRequestException;
 import gradation.implementation.presentationtier.exception.EmptyRequestException;
@@ -168,7 +169,10 @@ public class SportsManController {
 	}
 
 	@RequestMapping(value = "/user/update", method = RequestMethod.GET)
-	public String updateSportsManForm(Model model, Principal principal) {
+	public String updateSportsManForm(Model model, Principal principal) throws BlockedUserException {
+		if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+			throw new BlockedUserException(principal.getName());
+		}
 		model.addAttribute("sportsManForm",
 				new SportsManForm(sportsManService.findCurrentUser(principal.getName())));
 		model.addAttribute("blocked", sportsManService.findCurrentUser(principal.getName()).getBlocked());
@@ -225,7 +229,10 @@ public class SportsManController {
 	}*/
 
 	@RequestMapping(value = "/user/details", method = RequestMethod.GET)
-	public String sportsManOwnDetails(Principal principal, Model model) {
+	public String sportsManOwnDetails(Principal principal, Model model) throws BlockedUserException {
+		if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+			throw new BlockedUserException(principal.getName());
+		}
 		boolean empty = true;
 		List<SportsMan> applications = managementService.getPromotionCandidates();
 		for (SportsMan demander: applications) {
@@ -256,7 +263,10 @@ public class SportsManController {
 
 
 	@RequestMapping(value = "/user/createMessage{id}", method = RequestMethod.GET)
-	public String getMessageForm(@RequestParam(required = false) Long id, Model model, Principal principal){
+	public String getMessageForm(@RequestParam(required = false) Long id, Model model, Principal principal) throws BlockedUserException {
+		if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+			throw new BlockedUserException(principal.getName());
+		}
 		MessageForm messageForm = new MessageForm();
 		boolean showInput;
 		if (id != null) {
@@ -282,12 +292,16 @@ public class SportsManController {
 
 	@RequestMapping(value = "/user/sendMessage", method = RequestMethod.POST)
 	public String sendMessage(@Valid MessageForm messageForm, BindingResult bindingResult){
+
 		sportsManService.sendMessage(messageForm);
 		return "redirect:/user/details";
 	}
 
 	@RequestMapping(value = "/user/getMessagesSent", method = RequestMethod.GET)
-	public String getAllMessageSent(Model model, Principal principal){
+	public String getAllMessageSent(Model model, Principal principal) throws BlockedUserException {
+		if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+			throw new BlockedUserException(principal.getName());
+		}
 		model.addAttribute("messages",sportsManService.findMessages(
 				sportsManService.findCurrentUser(principal.getName()), true));
 		String status = "sent";
@@ -296,7 +310,10 @@ public class SportsManController {
 		return "sportsman/getMessages";
 	}
 	@RequestMapping(value = "/user/getReceivedMessages", method = RequestMethod.GET)
-	public String getAllReceivedMessages(Model model, Principal principal){
+	public String getAllReceivedMessages(Model model, Principal principal) throws BlockedUserException {
+		if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+			throw new BlockedUserException(principal.getName());
+		}
 		model.addAttribute("messages",sportsManService.findMessages(
 				sportsManService.findCurrentUser(principal.getName()), false));
 		String status = "received";
@@ -315,7 +332,10 @@ public class SportsManController {
 	}
 
 	@RequestMapping(value = "/user/notifications", method = RequestMethod.GET)
-	public String notifications(Model model, Principal principal){
+	public String notifications(Model model, Principal principal) throws BlockedUserException {
+		if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+			throw new BlockedUserException(principal.getName());
+		}
 		model.addAttribute("notifications",
 				sportsManService.getNotifications(sportsManService.findCurrentUser(principal.getName())));
 		model.addAttribute("blocked", sportsManService.findCurrentUser(principal.getName()).getBlocked());
@@ -329,7 +349,10 @@ public class SportsManController {
 
 	//FindContacts
 	@RequestMapping(value = "/user/contacts", method = RequestMethod.GET)
-	public String getContacts(Model model, Principal principal){
+	public String getContacts(Model model, Principal principal) throws BlockedUserException {
+		if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+			throw new BlockedUserException(principal.getName());
+		}
 		model.addAttribute("allUsers",
 				sportsManService.getAllContacts(principal.getName()));
 		model.addAttribute("blocked", sportsManService.findCurrentUser(principal.getName()).getBlocked());
@@ -347,14 +370,20 @@ public class SportsManController {
 	}
 
 	@RequestMapping(value = "/user/getRegisteredEvents{id}", method = RequestMethod.GET)
-	public String getRegisteredEvents(@RequestParam Long id, Model model) {
+	public String getRegisteredEvents(@RequestParam Long id, Model model, Principal principal) throws BlockedUserException {
+		if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+			throw new BlockedUserException(principal.getName());
+		}
 		model.addAttribute("sportsMan", sportsManService.findSpecificUser(id));
 		return "sportsman/userParticipatedEvents";
 	}
 
 	@RequestMapping(value = "/user/addContact{id}", method = RequestMethod.GET)
 	public String addContact(@RequestParam Long id,
-			Principal principal) {
+			Principal principal) throws BlockedUserException {
+		if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+			throw new BlockedUserException(principal.getName());
+		}
 		if(sportsManService.findCurrentUser(principal.getName()).hasContact(sportsManService.findSpecificUser(id)))
 		{
 			throw new DoubleRequestException(principal.getName());
@@ -366,7 +395,10 @@ public class SportsManController {
 
 	@RequestMapping(value = "/user/removeContact{id}", method = RequestMethod.GET)
 	public String removeContact(@RequestParam Long id,
-			Principal principal) {
+			Principal principal) throws BlockedUserException {
+		if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+			throw new BlockedUserException(principal.getName());
+		}
 		if(!sportsManService.findCurrentUser(principal.getName()).hasContact(sportsManService.findSpecificUser(id)))
 		{
 			throw new EmptyRequestException(principal.getName());
@@ -377,7 +409,10 @@ public class SportsManController {
 	}
 
 	@RequestMapping(value = "/user/applyAsConfirmedUser", method = RequestMethod.GET)
-	public String applyAsConfirmedUser(Principal principal) {
+	public String applyAsConfirmedUser(Principal principal) throws BlockedUserException {
+		if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+			throw new BlockedUserException(principal.getName());
+		}
 		managementService.applyForConfirmedRole(sportsManService.findCurrentUser(principal.getName()));
 		return "redirect:/user/details";
 	}
@@ -385,7 +420,10 @@ public class SportsManController {
 	@RequestMapping(value = "/factory/noteuser{idActivity,idUser}", method = RequestMethod.POST)
 	public String noteUser(@RequestParam(value = "idActivity") Long idActivity,
                            @RequestParam(value = "idUser") Long idUser, NotationForm notationForm, Principal principal,
-						   Model model){
+						   Model model) throws BlockedUserException {
+		if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+			throw new BlockedUserException(principal.getName());
+		}
 		if(!activityService.getSpecificActivity(idActivity).checkCreator(sportsManService.findCurrentUser(principal.getName())))
 		{
 			throw new CreatorNotMatchingException(principal.getName());

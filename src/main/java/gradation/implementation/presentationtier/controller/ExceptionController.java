@@ -1,8 +1,6 @@
 package gradation.implementation.presentationtier.controller;
 
-import gradation.implementation.presentationtier.exception.CreatorNotMatchingException;
-import gradation.implementation.presentationtier.exception.DoubleRequestException;
-import gradation.implementation.presentationtier.exception.EmptyRequestException;
+import gradation.implementation.presentationtier.exception.*;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,6 +26,20 @@ public class ExceptionController {
     @ExceptionHandler(EmptyRequestException.class)
     public String errorMatchingRedirection(EmptyRequestException ex, Model model){
         String errorMsg = "This is an empty request : any matching component.";
+        model.addAttribute("errorMsg", errorMsg);
+        return "global/error";
+    }
+
+    @ExceptionHandler(CloseOrCancelEventException.class)
+    public String errorMatchingRedirection(CloseOrCancelEventException ex, Model model){
+        String errorMsg = "This is an invalid request : the activity was " + ex.getMessage();
+        model.addAttribute("errorMsg", errorMsg);
+        return "global/error";
+    }
+
+    @ExceptionHandler(BlockedUserException.class)
+    public String errorMatchingRedirection(BlockedUserException ex, Model model){
+        String errorMsg = "Your account is not available.";
         model.addAttribute("errorMsg", errorMsg);
         return "global/error";
     }

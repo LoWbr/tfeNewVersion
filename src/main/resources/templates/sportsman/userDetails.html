@@ -21,10 +21,7 @@
 </head>
 <body>
 <th:block th:include="/navbar2"></th:block>
-<div th:if="${sportsMan != null and sportsMan.getBlocked()}">
-    <h3 style="text-align: center; margin-top: 10%;">Sorry, your account is not available</h3>
-</div>
-<div th:unless="${sportsMan != null and sportsMan.getBlocked()}" class="container">
+<div class="container">
     <div class="row">
         <h3 th:text="${sportsMan.getFirstName() + ' ' + sportsMan.getLastName()}"></h3>
     </div>

@@ -3,9 +3,7 @@ package gradation.implementation.presentationtier.controller;
 import gradation.implementation.businesstier.service.contractinterface.*;
 import gradation.implementation.datatier.entities.Activity;
 import gradation.implementation.datatier.entities.NewsType;
-import gradation.implementation.presentationtier.exception.CreatorNotMatchingException;
-import gradation.implementation.presentationtier.exception.DoubleRequestException;
-import gradation.implementation.presentationtier.exception.EmptyRequestException;
+import gradation.implementation.presentationtier.exception.*;
 import gradation.implementation.presentationtier.form.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +60,10 @@ public class ActivityController {
     }
 
     @RequestMapping(value ="/factory/create", method = RequestMethod.GET)
-    public String createEvent(Model model) {
+    public String createEvent(Model model, Principal principal) throws BlockedUserException {
+        if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+            throw new BlockedUserException(principal.getName());
+        }
         model.addAttribute("activityForm", new ActivityForm());
         model.addAttribute("allKinds", activitySettingService.getAllActivityTypes());
         model.addAttribute("allLevels", activitySettingService.getAllLevels());
@@ -133,14 +134,20 @@ public class ActivityController {
     }
 
     @RequestMapping(value = "/factory/activitiesbycreator", method = RequestMethod.GET)
-    public String getActivitiesByCreator(Model model, Principal principal) {
+    public String getActivitiesByCreator(Model model, Principal principal) throws BlockedUserException {
+        if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+            throw new BlockedUserException(principal.getName());
+        }
         model.addAttribute("ownCreations",
                 activityService.getAllOfTheSameCreator(sportsManService.findCurrentUser(principal.getName())));
         return "activity/ownevents";
     }
 
     @RequestMapping(value = "/factory/ownactivity{id}", method = RequestMethod.GET)
-    public String ownEventDetails(@RequestParam Long id, Model model, Principal principal) {
+    public String ownEventDetails(@RequestParam Long id, Model model, Principal principal) throws BlockedUserException {
+        if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+            throw new BlockedUserException(principal.getName());
+        }
         Activity activity = activityService.getSpecificActivity(id);
         model.addAttribute("activity", activity);//Raccourci encore faisable
         model.addAttribute("candidates", activity.getCandidates());
@@ -153,10 +160,20 @@ public class ActivityController {
     }
 
     @RequestMapping(value = "/factory/activity/update{id}", method = RequestMethod.GET)
-    public String updateEventForm(@RequestParam Long id, Model model, Principal principal) {
+    public String updateEventForm(@RequestParam Long id, Model model, Principal principal) throws CloseOrCancelEventException, BlockedUserException {
+        if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+            throw new BlockedUserException(principal.getName());
+        }
         if(!activityService.getSpecificActivity(id).checkCreator(sportsManService.findCurrentUser(principal.getName())))
         {
             throw new CreatorNotMatchingException(principal.getName());
+        }
+        if(!activityService.getSpecificActivity(id).getOpen() || activityService.getSpecificActivity(id).getOver())
+        {
+            if(activityService.getSpecificActivity(id).getOver())
+                throw new CloseOrCancelEventException("CLOSED");
+            else
+                throw new CloseOrCancelEventException("CANCELLED");
         }
         ActivityForm activityForm = new ActivityForm(activityService.getSpecificActivity(id),
                 activityService.getSpecificActivity(id).getAddress());
@@ -213,7 +230,17 @@ public class ActivityController {
     }
 
     @RequestMapping(value = "/user/postulate{id}", method = RequestMethod.GET)
-    public String applyAsCandidate(@RequestParam(value = "id") Long id, Principal principal) {
+    public String applyAsCandidate(@RequestParam(value = "id") Long id, Principal principal) throws CloseOrCancelEventException, BlockedUserException {
+        if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+            throw new BlockedUserException(principal.getName());
+        }
+        if(!activityService.getSpecificActivity(id).getOpen() || activityService.getSpecificActivity(id).getOver())
+        {
+            if(activityService.getSpecificActivity(id).getOver())
+                throw new CloseOrCancelEventException("CLOSED");
+            else
+                throw new CloseOrCancelEventException("CANCELLED");
+        }
         if(activityService.getSpecificActivity(id).getCandidates().contains(sportsManService.findCurrentUser(principal.getName())))
         {
             throw new DoubleRequestException(principal.getName());
@@ -223,7 +250,7 @@ public class ActivityController {
         return "redirect:/activity?id="+id;
     }
 
-    @RequestMapping(value = "/factory/managecandidates{id}", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/factory/managecandidates{id}", method = RequestMethod.GET)
     public String manageCandidates(@RequestParam Long id, Model model, Principal principal) {
         if(!activityService.getSpecificActivity(id).checkCreator(sportsManService.findCurrentUser(principal.getName())))
         {
@@ -245,11 +272,21 @@ public class ActivityController {
         model.addAttribute("activity",activityService.getSpecificActivity(id));
         model.addAttribute("status", true);
         return "activity/usersForEvent";
-    }
+    }*/
 
     @RequestMapping(value = "/factory/refuseuser{idActivity,idUser}", method = RequestMethod.GET)
     public String refuseUser(@RequestParam Long idUser,
-                          @RequestParam Long idActivity, Principal principal) {
+                          @RequestParam Long idActivity, Principal principal) throws CloseOrCancelEventException, BlockedUserException {
+        if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+            throw new BlockedUserException(principal.getName());
+        }
+        if(!activityService.getSpecificActivity(idActivity).getOpen() || activityService.getSpecificActivity(idActivity).getOver())
+        {
+            if(activityService.getSpecificActivity(idActivity).getOver())
+                throw new CloseOrCancelEventException("CLOSED");
+            else
+                throw new CloseOrCancelEventException("CANCELLED");
+        }
         if(!activityService.getSpecificActivity(idActivity).checkCreator(sportsManService.findCurrentUser(principal.getName())))
         {
             throw new CreatorNotMatchingException(principal.getName());
@@ -261,7 +298,17 @@ public class ActivityController {
 
     @RequestMapping(value = "/factory/adduser{idActivity,idUser}", method = RequestMethod.GET)
     public String addUser(@RequestParam Long idUser,
-                             @RequestParam Long idActivity, Principal principal) {
+                             @RequestParam Long idActivity, Principal principal) throws CloseOrCancelEventException, BlockedUserException {
+        if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+            throw new BlockedUserException(principal.getName());
+        }
+        if(!activityService.getSpecificActivity(idActivity).getOpen() || activityService.getSpecificActivity(idActivity).getOver())
+        {
+            if(activityService.getSpecificActivity(idActivity).getOver())
+                throw new CloseOrCancelEventException("CLOSED");
+            else
+                throw new CloseOrCancelEventException("CANCELLED");
+        }
         if(!activityService.getSpecificActivity(idActivity).checkCreator(sportsManService.findCurrentUser(principal.getName())))
         {
             throw new CreatorNotMatchingException(principal.getName());
@@ -273,7 +320,17 @@ public class ActivityController {
 
     @RequestMapping(value = "/factory/removeuser{idActivity,idUser}", method = RequestMethod.GET)
     public String removeUser(@RequestParam Long idUser,
-                             @RequestParam Long idActivity, Principal principal) {
+                             @RequestParam Long idActivity, Principal principal) throws CloseOrCancelEventException, BlockedUserException {
+        if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+            throw new BlockedUserException(principal.getName());
+        }
+        if(!activityService.getSpecificActivity(idActivity).getOpen() || activityService.getSpecificActivity(idActivity).getOver())
+        {
+            if(activityService.getSpecificActivity(idActivity).getOver())
+                throw new CloseOrCancelEventException("CLOSED");
+            else
+                throw new CloseOrCancelEventException("CANCELLED");
+        }
         if(!activityService.getSpecificActivity(idActivity).checkCreator(sportsManService.findCurrentUser(principal.getName())))
         {
             throw new CreatorNotMatchingException(principal.getName());
@@ -284,7 +341,10 @@ public class ActivityController {
     }
 
     @RequestMapping(value = "/user/quit{id}", method = RequestMethod.GET)
-    public String userLeave(@RequestParam(value = "id") Long idActivity, Principal principal) {
+    public String userLeave(@RequestParam(value = "id") Long idActivity, Principal principal) throws BlockedUserException {
+        if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+            throw new BlockedUserException(principal.getName());
+        }
         if(!activityService.getSpecificActivity(idActivity).getParticipants().contains(sportsManService.findCurrentUser(principal.getName())))
         {
             throw new EmptyRequestException(principal.getName());
@@ -295,7 +355,10 @@ public class ActivityController {
     }
 
     @RequestMapping(value = "/factory/invitecontactpage{id}", method = RequestMethod.GET)
-    public String inviteContactPage(@RequestParam(value = "id") Long id, Model model, Principal principal) {
+    public String inviteContactPage(@RequestParam(value = "id") Long id, Model model, Principal principal) throws BlockedUserException {
+        if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+            throw new BlockedUserException(principal.getName());
+        }
         if(!activityService.getSpecificActivity(id).checkCreator(sportsManService.findCurrentUser(principal.getName())))
         {
             throw new CreatorNotMatchingException(principal.getName());
@@ -307,7 +370,17 @@ public class ActivityController {
 
     @RequestMapping(value = "/factory/inviteusertoactivity{idActivity,idUser}", method = RequestMethod.GET)
     public String inviteContactToEvent(@RequestParam(value = "idActivity") Long idActivity,
-                                    @RequestParam(value = "idUser") Long idUser, Model model, Principal principal) {
+                                    @RequestParam(value = "idUser") Long idUser, Model model, Principal principal) throws CloseOrCancelEventException, BlockedUserException {
+        if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+            throw new BlockedUserException(principal.getName());
+        }
+        if(!activityService.getSpecificActivity(idActivity).getOpen() || activityService.getSpecificActivity(idActivity).getOver())
+        {
+            if(activityService.getSpecificActivity(idActivity).getOver())
+                throw new CloseOrCancelEventException("CLOSED");
+            else
+                throw new CloseOrCancelEventException("CANCELLED");
+        }
         if(!activityService.getSpecificActivity(idActivity).checkCreator(sportsManService.findCurrentUser(principal.getName())))
         {
             throw new CreatorNotMatchingException(principal.getName());
@@ -316,20 +389,30 @@ public class ActivityController {
         return "redirect:/factory/ownactivity?id=" + idActivity;
     }
 
-    @RequestMapping(value = "/factory/active{id}", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/factory/active{id}", method = RequestMethod.GET)
     public String active(@RequestParam(value = "id") Long id, Principal principal) {
         if(!activityService.getSpecificActivity(id).checkCreator(sportsManService.findCurrentUser(principal.getName())))
         {
             throw new CreatorNotMatchingException(principal.getName());
         }
         activityService.cancelOrActivateActivity(activityService.getSpecificActivity(id), true);
-        /*newsService.returnCancelledApplictionNewOrCloseEventNew(activityService.getSpecificActivity(id),
-                NewsType.RESTORE_EVENT);*/
+        *//*newsService.returnCancelledApplictionNewOrCloseEventNew(activityService.getSpecificActivity(id),
+                NewsType.RESTORE_EVENT);*//*
         return "redirect:/factory/activitiesbycreator";
-    }
+    }*/
 
     @RequestMapping(value = "/factory/cancel{id}", method = RequestMethod.GET)
-    public String cancel(@RequestParam(value = "id") Long id, Principal principal) throws CreatorNotMatchingException {
+    public String cancel(@RequestParam(value = "id") Long id, Principal principal) throws CreatorNotMatchingException, CloseOrCancelEventException, BlockedUserException {
+        if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+            throw new BlockedUserException(principal.getName());
+        }
+        if(!activityService.getSpecificActivity(id).getOpen() || activityService.getSpecificActivity(id).getOver())
+        {
+            if(activityService.getSpecificActivity(id).getOver())
+                throw new CloseOrCancelEventException("CLOSED");
+            else
+                throw new CloseOrCancelEventException("CANCELLED");
+        }
         if(!activityService.getSpecificActivity(id).checkCreator(sportsManService.findCurrentUser(principal.getName())))
         {
             throw new CreatorNotMatchingException(principal.getName());
@@ -342,7 +425,17 @@ public class ActivityController {
     }
 
     @RequestMapping(value = "/factory/close{id}", method = RequestMethod.GET)
-    public String closeEvent(@RequestParam(value = "id") Long id, Model model, Principal principal) {
+    public String closeEvent(@RequestParam(value = "id") Long id, Model model, Principal principal) throws CloseOrCancelEventException, BlockedUserException {
+        if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
+            throw new BlockedUserException(principal.getName());
+        }
+        if(!activityService.getSpecificActivity(id).getOpen() || activityService.getSpecificActivity(id).getOver())
+        {
+            if(activityService.getSpecificActivity(id).getOver())
+                throw new CloseOrCancelEventException("CLOSED");
+            else
+                throw new CloseOrCancelEventException("CANCELLED");
+        }
         if(!activityService.getSpecificActivity(id).checkCreator(sportsManService.findCurrentUser(principal.getName())))
         {
             throw new CreatorNotMatchingException(principal.getName());

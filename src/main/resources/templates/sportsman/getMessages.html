@@ -22,10 +22,6 @@
 </head>
 <body>
 <th:block th:include="/navbar2"></th:block>
-<div th:if="${blocked}">
-    <h3 style="text-align: center; margin-top: 10%;">Sorry, your account is not available</h3>
-</div>
-<div th:unless="${blocked}">
 <div th:if="${status} == 'sent'">
     <div class="container">
         <h3>Sent</h3>
@@ -81,6 +77,5 @@
 <!--
 <th:block th:include="/footer"></th:block>
 -->
-</div>
 </body>
 </html>

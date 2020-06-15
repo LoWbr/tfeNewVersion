@@ -21,10 +21,7 @@
 </head>
 <body>
 <th:block th:include="/navbar2"></th:block>
-<div th:if="${blocked}">
-    <h3 style="text-align: center; margin-top: 10%;">Sorry, your account is not available</h3>
-</div>
-<div th:unless="${blocked}" class="container">
+<div class="container">
     <h3 >Update your personal data</h3>
     <form th:action="@{/user/updateuser}"
           th:object="${sportsManForm}" method="POST">
