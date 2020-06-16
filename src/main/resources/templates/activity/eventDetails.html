@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${activity.getName()}"></title>
     <link th:href="@{/bootstrap/css/bootstrap.min.css}"
           rel="stylesheet" media="screen"/>
     <link th:href="@{/css/contentSetting.css}" href="../../css/contentSetting.css}" rel="stylesheet" type="text/css" media="all"/>
@@ -47,7 +48,7 @@
                     </div>
                     <div th:unless="${activity.checkPresence(sportsMan)}">
                         <div th:if="${activity.checkApplication(sportsMan)}">
-                            <h6>An application was sent; please wait for an answer.</h6>
+                            <h6>An application was sent. Please wait for an answer.</h6>
                         </div>
                         <div th:unless="${activity.checkApplication(sportsMan)}">
                             <a th:href="@{/user/postulate(id=${activity.getId()})}">Apply</a>
@@ -61,7 +62,7 @@
             </div>
             <!--Pas Ouvert-->
             <div th:unless="${activity.getOpen()}">
-                <h6>Not Available</h6>
+                <h6>Unavailable</h6>
             </div>
         </div>
         </div>
@@ -83,10 +84,10 @@
     <h4 style="margin-bottom: 1%;">When?</h4>
     <div class="row" style="margin-bottom: 2%;">
         <div class="col-md-6">
-            <h6 th:text="'Date: ' + ${activity.getPlannedTo()}"></h6>
+            <h6 th:text="'Date: ' + ${#temporals.format(activity.getPlannedTo(),'dd/MM/yyyy')}"></h6>
         </div>
         <div class="col-md-6">
-            <h6 th:text="'Hour: ' + ${activity.getHour()}"></h6>
+            <h6 th:text="'Hour: ' + ${#temporals.format(activity.getHour(),'HH:mm')}"></h6>
         </div>
     </div>
     <hr>
@@ -126,7 +127,7 @@
                     <div class="form-group col-md-12">
             <textarea name="content" class="form-control" th:field="*{content}" rows="5"></textarea>
                 <div th:if="${errorMsg != null}">
-                    <span class="text-danger">Comment (150 characters max)</span>
+                    <span class="text-danger">(150 characters max)</span>
                 </div>
             </div>
             <div class="form-group">

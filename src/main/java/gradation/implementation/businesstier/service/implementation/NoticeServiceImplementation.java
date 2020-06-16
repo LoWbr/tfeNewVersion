@@ -6,6 +6,7 @@ import gradation.implementation.datatier.entities.*;
 import gradation.implementation.datatier.repositories.NewsRepository;
 import gradation.implementation.datatier.repositories.SportsManRepository;
 import gradation.implementation.presentationtier.form.SearchNewForm;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
@@ -113,10 +114,10 @@ public class NoticeServiceImplementation implements NewsService {
     public void returnRegistrationResultNew(SportsMan sportsMan, Activity activity, NewsType newsType) {
         String content = "";
         if(newsType.name().equals("REFUSED_REGISTRATION")) {
-            content = activity.getCreatorName() + " rejected your demand.";
+            content = activity.getCreatorName() + " rejected your demand for " + activity.getName();
         }
         else if(newsType.name().equals("VALIDED_REGISTRATION")){
-            content = activity.getCreatorName() + " has accepted your demand.";
+            content = activity.getCreatorName() + " has accepted your demand for " + activity.getName();
         }
         else{
             content = activity.getCreatorName() + " creator cancel your participation to the activity \"" + activity.getName() + "\".";
@@ -140,7 +141,13 @@ public class NoticeServiceImplementation implements NewsService {
     @Override
     public void returnSendMessageNew(Message message, NewsType newsType) {
         for (SportsMan sportsman:message.getAddressees()) {
-            String content = message.getContent();
+            String content;
+            if(message.getContent().length() > 120){
+                 content = StringUtils.abbreviate(message.getContent(), 50);
+            }
+            else{
+                 content = message.getContent();
+            }
             News announceToCreator = new News(sportsman,message.getAuthor(),null,newsType, content,false);
             this.newsRepository.save(announceToCreator);
         }
@@ -148,7 +155,7 @@ public class NoticeServiceImplementation implements NewsService {
 
     @Override
     public void returnAbandonmentNew(SportsMan sportsMan, Activity activity, NewsType newsType) {
-        String content = sportsMan.getFirstName() + " " + sportsMan.getLastName() + " left the activity \"" + activity.getName() + "\".";
+        String content = sportsMan.getFirstName() + " " + sportsMan.getLastName() + " left the following activity: " + activity.getName() + ".";
         News answerToBuyer = new News(activity.getCreator(),sportsMan,activity,newsType, content, false);
         this.newsRepository.save(answerToBuyer);
     }

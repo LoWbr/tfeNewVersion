@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Targeted Message</title>
     <link th:href="@{/bootstrap/css/bootstrap.min.css}"
           rel="stylesheet" media="screen"/>
     <link th:href="@{/css/contentSetting.css}" href="../../css/contentSetting.css}" rel="stylesheet" type="text/css" media="all"/>
@@ -24,7 +25,7 @@
 <body>
 <th:block th:include="/navbar2"></th:block>
 <div class="container">
-    <h3>Say something to friend!!</h3>
+    <h3 th:text="'Say something to ' + ${messageForm.getAddressee().get(0).getFirstName()}"></h3>
     <form th:action="@{/user/sendtargetedmessage}"
           th:object="${messageForm}" method="POST">
         <fieldset>

@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update</title>
     <link th:href="@{/bootstrap/css/bootstrap.min.css}"
           rel="stylesheet" media="screen"/>
     <link th:href="@{/css/contentSetting.css}" href="../../css/contentSetting.css}" rel="stylesheet" type="text/css" media="all"/>
@@ -49,7 +50,7 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label>Mail</label>
+                        <label>Email</label>
                         <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="${sportsManForm.getMail()}" th:field="*{mail}">
                         <div>
                             <span class="text-danger" th:errors="*{mail}"> </span>

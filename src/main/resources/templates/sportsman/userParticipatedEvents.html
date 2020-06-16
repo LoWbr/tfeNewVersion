@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <title th:if="${status} == 'sent'" th:text="'Sent Messages'">Title</title>
-    <title th:unless="${status} == 'sent'" th:text="'Received Messages'">Title</title>
+    <title>My dashboard</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,6 +32,7 @@
         <th> Creator</th>
         <th> Status</th>
         <th> Settings</th>
+        <th> Close</th>
     </tr>
     </thead>
     <tbody>
@@ -49,6 +49,9 @@
         <td>
             <div th:if="${event.getOpen() and !event.getOver()}">
                 <a th:href="@{/user/quit(id=${event.getId()})}">Leave</a>
+            </div>
+            <div th:unless="${event.getOpen() and !event.getOver()}">
+                <span>CLOSED</span>
             </div>
         </td>
     </tr>

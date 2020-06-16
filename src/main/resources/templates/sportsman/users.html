@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members</title>
     <link th:href="@{/bootstrap/css/bootstrap.min.css}"
           rel="stylesheet" media="screen"/>
     <link th:href="@{/css/contentSetting.css}" href="../../css/contentSetting.css}" rel="stylesheet" type="text/css" media="all"/>
@@ -23,10 +24,10 @@
 <th:block th:include="/navbar2"></th:block>
 <div th:if="${all}">
     <div class="container">
-        <h3>Find sportsman!</h3>
+        <h3>Find sportsman :</h3>
 <form th:action="@{/sportsmenbyfilter}"
       th:object="${searchUserForm}" method="POST">
-    <legend>Give a firstname and/or a lastname</legend>
+    <legend>Enter a firstname and/or a lastname</legend>
     <div class="form-group">
         <div class="form-row">
         <div class="form-group col-md-5">
@@ -53,8 +54,8 @@
     <table class="table table-hover">
         <thead>
         <tr>
-            <th scope="col">First name</th>
-            <th scope="col">Last name</th>
+            <th scope="col">Firstname</th>
+            <th scope="col">Lastname</th>
             <th scope="col">Level</th>
             <th scope="col">Status</th>
             <th scope="col"></th>
@@ -78,7 +79,7 @@
         <td>
             <div th:if="${!current.getBlocked()}">
              <span th:if="${current.hasContact(sportsman)}">Already your Friend</span>
-            <span th:unless="${current.hasContact(sportsman)}"><a th:href="@{/user/addContact(id=${sportsman.getId()})}">Put in your Contacts list</a></span>
+            <span th:unless="${current.hasContact(sportsman)}"><a th:href="@{/user/addContact(id=${sportsman.getId()})}">Add to your contacts list</a></span>
             </div>
         </td>
             </div>

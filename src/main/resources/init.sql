@@ -252,8 +252,30 @@ INSERT INTO message_addressees (received_messages_id,addressees_id) VALUES
 (10,4),
 (11,6);
 
-/*INSERT INTO news (id,content, seen, type, activity_id, source_id, target_id) VALUES
-*/
+INSERT INTO news (content, seen, type, activity_id, source_id, target_id) VALUES
+
+('ut, pellentesque eget, dictum placerat, augue. Sed molestie. Sed...',false,'MESSAGE_SEND',null,5,1),
+('Romain rejected your demand for the activity : Clubs en Folie',false,'REFUSED_REGISTRATION',10,4,5),
+('ut, pellentesque eget, dictum placerat, augue. Sed molestie. Sed...',false,'MESSAGE_SEND',null,5,2),
+('dapibus id, blandit at, nisi. Cum sociis natoque penatibus...',false,'MESSAGE_SEND',null,5,1),
+('Troy rejected your demand for the activity : Etretat Racing Golf',false,'REFUSED_REGISTRATION',9,6,4),
+('Morbi non sapien molestie orci tincidunt adipiscing....',false,'MESSAGE_SEND',null,3,1),
+('Laurent has accepted your demand for the activity : Cross au bois de Malonne',false,'VALIDED_REGISTRATION',3,1,5),
+('ET, amet risus. Donec egestas. Aliquam nec enim. Nunc ut erat....',false,'MESSAGE_SEND',null,2,1),
+('Michael rejected your demand for the activity : Basket Party',false,'REFUSED_REGISTRATION',13,2,5),
+('The event Cross au bois de Malonne is now closed',false,'DONE_EVENT',3,1,5),
+('Neve Barber applied for the the confirmed Role.',false,'APPLY_AS_CONFIRMED',null,9,1),
+('Lucius Salazar applied for the the confirmed Role.',false,'APPLY_AS_CONFIRMED',null,12,1),
+('Michael has accepted your demand for the activity : Basket Party',false,'VALIDED_REGISTRATION',13,2,3),
+('Nora Berger applied for the the confirmed Role.',false,'APPLY_AS_CONFIRMED',null,25,1),
+('Laurent left the following activity: Balls type 2',false,'PARTICIPANT_DROPOUT',7,1,2),
+('Baptiste left the following activity: Bicycle Party',false,'PARTICIPANT_DROPOUT',8,5,1);
+
+INSERT INTO promotion_request (applier_id,in_demand_id) VALUES
+
+(9,2),
+(12,2),
+(25,2);
 
 INSERT INTO topic (content,date, author_id) VALUES
 

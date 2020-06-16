@@ -6,6 +6,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:if="${status} == 'sent'" th:text="'Sent Messages'">Title</title>
+    <title th:unless="${status} == 'sent'" th:text="'Received Messages'">Title</title>
     <link th:href="@{/bootstrap/css/bootstrap.min.css}"
           rel="stylesheet" media="screen"/>
     <link th:href="@{/css/contentSetting.css}" href="../../css/contentSetting.css}" rel="stylesheet" type="text/css" media="all"/>
@@ -24,7 +26,7 @@
 <th:block th:include="/navbar2"></th:block>
 <div th:if="${status} == 'sent'">
     <div class="container">
-        <h3>Sent</h3>
+        <h3>Sent messages</h3>
         <table class="table table-hover">
     <thead>
     <tr>
@@ -50,7 +52,7 @@
 </div>
 <div th:if="${status} == 'received'">
     <div class="container">
-    <h3>Received</h3>
+    <h3>Received messages</h3>
     <table class="table table-hover">
     <thead>
     <tr>
@@ -72,7 +74,7 @@
 </div>
 </div>
 <div class="container">
-    <h6 style="margin-top: 2%;"><a th:href="@{/user/createMessage}">Write</a></h6>
+    <h6 style="margin-top: 2%;"><a th:href="@{/user/create/emptymessage}">Write</a></h6>
 </div>
 <!--
 <th:block th:include="/footer"></th:block>

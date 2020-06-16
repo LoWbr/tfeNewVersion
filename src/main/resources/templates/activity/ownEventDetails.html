@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${activity.getName()}"></title>
     <link th:href="@{/bootstrap/css/bootstrap.min.css}"
           rel="stylesheet" media="screen"/>
     <link th:href="@{/css/contentSetting.css}" href="../../css/contentSetting.css}" rel="stylesheet" type="text/css" media="all"/>
@@ -40,7 +41,7 @@
         </div>
         <div class="col-md-3">
             <h6 th:if="${activity.getOpen() and !activity.getOver()}"><a th:href="@{/factory/activity/update(id=${activity.getId()})}">Update</a></h6>
-            <h6 th:unless="${activity.getOpen() and !activity.getOver()}">Not updatable</h6>
+            <h6 th:unless="${activity.getOpen() and !activity.getOver()}">Update not available</h6>
         </div>
     </div>
     <hr>
@@ -60,10 +61,10 @@
     <h4 style="margin-bottom: 1%;">When?</h4>
     <div class="row" style="margin-bottom: 2%;">
         <div class="col-md-6">
-            <h6 th:text="'Date: ' + ${activity.getPlannedTo()}"></h6>
+            <h6 th:text="'Date: ' + ${#temporals.format(activity.getPlannedTo(),'dd/MM/yyyy')}"></h6>
         </div>
         <div class="col-md-6">
-            <h6 th:text="'Hour: ' + ${activity.getHour()}"></h6>
+            <h6 th:text="'Hour: ' + ${#temporals.format(activity.getHour(),'HH:mm')}"></h6>
         </div>
     </div>
     <hr>
@@ -187,7 +188,7 @@
                     <div class="form-group col-md-12">
                         <textarea name="content" class="form-control" th:field="*{content}" rows="5"></textarea>
                         <div th:if="${errorMsg != null}">
-                            <span class="text-danger">Comment (150 characters max)</span>
+                            <span class="text-danger">(150 characters max)</span>
                         </div>
                     </div>
                     <div class="form-group">

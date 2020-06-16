@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade participants</title>
     <link th:href="@{/bootstrap/css/bootstrap.min.css}"
           rel="stylesheet" media="screen"/>
     <link th:href="@{/css/contentSetting.css}" href="../../css/contentSetting.css}" rel="stylesheet" type="text/css" media="all"/>
@@ -21,24 +22,24 @@
 <body>
 <th:block th:include="/navbar2"></th:block>
 <div class="container">
-<h3>You have <span th:text="${peopleToMark.size()}"></span> to note.</h3>
+<h3>You have <span th:text="' ' + ${peopleToMark.size()}"></span> people to note.</h3>
 <div th:each="user : ${peopleToMark}">
     <form form class="form-inline" th:action="@{/factory/noteuser(idActivity=${id},idUser=${user.getId()})}"
           th:object="${notationForm}" method="POST">
             <div class="col-md-3">
-                <label>Cote for <span th:text="': ' +${user.getFirstName()}"></span></label>
+                <label>Cote for <span th:text="': ' +${user.getFirstName()} + ' ' + ${user.getLastName()}"></span></label>
             </div>
             <div class="col-md-3">
             <select th:field="*{notation}" class="form-control">
-                <option value="0">Pas présent</option>
-                <option value="0.3">Basique</option>
-                <option value="0.5">Bien</option>
-                <option value="0.7">Très Bien</option>
-                <option value="1">Parfait</option>
+                <option value="0">Absent</option>
+                <option value="0.3">Basic</option>
+                <option value="0.5">Good</option>
+                <option value="0.7">Very Good</option>
+                <option value="1">Perfec</option>
             </select>
             </div>
             <div class="col-md-3">
-                <button class="btn btn-primary" type="submit">Save</button>
+                <button class="btn btn-primary" type="submit">Grade</button>
             </div>
     </form>
     <br>

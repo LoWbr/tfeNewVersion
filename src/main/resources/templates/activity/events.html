@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activities</title>
     <link th:href="@{/bootstrap/css/bootstrap.min.css}"
           rel="stylesheet" media="screen"/>
     <link th:href="@{/css/contentSetting.css}" href="../../css/contentSetting.css}" rel="stylesheet" type="text/css" media="all"/>
@@ -21,7 +22,7 @@
 <body>
 <th:block th:include="/navbar2"></th:block>
 <div class="container">
-    <h3>What are you looking For?</h3>
+    <h3>What are you looking for?</h3>
     <h4 style="text-align: right;">Need filters? <a th:href="@{/search}">Click Here</a></h4>
     <div style="margin-top:2%" class="row">
         <div class="col-sm-4" th:each="event : ${allActivities}">

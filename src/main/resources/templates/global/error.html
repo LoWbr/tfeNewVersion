@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link th:href="@{/bootstrap/css/bootstrap.min.css}"
           rel="stylesheet" media="screen"/>
+    <title>Error</title>
     <link th:href="@{/css/contentSetting.css}" href="../../css/contentSetting.css}" rel="stylesheet" type="text/css" media="all"/>
     <script th:src="@{/jquery/jquery.min.js}"></script>
     <script th:src="@{/popper/popper.min.js}"></script>
@@ -25,6 +26,8 @@
     <h2 style="text-align: center; margin-bottom: 2%;" th:text="${errorMsg}"></h2>
     <h5 style="text-align: center;">Back to the<a th:href="@{/}"> homepage</a></h5>
 </div>
+<!--
 <th:block th:include="/footer"></th:block>
+-->
 </body>
 </html>
