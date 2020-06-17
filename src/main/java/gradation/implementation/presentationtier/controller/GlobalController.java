@@ -2,18 +2,23 @@ package gradation.implementation.presentationtier.controller;
 
 import gradation.implementation.businesstier.service.contractinterface.*;
 import gradation.implementation.datatier.entities.Activity;
+import gradation.implementation.presentationtier.form.ActivityForm;
 import gradation.implementation.presentationtier.form.SearchActivityForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -34,6 +39,14 @@ public class GlobalController {
         this.activitySettingService = activitySettingService;
         this.sportsManService = sportsManService;
         this.managementService = managementService;
+    }
+
+    @ModelAttribute
+    public void initiate(Model model) {
+        model.addAttribute("searchActivityForm", new SearchActivityForm());
+        model.addAttribute("allKinds", activitySettingService.getAllActivityTypes());
+        model.addAttribute("allLevels", activitySettingService.getAllLevels());
+        model.addAttribute("allEvents",activityService.OnTime(LocalDate.now()));
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -96,8 +109,11 @@ public class GlobalController {
     }
 
     @RequestMapping(value ="/searchbyfilter", method = RequestMethod.POST)
-    public String searchByFilter(@ModelAttribute("searchActivityForm") SearchActivityForm searchActivityForm,
-                                 Model model, Principal principal) {
+    public String searchByFilter(@Valid @ModelAttribute("searchActivityForm") SearchActivityForm searchActivityForm,
+                                 BindingResult bindingResult, Model model, Principal principal) {
+        if(bindingResult.hasErrors()){
+            return "global/search";
+        }
         if(principal != null){
             model.addAttribute("sportsMan", sportsManService.findCurrentUser(principal.getName()));
         }
@@ -106,6 +122,17 @@ public class GlobalController {
         }
         if(searchActivityForm.getDate().equals("")){
             searchActivityForm.setDate(null);
+        }
+        else{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate current = LocalDate.now();
+            LocalDate dateInput;
+            try{
+                dateInput = LocalDate.parse(searchActivityForm.getDate(), formatter);
+            }catch (DateTimeParseException dt){
+                bindingResult.rejectValue("date", "", "Date not valid.");
+                return "global/search";
+            }
         }
         model.addAttribute("allLevels", activitySettingService.getAllLevels());
         model.addAttribute("allKinds", activitySettingService.getAllActivityTypes());

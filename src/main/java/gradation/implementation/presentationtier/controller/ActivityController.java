@@ -436,9 +436,12 @@ public class ActivityController {
     }
 
     @RequestMapping(value = "/factory/close{id}", method = RequestMethod.GET)
-    public String closeEvent(@RequestParam(value = "id") Long id, Model model, Principal principal) throws CloseOrCancelEventException, BlockedUserException {
+    public String closeEvent(@RequestParam(value = "id") Long id, Model model, Principal principal) throws CloseOrCancelEventException, BlockedUserException, InProgressActivityException {
         if(sportsManService.findCurrentUser(principal.getName()).getBlocked()){
             throw new BlockedUserException(principal.getName());
+        }
+        if (!activityService.getSpecificActivity(id).checkDate()){
+            throw new InProgressActivityException(activityService.getSpecificActivity(id).getName());
         }
         if(!activityService.getSpecificActivity(id).getOpen() || activityService.getSpecificActivity(id).getOver())
         {

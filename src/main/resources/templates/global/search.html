@@ -40,10 +40,16 @@
         <div class="form-group col-md-4">
             <label>After..</label>
         <input class="form-control" type="date" th:field="*{date}"/>
+            <div>
+                <span class="text-danger" th:errors="*{date}"></span>
+            </div>
         </div>
         <div class="form-group col-md-4">
             <label>Minimum Duration</label>
             <input class="form-control" type="number" th:field="*{duration}">
+            <div>
+                <span class="text-danger" th:errors="*{duration}"></span>
+            </div>
         </div>
         </div>
         <div class="form-row">
@@ -76,7 +82,7 @@
     </div>
 </form>
     <a th:href="@{/search}">Clear the Search</a>
-
+    <h4 style="margin-top:2%;" th:text="'Matching ' + ${allEvents.size()} + ' activities :'"></h4>
     <table class="table table-hover">
     <thead>
     <tr>
@@ -87,6 +93,7 @@
         <th> Duration</th>
         <th> City</th>
         <th> Date</th>
+        <th></th>
 
     </tr>
     </thead>
@@ -106,6 +113,9 @@
             <span th:if="${event.checkLevel(sportsMan)}" style="color: green">
                 <a th:href="@{/activity(id=${event.getId()})}" th:text="Details"></a></span>
             <span th:unless="${event.checkLevel(sportsMan)}" style="color: red">Not Available</span>
+        </td>
+        <td sec:authorize="!isAuthenticated()">
+                <a th:href="@{/activity(id=${event.getId()})}" th:text="Details"></a></span>
         </td>
     </tr>
     </tbody>

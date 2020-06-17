@@ -9,8 +9,8 @@ import java.util.List;
 
 public class MessageForm {
 
-    @Size(max=50, message="Between 10 and 50 characters")
-    @Size(max=10, message="Between 10 and 50 characters")
+    @Size(max=50, message="Between 5 and 50 characters")
+    @Size(min=5, message="Between 5 and 50 characters")
     @NotBlank(message = "Enter a subject")
     private String about;
 

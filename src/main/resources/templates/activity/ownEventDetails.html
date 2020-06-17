@@ -35,8 +35,11 @@
         <div class="col-md-3">
             <div th:if="${!activity.getOpen()}"></div>
             <div th:unless="${!activity.getOpen()}">
-            <h6 th:if="${!activity.getOver()}"><a th:href="@{/factory/close(id=${activity.getId()})}">Close</a></h6>
-            <h6 th:unless="${!activity.getOver()}">CLOSED</h6>
+            <div th:if="${!activity.getOver()}">
+                <div th:if="${activity.checkDate()}"><a th:href="@{/factory/close(id=${activity.getId()})}">Close</a></div>
+                <div th:unless="${activity.checkDate()}">In progress</div>
+            </div>
+                <div th:unless="${!activity.getOver()}"><h6>CLOSED</h6></div>
             </div>
         </div>
         <div class="col-md-3">

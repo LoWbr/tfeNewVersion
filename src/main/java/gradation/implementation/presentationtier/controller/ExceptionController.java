@@ -44,4 +44,11 @@ public class ExceptionController {
         return "global/error";
     }
 
+    @ExceptionHandler(InProgressActivityException.class)
+    public String errorMatchingRedirection(InProgressActivityException ex, Model model){
+        String errorMsg = "This activity is still in progress.";
+        model.addAttribute("errorMsg", errorMsg);
+        return "global/error";
+    }
+
 }

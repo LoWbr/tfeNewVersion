@@ -79,13 +79,13 @@ INSERT INTO address(number, street, postal_code, city, country) VALUES
 --Old Events
 INSERT INTO activity (name,description, type_activity_id, creator_id,duration,open,over,minimum_level_id, maximum_level_id, planned_to,hour, address_id) VALUES
 ('Initiation Crawl','Swimming, Beginning',5,1,90,true,true,1,1,'2020-05-10','14:00:00',3),
-('Namur-Ottiginies','45km, intense',3,2,60,true,true,2,4,'2020-07-15','09:30:00',1),
-('Cross au Bois de Malonne','Au travers des arbres',4,1,180,true,true,1,2,'2020-07-04','08:00:00',1),
-('Descente de la Meuse','Traveling au travers de la flotte',5,3,45,true,true,1,3,'2020-06-25','17:30:00',6);
+('Namur-Ottiginies','45km, intense',3,2,60,true,true,2,4,'2020-06-15','09:30:00',1),
+('Cross au Bois de Malonne','Au travers des arbres',4,1,180,true,true,1,2,'2020-06-04','08:00:00',1),
+('Descente de la Meuse','Traveling au travers de la flotte',5,1,45,true,false,1,3,'2020-06-15','13:30:00',6);
 
 --Current Events
 INSERT INTO activity (name,description, type_activity_id, creator_id,duration,open,over,minimum_level_id, maximum_level_id, planned_to, hour, address_id) VALUES
-('Initiation au Papillon','This is a test',5,1,90,true,false,1,3,'2020-08-10','14:00:00',5 ),
+('Initiation au Papillon','Découverte, pour les non-initiés, de cette intense pratique. Brasse et Crawl non-nécessaires.' ,5,1,90,true,false,1,3,'2020-06-20','14:00:00',5),
 ('Footing Mosan','Along the river',4,2,60,true,false,1,2,'2020-07-15','09:30:00',6),
 ('Vélo en Folie','Fun and Fun, in wilderness',3,3,180,true,false,1,1,'2020-07-04','08:00:00',2),
 ('Run & Beer','Plus long, plus long, plus long, plus long',4,1,45,true,false,1,2,'2020-06-25','17:30:00',4),
@@ -101,7 +101,7 @@ INSERT INTO activity (name,description, type_activity_id, creator_id,duration,op
 ('More and More feet','nunc sit amet metus. Aliquam erat volutpat. Nulla facilisis. Suspendisse',4,4,140,true,false,1,2,'20-10-25','18:00:00',19),
 ('Jogging +1000','sollicitudin orci sem eget massa. Suspendisse eleifend. Cras sed leo',4,1,170,true,false,1,1,'20-10-21','21:00:00',3),
 ('20km Race challenge','vitae, aliquet nec, imperdiet nec, leo. Morbi neque tellus, imperdiet',4,1,135,true,false,1,1,'20-08-10','10:00:00',6),
-('Earth and water','in faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus',8,4,100,true,false,1,2,'21-06-15','14:00:00',7),
+('Earth and water','in faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus',8,4,100,true,false,1,2,'21-06-19','14:00:00',7),
 ('Volley Session 1','ac turpis egestas. Fusce aliquet magna a neque. Nullam ut',2,1,100,true,false,2,3,'20-07-09','21:00:00',11),
 ('24h de raquette','sagittis semper. Nam tempor diam dictum sapien. Aenean massa. Integer',6,1,170,true,false,3,3,'20-10-14','21:00:00',18),
 ('Black Forest Challenge','leo. Morbi neque tellus, imperdiet non, vestibulum nec, euismod in',8,3,160,true,false,4,4,'20-11-15','18:00:00',2),
@@ -127,6 +127,7 @@ INSERT INTO activity_participants(registered_activities_id, participants_id) VAL
 (2,3),
 (3,1),
 (3,4),
+(4,1),
 (4,2),
 (4,3),
 (4,4),
@@ -150,11 +151,11 @@ INSERT INTO statistic (earned_points,energy_expenditure,activity_id, sports_man_
 (25,250,2,3),
 (25,250,3,1),
 (32,320,3,4),
-(12,120,4,2),
-(15,150,4,3),
-(14,140,4,4),
-(11,110,4,5),
-(10,100,4,6);
+(12,120,1,2),
+(15,150,1,3),
+(14,140,2,4),
+(11,110,2,5),
+(10,100,3,6);
 
 INSERT INTO sports_man_contacts (sports_man_id,contacts_id) VALUES
 (2,1),
@@ -282,3 +283,9 @@ INSERT INTO topic (content,date, author_id) VALUES
 ('Attention, modifications en vue : en cas de problèmes, relancer votre navigateur.','19-04-03 11:03:12',1),
 ('! Avis!! La 100e activité a vu le jour sur la plateforme! Félicitations!','20-01-02 16:15:45',1),
 ('Bientôt, sur la plateforme : ajout de nouveaux types de sports prévu sous peu!','20-02-06 21:56:02',1);
+
+INSERT INTO comment (content,date, activity_id, author_id) VALUES
+
+('Du matos est nécessaire, ou tout est compris?','20-05-20 11:03:12',4,4),
+('Un avis de pluie est lancé : une annulation est possible.','20-05-29 16:15:45',4,1),
+('Tout va bien, le soleil est prévu pour la journée: aucun risque.','20-06-10 21:56:02',4,3);

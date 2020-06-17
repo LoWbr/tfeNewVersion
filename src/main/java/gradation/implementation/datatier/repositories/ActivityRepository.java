@@ -8,6 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @ConditionalOnProperty(name="app.repository", havingValue = "main")
@@ -25,20 +26,30 @@ public interface ActivityRepository extends CrudRepository<Activity, Long>{
     List<SportsMan> findNotRegistered(
             @Param("list") List<SportsMan> listNonInscrits);
 
-    @Query("Select event from Activity event where (:activity is null or event.typeActivity = :activity)" +
+    @Query("Select event from Activity event where event.open = true and event.over = false and " +
+            "event.plannedTo > :nowDate and " /*+ "(:activity is null or event.typeActivity = :activity) and"*/ +
+            "(:activity is null or event.typeActivity = :activity)" +
             "and (:minlevel is null or event.minimumLevel = :minlevel) and (:maxlevel is null or event.maximumLevel = :maxlevel)" +
             "and (:city is null or event.address.city = :city)" +
             "and (:duration is null or event.duration >= :duration) and" +
-            " (:plannedTo is null or event.plannedTo >= :plannedTo)")
+            " (:plannedTo is null or event.plannedTo >= :plannedTo) order by event.plannedTo ASC, event.hour ASC")
     List<Activity> filter(
+/*
+            @Param("name") String name,
+*/
             @Param("activity") ActivityType activityType,
             @Param("minlevel") Level minlevel,
             @Param("maxlevel") Level maxlevel,
             @Param("city") String city,
+/*
+            @Param("country") String country,
+*/
             @Param("duration") Short duration,
-            @Param("plannedTo") LocalDate plannedTo);
+            @Param("plannedTo") LocalDate plannedTo,
+            @Param("nowDate") LocalDate nowDate);
 
-    @Query("Select event from Activity event where event.plannedTo >= :date order by event.plannedTo ASC ")
+    @Query("Select event from Activity event where event.open = true and event.over = false and" +
+            " event.plannedTo > :date order by event.plannedTo ASC ")
     List<Activity> findOnTimeActivities(
             @Param("date") LocalDate date);
 

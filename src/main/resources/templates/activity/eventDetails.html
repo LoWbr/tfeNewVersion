@@ -162,6 +162,10 @@
         </tr>
         </tbody>
     </table>
-</div>
+    <div sec:authorize="!isAuthenticated()" style="margin-top: 3%;">
+        <h6>Do you want to interact (comment, apply) to this activity? <a th:href="@{/signIn}">Sign in</a> or <a th:href="@{/signIn}"> create an
+        account</a></h6>
+    </div>
+    </div>
 </body>
 </html>

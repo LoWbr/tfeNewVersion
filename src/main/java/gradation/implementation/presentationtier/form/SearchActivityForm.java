@@ -2,11 +2,15 @@ package gradation.implementation.presentationtier.form;
 
 import gradation.implementation.datatier.entities.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
+
 public class SearchActivityForm {
 
     private ActivityType activity;
     private Level minimumLevel;
     private Level maximumLevel;
+    @Positive(message = "You have to put a valid value (positive)")
     private Short duration;
     private String city;
     private String country;

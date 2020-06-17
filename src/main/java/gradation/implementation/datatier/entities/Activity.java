@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -265,6 +266,14 @@ public class Activity {
 
     public boolean checkCreator(SportsMan sportsMan){
         if(this.creator.getId() == sportsMan.getId())
+            return true;
+        else
+            return false;
+    }
+
+    public boolean checkDate(){
+        LocalDate current = LocalDate.now();
+        if (Period.between(this.plannedTo,current).getDays() > 0)
             return true;
         else
             return false;

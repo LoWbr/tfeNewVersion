@@ -105,6 +105,12 @@
         </tbody>
     </table>
 </div>
+<div class="container">
+    <div sec:authorize="!isAuthenticated()" style="margin-top: 3%;">
+        <h6>Do you want to interact (add as contact, send messages) with this user? <a th:href="@{/signIn}">Sign in</a> or <a th:href="@{/signIn}"> create an
+            account</a></h6>
+    </div>
+</div>
 <!--
 <th:block th:include="/footer"></th:block>
 -->

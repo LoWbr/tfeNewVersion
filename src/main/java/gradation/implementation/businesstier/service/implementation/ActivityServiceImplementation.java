@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -77,9 +78,10 @@ import java.util.List;
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             plannedTo = LocalDate.parse(searchActivityForm.getDate(), formatter).plusDays(1);
         }
-        LocalDate now = LocalDate.now();
+        LocalDate nowDate = LocalDate.now();
         return this.activityRepository.filter(searchActivityForm.getActivity(), searchActivityForm.getMinimumLevel(),
-                searchActivityForm.getMaximumLevel(),searchActivityForm.getCity(),searchActivityForm.getDuration(), plannedTo);
+                searchActivityForm.getMaximumLevel(),searchActivityForm.getCity(),searchActivityForm.getDuration(), plannedTo,
+                nowDate);
     }
 
     @Override
